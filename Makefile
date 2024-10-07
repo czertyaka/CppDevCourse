@@ -1,13 +1,12 @@
-DOCKER_IMAGE := texlive/texlive:latest
 ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 TEXFILES := \
-	Presentations/1-Intro/intro.tex
+	$(ROOT_DIR)/Presentations/1-Intro/intro.tex
 
-PDFFILES := $(TEXFILES:%.tex=build/%.pdf)
+PDFFILES := $(TEXFILES:$(ROOT_DIR)/%.tex=build/%.pdf)
 
 define INSTALL_PDF
-	$(eval FILE = $(1:build/%=%))
+$(eval FILE = $(1:build/%=%))
 	$(eval INSTALL_DIR = $(PREFIX)/$(dir ${FILE}))
 	mkdir -p ${INSTALL_DIR}
 	cp $(1) ${INSTALL_DIR}
@@ -17,7 +16,8 @@ endef
 	all \
 	build \
 	install \
-	clean
+	clean \
+	dockerimage
 
 all: build
 
@@ -29,13 +29,18 @@ install: build
 clean:
 	rm -rf texput.log build
 
-build/%.pdf: %.tex
+build/%.pdf: %.tex dockerimage
 	mkdir -p build/$(dir $<)
 	docker run \
 		--rm \
 		-u $(shell id -u):$(shell id -g) \
 		-v $(ROOT_DIR):/workdir/ \
-		-w /workdir/ \
-		$(DOCKER_IMAGE) \
+		cppdevcourse/texlive:latest \
 		pdflatex -output-directory=build/$(dir $<) $<
 
+dockerimage: Dockerfile
+	docker build \
+		--build-arg UID=$(shell id -u) \
+		--build-arg GID=$(shell id -g) \
+		-t cppdevcourse/texlive:latest \
+		$(ROOT_DIR)
