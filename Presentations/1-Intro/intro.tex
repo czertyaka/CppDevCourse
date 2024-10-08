@@ -18,6 +18,8 @@
 \usemintedstyle{borland}
 \SetupFloatingEnvironment{listing}{name=Листинг}
 
+\usepackage{fancyvrb}
+
 % ==== Beamer customization section ================
 
 \title{Введение в разработку на C++}
@@ -160,15 +162,21 @@
 
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
 
     \frametitle{Hello, world!}
 
     \begin{listing}[H]
-        \inputminted[frame=single,fontsize=\footnotesize,linenos]{cpp}
+        \inputminted[frame=single, fontsize=\footnotesize, linenos]{cpp}
             {Presentations/1-Intro/hello-world.cpp}
         \caption{hello-world.cpp}
     \end{listing}
+
+    \begin{Verbatim}[frame=single, fontsize=\footnotesize, commandchars=\\\{\}]
+$ \textbf{g++ hello-world.cpp}
+$ \textbf{./a.out}
+Hello, World!
+    \end{Verbatim}
 
 \end{frame}
 
