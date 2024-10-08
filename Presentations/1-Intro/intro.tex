@@ -9,6 +9,7 @@
 \setmonofont{DejaVu Sans Mono}
 
 \usepackage[export]{adjustbox}
+\usepackage{tikz}
 
 \title{Введение в разработку на C++}
 \subtitle{Введение}
@@ -22,9 +23,132 @@
     \includegraphics[scale=0.1,valign=t]{Presentations/images/university-logo.png}
     \includegraphics[scale=0.3,valign=t]{Presentations/images/prosoft-logo.png}
 }
+\logo{
+    \begin{tikzpicture}[overlay,remember picture]
+        \node[left=0.2cm] at (current page.32){
+            \includegraphics[scale=0.15,valign=t]{Presentations/images/prosoft-logo.png}
+            \includegraphics[scale=0.05,valign=t]{Presentations/images/university-logo.png}
+        };
+    \end{tikzpicture}
+}
+
+\setbeamertemplate{footline}[frame number]
 
 \begin{document}
 
-\frame{\titlepage}
+\frame[plain]{\titlepage}
+
+\begin{frame}
+
+    \frametitle{Темы курса}
+
+    \begin{itemize}
+
+        \item Компиляция
+
+            \begin{itemize}
+
+                \item Фазы трансляции
+
+                \item Системы сборки
+
+                \item Кросс-компиляция
+
+                \item Управление зависимостями
+
+            \end{itemize}
+
+        \item Система контроля версий (git)
+
+        \item Типы объектов
+
+            \begin{itemize}
+
+                \item Фундаментальные типы
+
+                \item Квалификаторы типов
+
+                \item Операции и операторы
+
+                \item Приведение типов
+
+            \end{itemize}
+
+        \item Условия и циклы
+
+        \item Указатели и работа с памятью
+
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+
+    \frametitle{Темы курса}
+
+    \begin{itemize}
+
+        \item Функции
+
+            \begin{itemize}
+
+                \item Сигнатура функции
+
+                \item Объявление и определение функции
+
+                \item Рекурсия
+
+                \item Перегрузка функций
+
+            \end{itemize}
+
+        \item Пространства имен
+
+        \item Классы
+
+            \begin{itemize}
+
+                \item Поля и методы класса, конструкторы и деструкторы,
+                    время жизни объектов, инициализация
+
+                \item \texttt{const}, \texttt{mutable}, статические поля и методы
+
+                \item Наследование
+
+                \item Полиморфизм
+
+            \end{itemize}
+
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+
+    \frametitle{Темы курса}
+
+    \begin{itemize}
+
+        \item Исключения
+
+        \item Шаблоны
+
+        \item Стандартная библиотека
+
+            \begin{itemize}
+
+                \item Строки, потоки ввода-вывода, работа с файлами
+
+                \item Контейнеры
+
+                \item Алгоритмы
+
+                \item Умные указатели
+
+            \end{itemize}
+
+    \end{itemize}
+
+\end{frame}
 
 \end{document}
