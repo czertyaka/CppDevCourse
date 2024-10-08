@@ -2,6 +2,8 @@
 
 \documentclass{beamer}
 
+% ==== Packages section ============================
+
 \usepackage{xltxtra}
 \usepackage[main=russian,english]{babel}
 
@@ -10,6 +12,12 @@
 
 \usepackage[export]{adjustbox}
 \usepackage{tikz}
+
+\usepackage[newfloat]{minted}
+\usemintedstyle{borland}
+\SetupFloatingEnvironment{listing}{name=Листинг}
+
+% ==== Beamer customization section ================
 
 \title{Введение в разработку на C++}
 \subtitle{Введение}
@@ -148,6 +156,18 @@
             \end{itemize}
 
     \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+
+    \frametitle{Hello, world!}
+
+    \begin{listing}[H]
+        \inputminted[frame=single,fontsize=\footnotesize,linenos]{cpp}
+            {Presentations/1-Intro/hello-world.cpp}
+        \caption{hello-world.cpp}
+    \end{listing}
 
 \end{frame}
 
