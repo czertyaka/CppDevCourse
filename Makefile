@@ -38,7 +38,12 @@ build/%.pdf: %.tex Dockerfile
 		-u $(shell id -u):$(shell id -g) \
 		-v $(ROOT_DIR):/workdir/ \
 		cppdevcourse/texlive:latest \
-		pdflatex -output-directory=build/$(dir $<) $<
+		latexmk \
+			-synctex=1 \
+			-latexoption='-halt-on-error -enable-etex' \
+			-xelatex \
+			-output-directory=build/$(dir $<) \
+			$<
 
 dockerimage:
 	docker build \
