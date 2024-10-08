@@ -30,7 +30,8 @@ install: build
 clean:
 	rm -rf texput.log build
 
-build/%.pdf: %.tex dockerimage
+build/%.pdf: %.tex Dockerfile
+	$(MAKE) dockerimage
 	mkdir -p build/$(dir $<)
 	docker run \
 		--rm \
@@ -39,7 +40,7 @@ build/%.pdf: %.tex dockerimage
 		cppdevcourse/texlive:latest \
 		pdflatex -output-directory=build/$(dir $<) $<
 
-dockerimage: Dockerfile
+dockerimage:
 	docker build \
 		--build-arg UID=$(shell id -u) \
 		--build-arg GID=$(shell id -g) \
