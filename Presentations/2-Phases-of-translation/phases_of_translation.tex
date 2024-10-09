@@ -366,4 +366,26 @@ int main() \{
 
 \end{frame}
 
+\begin{frame}
+
+    \frametitle{Компиляция}
+
+    \centering
+
+    \begin{tikzpicture}[node distance = 5cm]
+
+        \node (source) {
+            \includegraphics[width=1.7cm]{Presentations/images/source_code.png}
+        };
+        \node (binary) [right=of source] {
+            \includegraphics[width=1.7cm]{Presentations/images/binary-file.png}
+        };
+
+        \draw[->, ultra thick] (source.east) -- (binary.west)
+            node[midway, above] {Компиляция};
+
+    \end{tikzpicture}
+
+\end{frame}
+
 \end{document}
