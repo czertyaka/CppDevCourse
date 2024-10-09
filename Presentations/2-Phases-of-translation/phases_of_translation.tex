@@ -20,7 +20,9 @@
 
 \usepackage[newfloat]{minted}
 \usemintedstyle{borland}
-\SetupFloatingEnvironment{listing}{name=\tiny Листинг}
+\SetupFloatingEnvironment{listing}{name=Листинг}
+
+\usepackage[font=tiny,skip=0pt]{caption}
 
 \usepackage{fancyvrb}
 \usepackage{fvextra}
@@ -157,7 +159,7 @@
                     xleftmargin=1em
                 ]{cpp}
                     {Presentations/2-Phases-of-translation/defines-example.cpp}
-                \caption{\tiny defines-example.cpp}
+                \caption{defines-example.cpp}
             \end{listing}
 
         \end{column}
@@ -210,7 +212,7 @@ int main() \{
                     xleftmargin=1em
                 ]{cpp}
                     {Presentations/2-Phases-of-translation/defines-param-example.cpp}
-                \caption{\tiny define-parameters.cpp}
+                \caption{define-parameters.cpp}
             \end{listing}
 
         \end{column}
@@ -251,7 +253,7 @@ $ \textbf{./a.out}
                     xleftmargin=1em
                 ]{cpp}
                     {Presentations/2-Phases-of-translation/include-header.h}
-                \caption{\tiny include-header.h}
+                \caption{include-header.h}
             \end{listing}
 
             \begin{listing}[H]
@@ -262,7 +264,7 @@ $ \textbf{./a.out}
                     xleftmargin=1em
                 ]{cpp}
                     {Presentations/2-Phases-of-translation/include-source.cpp}
-                \caption{\tiny include-source.cpp}
+                \caption{include-source.cpp}
             \end{listing}
 
         \end{column}
@@ -315,7 +317,7 @@ int main() \{
                     xleftmargin=1em
                 ]{cpp}
                     {Presentations/2-Phases-of-translation/pragma-example.h}
-                \caption{\tiny pragma-example.h}
+                \caption{pragma-example.h}
             \end{listing}
 
             \begin{listing}[H]
@@ -326,7 +328,7 @@ int main() \{
                     xleftmargin=1em
                 ]{cpp}
                     {Presentations/2-Phases-of-translation/pragma-example.cpp}
-                \caption{\tiny pragma-example.cpp}
+                \caption{pragma-example.cpp}
             \end{listing}
 
         \end{column}
@@ -405,7 +407,7 @@ int main() \{
                     xleftmargin=1em
                 ]{cpp}
                     {Presentations/2-Phases-of-translation/compilation-example.cpp}
-                \caption{\tiny compilation-example.cpp}
+                \caption{compilation-example.cpp}
             \end{listing}
 
         \end{column}
@@ -517,6 +519,73 @@ Disassembly of section .text:
             node[midway, above] {Линковка};
 
     \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Линковка}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.4\textwidth}
+
+            \begin{listing}[H]
+                \inputminted[
+                    frame=single,
+                    fontsize=\tiny,
+                    linenos,
+                    xleftmargin=1em
+                ]{cpp}
+                    {Presentations/2-Phases-of-translation/link-example.h}
+                \caption{link-example.h}
+            \end{listing}
+
+            \begin{listing}[H]
+                \inputminted[
+                    frame=single,
+                    fontsize=\tiny,
+                    linenos,
+                    xleftmargin=1em
+                ]{cpp}
+                    {Presentations/2-Phases-of-translation/link-example.cpp}
+                \caption{link-example.cpp}
+            \end{listing}
+
+            \begin{listing}[H]
+                \inputminted[
+                    frame=single,
+                    fontsize=\tiny,
+                    linenos,
+                    xleftmargin=1em
+                ]{cpp}
+                    {Presentations/2-Phases-of-translation/link-example-main.cpp}
+                \caption{link-example-main.cpp}
+            \end{listing}
+
+        \end{column}
+
+        \begin{column}{0.6\textwidth}
+
+            \begin{Verbatim}[
+                frame=single,
+                fontsize=\tiny,
+                commandchars=\\\{\},
+                breaklines=true,
+                breakanywhere=true,
+            ]
+$ \textbf{g++ -c link-example.cpp}
+$ \textbf{g++ -c link-example-main.cpp}
+$ \textbf{g++ link-example.o link-example-main.o}
+$ \textbf{./a.out}
+Hello!
+$ \textbf{file a.out}
+a.out: ELF \colorbox{green}{64-bit} LSB executable, \colorbox{green}{x86-64}, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=9e6a23c78b72c21d9e51a783409c9ec5064a8d55, for GNU/Linux 3.2.0, not stripped
+            \end{Verbatim}
+
+        \end{column}
+
+    \end{columns}
 
 \end{frame}
 
