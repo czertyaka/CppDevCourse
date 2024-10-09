@@ -19,7 +19,7 @@
 
 \usepackage[newfloat]{minted}
 \usemintedstyle{borland}
-\SetupFloatingEnvironment{listing}{name=Листинг}
+\SetupFloatingEnvironment{listing}{name=\tiny Листинг}
 
 \usepackage{fancyvrb}
 \usepackage{fvextra}
@@ -156,7 +156,7 @@
                     xleftmargin=1em
                 ]{cpp}
                     {Presentations/2-Phases-of-translation/defines-example.cpp}
-                \caption{defines-example.cpp}
+                \caption{\tiny defines-example.cpp}
             \end{listing}
 
         \end{column}
@@ -209,7 +209,7 @@ int main() \{
                     xleftmargin=1em
                 ]{cpp}
                     {Presentations/2-Phases-of-translation/defines-param-example.cpp}
-                \caption{define-parameters.cpp}
+                \caption{\tiny define-parameters.cpp}
             \end{listing}
 
         \end{column}
@@ -250,7 +250,7 @@ $ \textbf{./a.out}
                     xleftmargin=1em
                 ]{cpp}
                     {Presentations/2-Phases-of-translation/include-header.h}
-                \caption{include-header.h}
+                \caption{\tiny include-header.h}
             \end{listing}
 
             \begin{listing}[H]
@@ -261,7 +261,7 @@ $ \textbf{./a.out}
                     xleftmargin=1em
                 ]{cpp}
                     {Presentations/2-Phases-of-translation/include-source.cpp}
-                \caption{include-source.cpp}
+                \caption{\tiny include-source.cpp}
             \end{listing}
 
         \end{column}
@@ -289,6 +289,74 @@ $ \textbf{g++ -E include-source.cpp}
 int main() \{
     int b = a;
     return 0;
+\}
+            \end{Verbatim}
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Препроцессор: директива \\ \texttt{\#pragma}}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{listing}[H]
+                \inputminted[
+                    frame=single,
+                    fontsize=\scriptsize,
+                    linenos,
+                    xleftmargin=1em
+                ]{cpp}
+                    {Presentations/2-Phases-of-translation/pragma-example.h}
+                \caption{\tiny pragma-example.h}
+            \end{listing}
+
+            \begin{listing}[H]
+                \inputminted[
+                    frame=single,
+                    fontsize=\scriptsize,
+                    linenos,
+                    xleftmargin=1em
+                ]{cpp}
+                    {Presentations/2-Phases-of-translation/pragma-example.cpp}
+                \caption{\tiny pragma-example.cpp}
+            \end{listing}
+
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{Verbatim}[
+                frame=single,
+                fontsize=\tiny,
+                commandchars=\\\{\},
+                breaklines=true,
+                breakanywhere=true,
+            ]
+$ \textbf{g++ -E pragma-example.cpp}
+# 0 "pragma-example.cpp"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 0 "<command-line>" 2
+# 1 "pragma-example.cpp"
+# 1 "pragma-example.h" 1
+
+
+const auto PI = 3.14;
+# 2 "pragma-example.cpp" 2
+
+
+
+
+int main() \{
+    auto pi = PI;
 \}
             \end{Verbatim}
 
