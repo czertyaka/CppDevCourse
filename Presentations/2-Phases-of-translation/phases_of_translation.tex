@@ -388,4 +388,101 @@ int main() \{
 
 \end{frame}
 
+\begin{frame}[fragile]
+
+    \frametitle{Компиляция}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.25\textwidth}
+
+            \begin{listing}[H]
+                \inputminted[
+                    frame=single,
+                    fontsize=\tiny,
+                    linenos,
+                    xleftmargin=1em
+                ]{cpp}
+                    {Presentations/2-Phases-of-translation/compilation-example.cpp}
+                \caption{\tiny compilation-example.cpp}
+            \end{listing}
+
+        \end{column}
+
+        \begin{column}{0.75\textwidth}
+
+            \begin{Verbatim}[
+                frame=single,
+                fontsize=\tiny,
+                commandchars=\\\{\},
+                breaklines=true,
+                breakanywhere=true,
+            ]
+$ \textbf{g++ \colorbox{yellow}{-c} compilation-example.cpp -o compilation-example.o}
+$ \textbf{objdump -f compilation-example.o}
+
+compilation-example.o:     file format \colorbox{green}{elf64-x86-64}
+architecture: i386:x86-64, flags 0x00000011:
+HAS_RELOC, HAS_SYMS
+start address 0x0000000000000000
+$ \textbf{objdump \colorbox{yellow}{-tC} compilation-example.o}
+
+compilation-example.o:     file format elf64-x86-64
+
+SYMBOL TABLE:
+0000000000000000 l    df *ABS*  0000000000000000 compilation-example.cpp
+0000000000000000 l    d  .text  0000000000000000 .text
+0000000000000000 l    d  .rodata        0000000000000000 .rodata
+0000000000000000 g     F .text  000000000000000e \colorbox{green}{PI()}
+000000000000000e g     F .text  000000000000001b \colorbox{green}{main}
+            \end{Verbatim}
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Компиляция}
+
+        \begin{Verbatim}[
+            frame=single,
+            fontsize=\tiny,
+            commandchars=\\\{\},
+            breaklines=true,
+            breakanywhere=true,
+        ]
+$ \textbf{objdump \colorbox{yellow}{-d} compilation-example.o}
+
+compilation-example.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <_Z2PIv>:
+   0:   55                      push   %rbp
+   1:   48 89 e5                mov    %rsp,%rbp
+   4:   f3 0f 10 05 00 00 00    movss  0x0(%rip),%xmm0        # c <_Z2PIv+0xc>
+   b:   00
+   c:   5d                      pop    %rbp
+   d:   c3                      ret
+
+000000000000000e <main>:
+   e:   55                      push   %rbp
+   f:   48 89 e5                mov    %rsp,%rbp
+  12:   48 83 ec 10             sub    $0x10,%rsp
+  16:   e8 00 00 00 00          call   1b <main+0xd>
+  1b:   66 0f 7e c0             movd   %xmm0,%eax
+  1f:   89 45 fc                mov    %eax,-0x4(%rbp)
+  22:   b8 00 00 00 00          mov    $0x0,%eax
+  27:   c9                      leave
+  28:   c3                      ret
+        \end{Verbatim}
+
+    \centering
+
+\end{frame}
+
 \end{document}
