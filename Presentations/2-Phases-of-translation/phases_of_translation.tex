@@ -16,6 +16,7 @@
 
 \usepackage[export]{adjustbox}
 \usepackage{tikz}
+\usetikzlibrary{matrix}
 
 \usepackage[newfloat]{minted}
 \usemintedstyle{borland}
@@ -482,6 +483,40 @@ Disassembly of section .text:
         \end{Verbatim}
 
     \centering
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Линковка}
+
+    \centering
+
+    \begin{tikzpicture}[node distance=5cm]
+
+        \matrix (objs) [row sep=0.1cm, column sep=0.1cm] {
+            \node (bin1) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; &
+            \node (bin2) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; \\
+            \node (bin3) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; &
+            \node (bin4) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; \\
+        };
+
+        \node (exe) [right=of objs] {
+            \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+        };
+
+        \draw[->, ultra thick] (objs.east) -- (exe.west)
+            node[midway, above] {Линковка};
+
+    \end{tikzpicture}
 
 \end{frame}
 
