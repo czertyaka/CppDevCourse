@@ -2,6 +2,7 @@ ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 TEXFILES := \
 	$(ROOT_DIR)/Presentations/1-Intro/intro.tex \
+	$(ROOT_DIR)/Presentations/2-Phases-of-translation/phases_of_translation.tex \
 	$(ROOT_DIR)/Homeworks/1-SetUp/set-up.tex
 
 PDFFILES := $(TEXFILES:$(ROOT_DIR)/%.tex=build/%.pdf)

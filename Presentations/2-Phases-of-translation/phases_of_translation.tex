@@ -1,0 +1,63 @@
+% !TeX TS-program = xelatex
+
+\documentclass[compress]{beamer}
+
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{headline}{}
+
+% ==== Packages section ============================
+
+\usepackage{xltxtra}
+\usepackage[main=russian,english]{babel}
+
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont{Fira Mono}
+
+\usepackage[export]{adjustbox}
+\usepackage{tikz}
+
+\usepackage[newfloat]{minted}
+\usemintedstyle{borland}
+\SetupFloatingEnvironment{listing}{name=Листинг}
+
+\usepackage{fancyvrb}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+}
+
+% ==== Beamer customization section ================
+
+\title{Фазы трансляции}
+\subtitle{Введение в разработку на C++}
+\author{Пыхов~Олег~Александрович\inst{1} \\ \texttt{pyhovoleg31@gmail.com}}
+\institute{
+    \inst{1}%
+    ООО~"Прософт-Системы"
+}
+\date{2024}
+\titlegraphic{
+    \includegraphics[scale=0.1,valign=t]{Presentations/images/university-logo.png}
+    \includegraphics[scale=0.3,valign=t]{Presentations/images/prosoft-logo.png}
+}
+\logo{
+    \begin{tikzpicture}[overlay,remember picture]
+        \node[left=0.2cm] at (current page.32){
+            \includegraphics[scale=0.15,valign=t]{Presentations/images/prosoft-logo.png}
+            \includegraphics[scale=0.05,valign=t]{Presentations/images/university-logo.png}
+        };
+    \end{tikzpicture}
+}
+
+\setbeamertemplate{footline}[frame number]
+
+\begin{document}
+
+\frame[plain]{\titlepage}
+
+\end{document}
