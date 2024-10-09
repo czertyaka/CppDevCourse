@@ -31,6 +31,11 @@
     urlcolor=cyan,
 }
 
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\usepackage{makecell}
+
 % ==== Beamer customization section ================
 
 \title{Фазы трансляции}
@@ -109,6 +114,28 @@
         \item и др.
 
     \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+
+    \frametitle{Препроцессор}
+
+    \centering
+
+    \begin{tikzpicture}[node distance = 5cm]
+
+        \node (source1) {
+            \includegraphics[width=1.7cm]{Presentations/images/source_code.png}
+        };
+        \node (source2) [right=of source1] {
+            \includegraphics[width=1.7cm]{Presentations/images/source_code.png}
+        };
+
+        \draw[->, ultra thick] (source1.east) -- (source2.west)
+            node[midway, above] {\makecell[l]{Работа\\препроцессора}};
+
+    \end{tikzpicture}
 
 \end{frame}
 
