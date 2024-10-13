@@ -2,32 +2,33 @@
 
 \documentclass[compress]{beamer}
 
-\beamertemplatenavigationsymbolsempty
-\setbeamertemplate{headline}{}
-
-% ==== Packages section ============================
-
-\usepackage{xltxtra}
+% packages
+\usepackage[export]{adjustbox}
+\usepackage[font=tiny,skip=0pt]{caption}
 \usepackage[main=russian,english]{babel}
+\usepackage[newfloat]{minted}
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\usepackage{hyperref}
+\usepackage{makecell}
+\usepackage{tikz}
+\usepackage{tikz}
+\usepackage{xltxtra}
 
+% fonts
 \setmainfont{DejaVu Serif}
 \setsansfont{DejaVu Sans}
 \setmonofont{Fira Mono}
 
-\usepackage[export]{adjustbox}
-\usepackage{tikz}
+% tikz libraries
 \usetikzlibrary{matrix}
+\usetikzlibrary{positioning}
 
-\usepackage[newfloat]{minted}
+% minted settings
 \usemintedstyle{borland}
 \SetupFloatingEnvironment{listing}{name=Листинг}
 
-\usepackage[font=tiny,skip=0pt]{caption}
-
-\usepackage{fancyvrb}
-\usepackage{fvextra}
-
-\usepackage{hyperref}
+% set hyperlinks style
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
@@ -35,25 +36,17 @@
     urlcolor=cyan,
 }
 
-\usepackage{tikz}
-\usetikzlibrary{positioning}
+% beamer template settings
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{headline}{}
 
-\usepackage{makecell}
-
-% ==== Beamer customization section ================
-
-\title{Фазы трансляции}
-\subtitle{Введение в разработку на C++}
-\author{Пыхов~Олег~Александрович\inst{1} \\ \texttt{pyhovoleg31@gmail.com}}
-\institute{
-    \inst{1}%
-    ООО~"Прософт-Системы"
-}
-\date{2024}
+% add logos on title slide
 \titlegraphic{
     \includegraphics[scale=0.1,valign=t]{Presentations/images/university-logo.png}
     \includegraphics[scale=0.3,valign=t]{Presentations/images/prosoft-logo.png}
 }
+
+% add logos on regular slides
 \logo{
     \begin{tikzpicture}[overlay,remember picture]
         \node[left=0.2cm] at (current page.32){
@@ -63,7 +56,19 @@
     \end{tikzpicture}
 }
 
+% add slide numbers
 \setbeamertemplate{footline}[frame number]
+
+% title slide content (except current topic)
+\subtitle{Введение в разработку на C++}
+\author{Пыхов~Олег~Александрович \\ \texttt{pyhovoleg31@gmail.com}}
+\institute{
+    ООО~"Прософт-Системы"
+}
+\date{2024}
+
+% current topic
+\title{Фазы трансляции}
 
 \begin{document}
 
