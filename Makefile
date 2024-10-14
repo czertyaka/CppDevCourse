@@ -41,7 +41,10 @@ help:
 	@printf "help\t\t\t\tprint this message\n"
 	@printf "install\t\t\t\tinstall all presentations and homeworks to <PREFIX>\n"
 	@printf "pr-1-intro\t\t\tbuild presentation intro.pdf\n"
-	@printf "pr-2-phases_of_translation\tbuild presentation phases_of_translation.pdf\n"
+	@printf "pr-2-phases-of-translation\tbuild presentation phases_of_translation.pdf\n"
+
+pr-1-intro: build/Presentations/1-Intro/intro.pdf
+pr-2-phases-of-translation: build/Presentations/2-Phases-of-translation/phases_of_translation.pdf
 
 build/%.pdf: %.tex Dockerfile
 	$(MAKE) dockerimage
@@ -54,7 +57,7 @@ build/%.pdf: %.tex Dockerfile
 		cppdevcourse/texlive:latest \
 		latexmk \
 			-synctex=1 \
-			-latexoption='-halt-on-error -enable-etex' \
+			-latexoption='-halt-on-error' \
 			-xelatex \
 			-output-directory=build/$(dir $<) \
 			$<
