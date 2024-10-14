@@ -2,38 +2,32 @@
 
 \documentclass[compress]{beamer}
 
+\usepackage[export]{adjustbox}
+\usepackage[font=scriptsize,skip=0pt]{caption}
+\usepackage[main=russian,english]{babel}
+\usepackage[newfloat]{minted}
+\usepackage{consolewindow}
+\usepackage{fancyvrb}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{xltxtra}
+
 \beamertemplatenavigationsymbolsempty
 \setbeamertemplate{headline}{}
-
-% ==== Packages section ============================
-
-\usepackage{xltxtra}
-\usepackage[main=russian,english]{babel}
 
 \setmainfont{DejaVu Serif}
 \setsansfont{DejaVu Sans}
 \setmonofont{Fira Mono}
 
-\usepackage[export]{adjustbox}
-\usepackage{tikz}
-
-\usepackage[newfloat]{minted}
 \usemintedstyle{borland}
 \SetupFloatingEnvironment{listing}{name=Листинг}
 
-\usepackage[font=scriptsize,skip=0pt]{caption}
-
-\usepackage{fancyvrb}
-
-\usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
     filecolor=magenta,
     urlcolor=cyan,
 }
-
-% ==== Beamer customization section ================
 
 \title{Введение}
 \subtitle{Введение в разработку на C++}
@@ -185,11 +179,11 @@
         \caption{hello-world.cpp}
     \end{listing}
 
-    \begin{Verbatim}[frame=single, fontsize=\footnotesize, commandchars=\\\{\}]
-$ \textbf{g++ hello-world.cpp}
-$ \textbf{./a.out}
+    \begin{consolewindow}[\footnotesize]
+|\shellcommand{g++ hello-world.cpp}|
+|\shellcommand{./a.out}|
 Hello, World!
-    \end{Verbatim}
+    \end{consolewindow}
 
 \end{frame}
 
