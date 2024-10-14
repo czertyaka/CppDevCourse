@@ -6,15 +6,12 @@
 \usepackage[export]{adjustbox}
 \usepackage[font=tiny,skip=0pt]{caption}
 \usepackage[main=russian,english]{babel}
-\usepackage[newfloat]{minted}
-\usepackage{fancyvrb}
-\usepackage{fvextra}
+\usepackage{consolewindow}
+\usepackage{cpplisting}
 \usepackage{hyperref}
 \usepackage{makecell}
 \usepackage{tikz}
 \usepackage{xltxtra}
-\usepackage[minted]{tcolorbox}
-\usepackage{consolewindow}
 
 % fonts
 \setmainfont{DejaVu Serif}
@@ -25,50 +22,12 @@
 \usetikzlibrary{matrix}
 \usetikzlibrary{positioning}
 
-% minted settings
-\usemintedstyle{borland}
-\SetupFloatingEnvironment{listing}{name=Листинг}
-
 % set hyperlinks style
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
     filecolor=magenta,
     urlcolor=cyan,
-}
-
-% custom commands
-\renewcommand{\theFancyVerbLine}{
-    \ttfamily\tiny\textcolor{gray}{\arabic{FancyVerbLine}}
-}
-\newtcbinputlisting{\CppInputListing}[3][\tiny]{
-    listing file={#2#3},
-    title=#3,
-    listing engine=minted,
-    minted options={
-        fontsize=#1,
-        breaklines,
-        breakanywhere,
-        linenos,
-        numbersep=2pt,
-    },
-    minted language=cpp,
-    listing only,
-    left skip=1mm,
-    right skip=1mm,
-    after skip=5mm,
-    before skip=1mm,
-    left=0mm,
-    right=0mm,
-    top=0mm,
-    bottom=0mm,
-    fonttitle=\it\tiny,
-    boxrule=0.02cm,
-    colback=white,
-    colframe=black,
-    colbacktitle=gray!10!white,
-    coltitle=black,
-    sharp corners,
 }
 
 % beamer template settings

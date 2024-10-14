@@ -5,9 +5,8 @@
 \usepackage[export]{adjustbox}
 \usepackage[font=scriptsize,skip=0pt]{caption}
 \usepackage[main=russian,english]{babel}
-\usepackage[newfloat]{minted}
 \usepackage{consolewindow}
-\usepackage{fancyvrb}
+\usepackage{cpplisting}
 \usepackage{hyperref}
 \usepackage{tikz}
 \usepackage{xltxtra}
@@ -18,9 +17,6 @@
 \setmainfont{DejaVu Serif}
 \setsansfont{DejaVu Sans}
 \setmonofont{Fira Mono}
-
-\usemintedstyle{borland}
-\SetupFloatingEnvironment{listing}{name=Листинг}
 
 \hypersetup{
     colorlinks=true,
@@ -173,11 +169,9 @@
 
     \frametitle{Hello, world!}
 
-    \begin{listing}[H]
-        \inputminted[frame=single, fontsize=\footnotesize, linenos]{cpp}
-            {Presentations/1-Intro/hello-world.cpp}
-        \caption{hello-world.cpp}
-    \end{listing}
+    \CppInputListing[\footnotesize]
+        {Presentations/1-Intro/}
+        {hello-world.cpp}
 
     \begin{consolewindow}[\footnotesize]
 |\shellcommand{g++ hello-world.cpp}|
