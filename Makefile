@@ -19,7 +19,10 @@ endef
 	build \
 	install \
 	clean \
-	dockerimage
+	dockerimage \
+	help \
+	pr-1-intro \
+	pr-2-phases-of-translation
 
 all: build
 
@@ -30,6 +33,15 @@ install: build
 
 clean:
 	rm -rf texput.log build
+
+help:
+	@printf "all\t\t\t\tbuild all presentations and homeworks\n"
+	@printf "build\t\t\t\tbuild all presentations and homeworks\n"
+	@printf "clean\t\t\t\tremove build artifacts\n"
+	@printf "help\t\t\t\tprint this message\n"
+	@printf "install\t\t\t\tinstall all presentations and homeworks to <PREFIX>\n"
+	@printf "pr-1-intro\t\t\tbuild presentation intro.pdf\n"
+	@printf "pr-2-phases_of_translation\tbuild presentation phases_of_translation.pdf\n"
 
 build/%.pdf: %.tex Dockerfile
 	$(MAKE) dockerimage
