@@ -38,6 +38,7 @@ build/%.pdf: %.tex Dockerfile
 		--rm \
 		-u $(shell id -u):$(shell id -g) \
 		-v $(ROOT_DIR):/workdir/ \
+		-e TEXINPUTS='/workdir//:' \
 		cppdevcourse/texlive:latest \
 		latexmk \
 			-synctex=1 \
