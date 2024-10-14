@@ -46,7 +46,7 @@
 }
 \newtcbinputlisting{\CppInputListing}[3][\tiny]{
     listing file={#2#3},
-    title=\texttt{#3},
+    title=#3,
     listing engine=minted,
     minted options={
         fontsize=#1,
@@ -59,17 +59,19 @@
     listing only,
     left skip=1mm,
     right skip=1mm,
-    after skip=1mm,
+    after skip=5mm,
     before skip=1mm,
     left=0mm,
     right=0mm,
     top=0mm,
     bottom=0mm,
-    fonttitle=#1,
+    fonttitle=\it\tiny,
     boxrule=0.02cm,
     colback=white,
     colframe=black,
-    colbacktitle=black,
+    colbacktitle=gray!10!white,
+    coltitle=black,
+    sharp corners,
 }
 
 % custom environments
@@ -267,7 +269,7 @@ int main() {
 
         \begin{column}{0.5\textwidth}
 
-            \begin{ConsoleWindow}[\scriptsize]
+            \begin{ConsoleWindow}
 |\shellcommand{g++ defines-param-example.cpp}|
 |\shellcommand{./a.out}|
 1, 3.14, text
