@@ -68,3 +68,17 @@ dockerimage:
 		--build-arg GID=$(shell id -g) \
 		-t cppdevcourse/texlive:latest \
 		$(ROOT_DIR)
+
+build/Presentations/1-Intro/intro.pdf: \
+	Presentations/images/binary-file.png \
+	Presentations/images/source_code.png \
+	$(wildcard Presentations/images/*-logo.png) \
+	$(wildcard Presentations/1-Intro/*.cpp) \
+	$(wildcard Presentations/1-Intro/*.h) \
+	Packages/consolewindow.sty
+
+build/Presentations/2-Phases-of-translation/phases_of_translation.pdf: \
+	$(wildcard Presentations/images/*-logo.png) \
+	$(wildcard Presentations/2-Phases-of-translation/*.cpp) \
+	$(wildcard Presentations/2-Phases-of-translation/*.h) \
+	Packages/consolewindow.sty
