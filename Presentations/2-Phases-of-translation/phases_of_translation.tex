@@ -199,7 +199,7 @@
 
         \begin{column}{0.5\textwidth}
 
-            \begin{ConsoleWindow}
+            \begin{consolewindow}
 |\shellcommand{g++ \colorbox{yellow}{-E} defines-example.cpp}|
 # 0 "defines-example.cpp"
 # 0 "<built-in>"
@@ -215,7 +215,7 @@ int main() {
     int i = 1 + 32;
     return 0;
 }
-            \end{ConsoleWindow}
+            \end{consolewindow}
 
         \end{column}
 
@@ -239,11 +239,11 @@ int main() {
 
         \begin{column}{0.5\textwidth}
 
-            \begin{ConsoleWindow}
+            \begin{consolewindow}
 |\shellcommand{g++ defines-param-example.cpp}|
 |\shellcommand{./a.out}|
 1, 3.14, text
-            \end{ConsoleWindow}
+            \end{consolewindow}
 
         \end{column}
 
@@ -271,7 +271,7 @@ int main() {
 
         \begin{column}{0.5\textwidth}
 
-            \begin{ConsoleWindow}
+            \begin{consolewindow}
 |\shellcommand{g++ -E include-source.cpp}|
 # 0 "include-source.cpp"
 # 0 "<built-in>"
@@ -287,7 +287,7 @@ int main() {
     int b = a;
     return 0;
 }
-            \end{ConsoleWindow}
+            \end{consolewindow}
 
         \end{column}
 
@@ -315,7 +315,7 @@ int main() {
 
         \begin{column}{0.5\textwidth}
 
-            \begin{ConsoleWindow}
+            \begin{consolewindow}
 |\shellcommand{g++ -E pragma-example.cpp}|
 # 0 "pragma-example.cpp"
 # 0 "<built-in>"
@@ -335,7 +335,7 @@ const auto PI = 3.14;
 int main() {
     auto pi = PI;
 }
-            \end{ConsoleWindow}
+            \end{consolewindow}
 
         \end{column}
 
@@ -381,7 +381,7 @@ int main() {
 
         \begin{column}{0.75\textwidth}
 
-            \begin{ConsoleWindow}
+            \begin{consolewindow}
 |\shellcommand{g++ \colorbox{yellow}{-c} comp-example.cpp -o comp-example.o}|
 |\shellcommand{objdump -f comp-example.o}|
 
@@ -399,7 +399,7 @@ SYMBOL TABLE:
 0000000000000000 l    d  .rodata        0000000000000000 .rodata
 0000000000000000 g     F .text  000000000000000e |\colorbox{green}{PI()}|
 000000000000000e g     F .text  000000000000001b |\colorbox{green}{main}|
-            \end{ConsoleWindow}
+            \end{consolewindow}
 
         \end{column}
 
@@ -411,7 +411,7 @@ SYMBOL TABLE:
 
     \frametitle{Компиляция}
 
-        \begin{ConsoleWindow}
+        \begin{consolewindow}
 |\shellcommand{objdump \colorbox{yellow}{-d} comp-example.o}|
 
 comp-example.o:     file format elf64-x86-64
@@ -437,7 +437,7 @@ Disassembly of section .text:
   22:   b8 00 00 00 00          mov    $0x0,%eax
   27:   c9                      leave
   28:   c3                      ret
-        \end{ConsoleWindow}
+        \end{consolewindow}
 
     \centering
 
@@ -501,7 +501,7 @@ Disassembly of section .text:
 
         \begin{column}{0.6\textwidth}
 
-            \begin{ConsoleWindow}
+            \begin{consolewindow}
 |\shellcommand{g++ -c link-example.cpp}|
 |\shellcommand{g++ -c link-example-main.cpp}|
 |\shellcommand{g++ link-example.o link-example-main.o}|
@@ -509,7 +509,7 @@ Disassembly of section .text:
 Hello!
 |\shellcommand{file a.out}|
 a.out: ELF |\colorbox{green}{64-bit}| LSB executable, |\colorbox{green}{x86-64}|, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=9e6a23c78b72c21d9e51a783409c9ec5064a8d55, for GNU/Linux 3.2.0, not stripped
-            \end{ConsoleWindow}
+            \end{consolewindow}
 
         \end{column}
 
