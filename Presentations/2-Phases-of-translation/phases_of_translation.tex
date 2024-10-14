@@ -68,6 +68,8 @@
     fonttitle=#1,
     boxrule=0.02cm,
     colback=white,
+    colframe=black,
+    colbacktitle=black,
 }
 
 % custom environments
@@ -93,6 +95,8 @@
     fonttitle=\ttfamily\tiny,
     boxrule=0.02cm,
     colback=white,
+    colframe=black,
+    colbacktitle=black,
 }
 
 % beamer template settings
@@ -264,7 +268,7 @@ int main() {
         \begin{column}{0.5\textwidth}
 
             \begin{ConsoleWindow}[\scriptsize]
-|\shellcommand{g++ define-parameters.cpp}|
+|\shellcommand{g++ defines-param-example.cpp}|
 |\shellcommand{./a.out}|
 1, 3.14, text
             \end{ConsoleWindow}
