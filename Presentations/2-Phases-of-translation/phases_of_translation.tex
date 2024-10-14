@@ -41,6 +41,35 @@
 \newcommand{\shellprompt}{>}
 \newcommand{\shellcommand}[1]{\shellprompt \space \textbf{#1}}
 
+\renewcommand{\theFancyVerbLine}{
+    \ttfamily\tiny\textcolor{gray}{\arabic{FancyVerbLine}}
+}
+\newtcbinputlisting{\CppInputListing}[3][\tiny]{
+    listing file={#2#3},
+    title=\texttt{#3},
+    listing engine=minted,
+    minted options={
+        fontsize=#1,
+        breaklines,
+        breakanywhere,
+        linenos,
+        numbersep=2pt,
+    },
+    minted language=cpp,
+    listing only,
+    left skip=1mm,
+    right skip=1mm,
+    after skip=1mm,
+    before skip=1mm,
+    left=0mm,
+    right=0mm,
+    top=0mm,
+    bottom=0mm,
+    fonttitle=#1,
+    boxrule=0.02cm,
+    colback=white,
+}
+
 % custom environments
 \newtcblisting{ConsoleWindow}[1][\tiny]{
     listing engine=minted,
@@ -63,6 +92,7 @@
     bottom=0mm,
     fonttitle=\ttfamily\tiny,
     boxrule=0.02cm,
+    colback=white,
 }
 
 % beamer template settings
@@ -185,16 +215,9 @@
 
         \begin{column}{0.5\textwidth}
 
-            \begin{listing}[H]
-                \inputminted[
-                    frame=single,
-                    fontsize=\scriptsize,
-                    linenos,
-                    xleftmargin=1em
-                ]{cpp}
-                    {Presentations/2-Phases-of-translation/defines-example.cpp}
-                \caption{defines-example.cpp}
-            \end{listing}
+            \CppInputListing[\scriptsize]
+                {Presentations/2-Phases-of-translation/}
+                {defines-example.cpp}
 
         \end{column}
 
@@ -232,16 +255,9 @@ int main() {
 
         \begin{column}{0.5\textwidth}
 
-            \begin{listing}[H]
-                \inputminted[
-                    frame=single,
-                    fontsize=\scriptsize,
-                    linenos,
-                    xleftmargin=1em
-                ]{cpp}
-                    {Presentations/2-Phases-of-translation/defines-param-example.cpp}
-                \caption{define-parameters.cpp}
-            \end{listing}
+            \CppInputListing[\scriptsize]
+                {Presentations/2-Phases-of-translation/}
+                {defines-param-example.cpp}
 
         \end{column}
 
@@ -267,27 +283,13 @@ int main() {
 
         \begin{column}{0.5\textwidth}
 
-            \begin{listing}[H]
-                \inputminted[
-                    frame=single,
-                    fontsize=\scriptsize,
-                    linenos,
-                    xleftmargin=1em
-                ]{cpp}
-                    {Presentations/2-Phases-of-translation/include-header.h}
-                \caption{include-header.h}
-            \end{listing}
+            \CppInputListing[\scriptsize]
+                {Presentations/2-Phases-of-translation/}
+                {include-header.h}
 
-            \begin{listing}[H]
-                \inputminted[
-                    frame=single,
-                    fontsize=\scriptsize,
-                    linenos,
-                    xleftmargin=1em
-                ]{cpp}
-                    {Presentations/2-Phases-of-translation/include-source.cpp}
-                \caption{include-source.cpp}
-            \end{listing}
+            \CppInputListing[\scriptsize]
+                {Presentations/2-Phases-of-translation/}
+                {include-source.cpp}
 
         \end{column}
 
@@ -325,27 +327,13 @@ int main() {
 
         \begin{column}{0.5\textwidth}
 
-            \begin{listing}[H]
-                \inputminted[
-                    frame=single,
-                    fontsize=\scriptsize,
-                    linenos,
-                    xleftmargin=1em
-                ]{cpp}
-                    {Presentations/2-Phases-of-translation/pragma-example.h}
-                \caption{pragma-example.h}
-            \end{listing}
+            \CppInputListing[\scriptsize]
+                {Presentations/2-Phases-of-translation/}
+                {pragma-example.h}
 
-            \begin{listing}[H]
-                \inputminted[
-                    frame=single,
-                    fontsize=\scriptsize,
-                    linenos,
-                    xleftmargin=1em
-                ]{cpp}
-                    {Presentations/2-Phases-of-translation/pragma-example.cpp}
-                \caption{pragma-example.cpp}
-            \end{listing}
+            \CppInputListing[\scriptsize]
+                {Presentations/2-Phases-of-translation/}
+                {pragma-example.cpp}
 
         \end{column}
 
@@ -409,35 +397,28 @@ int main() {
 
         \begin{column}{0.25\textwidth}
 
-            \begin{listing}[H]
-                \inputminted[
-                    frame=single,
-                    fontsize=\tiny,
-                    linenos,
-                    xleftmargin=1em
-                ]{cpp}
-                    {Presentations/2-Phases-of-translation/compilation-example.cpp}
-                \caption{compilation-example.cpp}
-            \end{listing}
+            \CppInputListing
+                {Presentations/2-Phases-of-translation/}
+                {comp-example.cpp}
 
         \end{column}
 
         \begin{column}{0.75\textwidth}
 
             \begin{ConsoleWindow}
-|\shellcommand{g++ \colorbox{yellow}{-c} compilation-example.cpp -o compilation-example.o}|
-|\shellcommand{objdump -f compilation-example.o}|
+|\shellcommand{g++ \colorbox{yellow}{-c} comp-example.cpp -o comp-example.o}|
+|\shellcommand{objdump -f comp-example.o}|
 
-compilation-example.o:     file format |\colorbox{green}{elf64-x86-64}|
+comp-example.o:     file format |\colorbox{green}{elf64-x86-64}|
 architecture: i386:x86-64, flags 0x00000011:
 HAS_RELOC, HAS_SYMS
 start address 0x0000000000000000
-|\shellcommand{objdump \colorbox{yellow}{-tC} compilation-example.o}|
+|\shellcommand{objdump \colorbox{yellow}{-tC} comp-example.o}|
 
-compilation-example.o:     file format elf64-x86-64
+comp-example.o:     file format elf64-x86-64
 
 SYMBOL TABLE:
-0000000000000000 l    df *ABS*  0000000000000000 compilation-example.cpp
+0000000000000000 l    df *ABS*  0000000000000000 comp-example.cpp
 0000000000000000 l    d  .text  0000000000000000 .text
 0000000000000000 l    d  .rodata        0000000000000000 .rodata
 0000000000000000 g     F .text  000000000000000e |\colorbox{green}{PI()}|
@@ -455,9 +436,9 @@ SYMBOL TABLE:
     \frametitle{Компиляция}
 
         \begin{ConsoleWindow}
-|\shellcommand{objdump \colorbox{yellow}{-d} compilation-example.o}|
+|\shellcommand{objdump \colorbox{yellow}{-d} comp-example.o}|
 
-compilation-example.o:     file format elf64-x86-64
+comp-example.o:     file format elf64-x86-64
 
 
 Disassembly of section .text:
@@ -528,38 +509,17 @@ Disassembly of section .text:
 
         \begin{column}{0.4\textwidth}
 
-            \begin{listing}[H]
-                \inputminted[
-                    frame=single,
-                    fontsize=\tiny,
-                    linenos,
-                    xleftmargin=1em
-                ]{cpp}
-                    {Presentations/2-Phases-of-translation/link-example.h}
-                \caption{link-example.h}
-            \end{listing}
+            \CppInputListing
+                {Presentations/2-Phases-of-translation/}
+                {link-example.h}
 
-            \begin{listing}[H]
-                \inputminted[
-                    frame=single,
-                    fontsize=\tiny,
-                    linenos,
-                    xleftmargin=1em
-                ]{cpp}
-                    {Presentations/2-Phases-of-translation/link-example.cpp}
-                \caption{link-example.cpp}
-            \end{listing}
+            \CppInputListing
+                {Presentations/2-Phases-of-translation/}
+                {link-example.cpp}
 
-            \begin{listing}[H]
-                \inputminted[
-                    frame=single,
-                    fontsize=\tiny,
-                    linenos,
-                    xleftmargin=1em
-                ]{cpp}
-                    {Presentations/2-Phases-of-translation/link-example-main.cpp}
-                \caption{link-example-main.cpp}
-            \end{listing}
+            \CppInputListing
+                {Presentations/2-Phases-of-translation/}
+                {link-example-main.cpp}
 
         \end{column}
 
