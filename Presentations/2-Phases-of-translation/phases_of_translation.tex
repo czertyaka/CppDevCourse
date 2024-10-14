@@ -42,11 +42,11 @@
 \newcommand{\shellcommand}[1]{\shellprompt \space \textbf{#1}}
 
 % custom environments
-\NewTCBListing{ConsoleWindow}{ O{} }{
+\newtcblisting{ConsoleWindow}[1][\tiny]{
     listing engine=minted,
     title=>\_\null\hfill x,
     minted options={
-        fontsize=\tiny,
+        fontsize=#1,
         breaklines,
         breakanywhere,
         escapeinside=||,
@@ -63,7 +63,6 @@
     bottom=0mm,
     fonttitle=\ttfamily\tiny,
     boxrule=0.02cm,
-    #1
 }
 
 % beamer template settings
@@ -248,7 +247,7 @@ int main() {
 
         \begin{column}{0.5\textwidth}
 
-            \begin{ConsoleWindow}[minted options={fontsize=\scriptsize, escapeinside=||}]
+            \begin{ConsoleWindow}[\scriptsize]
 |\shellcommand{g++ define-parameters.cpp}|
 |\shellcommand{./a.out}|
 1, 3.14, text
