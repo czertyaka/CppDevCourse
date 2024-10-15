@@ -70,7 +70,7 @@ dockerimage:
 		$(ROOT_DIR)
 
 build/Presentations/1-Intro/intro.pdf: \
-	Presentations/cpptemplate.sty \
+	Presentations/presentationtemplate.sty \
 	Presentations/images/binary-file.png \
 	Presentations/images/source_code.png \
 	$(wildcard Presentations/images/*-logo.png) \
@@ -80,7 +80,7 @@ build/Presentations/1-Intro/intro.pdf: \
 	Packages/cpplisting.sty
 
 build/Presentations/2-Phases-of-translation/phases_of_translation.pdf: \
-	Presentations/cpptemplate.sty \
+	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/2-Phases-of-translation/*.cpp) \
 	$(wildcard Presentations/2-Phases-of-translation/*.h) \
