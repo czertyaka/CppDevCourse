@@ -1,0 +1,582 @@
+% !TeX TS-program = xelatex
+
+\documentclass[compress]{beamer}
+
+% packages
+\usepackage[export]{adjustbox}
+\usepackage[font=tiny,skip=0pt]{caption}
+\usepackage[main=russian,english]{babel}
+\usepackage[newfloat]{minted}
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\usepackage{hyperref}
+\usepackage{makecell}
+\usepackage{tikz}
+\usepackage{tikz}
+\usepackage{xltxtra}
+\usepackage[listings]{tcolorbox}
+
+% fonts
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont{Fira Mono}
+
+% tikz libraries
+\usetikzlibrary{matrix}
+\usetikzlibrary{positioning}
+
+% minted settings
+\usemintedstyle{borland}
+\SetupFloatingEnvironment{listing}{name=Листинг}
+
+% set hyperlinks style
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+}
+
+% custom environments
+\DefineVerbatimEnvironment{commandline}{Verbatim}{
+    frame=single,
+    fontsize=\tiny,
+    commandchars=\\\{\},
+    breaklines=true,
+    breakanywhere=true,
+    label=>\_,
+}
+
+\newenvironment{test}
+    {
+        \begin{tcolorbox}
+    }
+    {
+        \end{tocolorbox}
+    }
+
+% beamer template settings
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{headline}{}
+
+% add logos on title slide
+\titlegraphic{
+    \includegraphics[scale=0.1,valign=t]{Presentations/images/university-logo.png}
+    \includegraphics[scale=0.3,valign=t]{Presentations/images/prosoft-logo.png}
+}
+
+% add logos on regular slides
+\logo{
+    \begin{tikzpicture}[overlay,remember picture]
+        \node[left=0.2cm] at (current page.32){
+            \includegraphics[scale=0.15,valign=t]{Presentations/images/prosoft-logo.png}
+            \includegraphics[scale=0.05,valign=t]{Presentations/images/university-logo.png}
+        };
+    \end{tikzpicture}
+}
+
+% add slide numbers
+\setbeamertemplate{footline}[frame number]
+
+% title slide content (except current topic)
+\subtitle{Введение в разработку на C++}
+\author{Пыхов~Олег~Александрович \\ \texttt{pyhovoleg31@gmail.com}}
+\institute{
+    ООО~"Прософт-Системы"
+}
+\date{2024}
+
+% current topic
+\title{Фазы трансляции}
+
+\begin{document}
+
+\frame[plain]{\titlepage}
+
+\begin{frame}
+
+    \frametitle{Фазы трансляции}
+
+    \begin{enumerate}
+
+        \item Mapping source characters
+
+        \item Splicing lines
+
+        \item Lexing
+
+        \item \textbf{Preprocessing (препроцессор)}
+
+        \item Determining common string literal encodings
+
+        \item Concatenating string literals
+
+        \item \textbf{Compiling (компиляция)}
+
+        \item Instantiating templates
+
+        \item \textbf{Linking (линковка)}
+
+    \end{enumerate}
+
+    \vfill
+
+    Более подробно:
+    \href{https://en.cppreference.com/w/cpp/language/translation_phases}{eng},
+    \href{https://ru.cppreference.com/w/cpp/language/translation_phases}{ru}.
+
+\end{frame}
+
+\begin{frame}
+
+    \frametitle{Компиляторы C++}
+
+    \begin{itemize}
+
+        \item \texttt{\textbf{g++}} от GNU Compiler Collection (GCC)
+
+        \item \texttt{\textbf{clang++}} от от Low Level Virtual Machine (LLVM)
+
+        \item Microsoft Visual C++ (MSVC)
+
+        \item и др.
+
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+
+    \frametitle{Препроцессор}
+
+    \centering
+
+    \begin{tikzpicture}[node distance = 5cm]
+
+        \node (source1) {
+            \includegraphics[width=1.7cm]{Presentations/images/source_code.png}
+        };
+        \node (source2) [right=of source1] {
+            \includegraphics[width=1.7cm]{Presentations/images/source_code.png}
+        };
+
+        \draw[->, ultra thick] (source1.east) -- (source2.west)
+            node[midway, above] {\makecell[l]{Работа\\препроцессора}};
+
+    \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Препроцессор: директива \\ \texttt{\#define}}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{listing}[H]
+                \inputminted[
+                    frame=single,
+                    fontsize=\scriptsize,
+                    linenos,
+                    xleftmargin=1em
+                ]{cpp}
+                    {Presentations/2-Phases-of-translation/defines-example.cpp}
+                \caption{defines-example.cpp}
+            \end{listing}
+
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{test}
+                Test!
+            \end{test}
+
+            Текст после.
+
+            Text after.
+
+            \begin{commandline}
+$ \textbf{g++ \colorbox{yellow}{-E} defines-example.cpp}
+# 0 "defines-example.cpp"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 0 "<command-line>" 2
+# 1 "defines-example.cpp"
+
+
+
+
+int main() \{
+    int i = 1 + 32;
+    return 0;
+\}
+            \end{commandline}
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Препроцессор: директива \\ \texttt{\#define}}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{listing}[H]
+                \inputminted[
+                    frame=single,
+                    fontsize=\scriptsize,
+                    linenos,
+                    xleftmargin=1em
+                ]{cpp}
+                    {Presentations/2-Phases-of-translation/defines-param-example.cpp}
+                \caption{define-parameters.cpp}
+            \end{listing}
+
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{commandline}[fontsize=\scriptsize]
+$ \textbf{g++ define-parameters.cpp}
+$ \textbf{./a.out}
+1, 3.14, text
+            \end{commandline}
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Препроцессор: директива \\ \texttt{\#include}}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{listing}[H]
+                \inputminted[
+                    frame=single,
+                    fontsize=\scriptsize,
+                    linenos,
+                    xleftmargin=1em
+                ]{cpp}
+                    {Presentations/2-Phases-of-translation/include-header.h}
+                \caption{include-header.h}
+            \end{listing}
+
+            \begin{listing}[H]
+                \inputminted[
+                    frame=single,
+                    fontsize=\scriptsize,
+                    linenos,
+                    xleftmargin=1em
+                ]{cpp}
+                    {Presentations/2-Phases-of-translation/include-source.cpp}
+                \caption{include-source.cpp}
+            \end{listing}
+
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{commandline}
+$ \textbf{g++ -E include-source.cpp}
+# 0 "include-source.cpp"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 0 "<command-line>" 2
+# 1 "include-source.cpp"
+# 1 "include-header.h" 1
+\colorbox{yellow}{int a = 0;}
+# 2 "include-source.cpp" 2
+
+int main() \{
+    int b = a;
+    return 0;
+\}
+            \end{commandline}
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Препроцессор: директива \\ \texttt{\#pragma}}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{listing}[H]
+                \inputminted[
+                    frame=single,
+                    fontsize=\scriptsize,
+                    linenos,
+                    xleftmargin=1em
+                ]{cpp}
+                    {Presentations/2-Phases-of-translation/pragma-example.h}
+                \caption{pragma-example.h}
+            \end{listing}
+
+            \begin{listing}[H]
+                \inputminted[
+                    frame=single,
+                    fontsize=\scriptsize,
+                    linenos,
+                    xleftmargin=1em
+                ]{cpp}
+                    {Presentations/2-Phases-of-translation/pragma-example.cpp}
+                \caption{pragma-example.cpp}
+            \end{listing}
+
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{commandline}
+$ \textbf{g++ -E pragma-example.cpp}
+# 0 "pragma-example.cpp"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 0 "<command-line>" 2
+# 1 "pragma-example.cpp"
+# 1 "pragma-example.h" 1
+
+
+const auto PI = 3.14;
+# 2 "pragma-example.cpp" 2
+
+
+
+
+int main() \{
+    auto pi = PI;
+\}
+            \end{commandline}
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}
+
+    \frametitle{Компиляция}
+
+    \centering
+
+    \begin{tikzpicture}[node distance = 5cm]
+
+        \node (source) {
+            \includegraphics[width=1.7cm]{Presentations/images/source_code.png}
+        };
+        \node (binary) [right=of source] {
+            \includegraphics[width=1.7cm]{Presentations/images/binary-file.png}
+        };
+
+        \draw[->, ultra thick] (source.east) -- (binary.west)
+            node[midway, above] {Компиляция};
+
+    \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Компиляция}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.25\textwidth}
+
+            \begin{listing}[H]
+                \inputminted[
+                    frame=single,
+                    fontsize=\tiny,
+                    linenos,
+                    xleftmargin=1em
+                ]{cpp}
+                    {Presentations/2-Phases-of-translation/compilation-example.cpp}
+                \caption{compilation-example.cpp}
+            \end{listing}
+
+        \end{column}
+
+        \begin{column}{0.75\textwidth}
+
+            \begin{commandline}
+$ \textbf{g++ \colorbox{yellow}{-c} compilation-example.cpp -o compilation-example.o}
+$ \textbf{objdump -f compilation-example.o}
+
+compilation-example.o:     file format \colorbox{green}{elf64-x86-64}
+architecture: i386:x86-64, flags 0x00000011:
+HAS_RELOC, HAS_SYMS
+start address 0x0000000000000000
+$ \textbf{objdump \colorbox{yellow}{-tC} compilation-example.o}
+
+compilation-example.o:     file format elf64-x86-64
+
+SYMBOL TABLE:
+0000000000000000 l    df *ABS*  0000000000000000 compilation-example.cpp
+0000000000000000 l    d  .text  0000000000000000 .text
+0000000000000000 l    d  .rodata        0000000000000000 .rodata
+0000000000000000 g     F .text  000000000000000e \colorbox{green}{PI()}
+000000000000000e g     F .text  000000000000001b \colorbox{green}{main}
+            \end{commandline}
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Компиляция}
+
+        \begin{commandline}
+$ \textbf{objdump \colorbox{yellow}{-d} compilation-example.o}
+
+compilation-example.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <_Z2PIv>:
+   0:   55                      push   %rbp
+   1:   48 89 e5                mov    %rsp,%rbp
+   4:   f3 0f 10 05 00 00 00    movss  0x0(%rip),%xmm0        # c <_Z2PIv+0xc>
+   b:   00
+   c:   5d                      pop    %rbp
+   d:   c3                      ret
+
+000000000000000e <main>:
+   e:   55                      push   %rbp
+   f:   48 89 e5                mov    %rsp,%rbp
+  12:   48 83 ec 10             sub    $0x10,%rsp
+  16:   e8 00 00 00 00          call   1b <main+0xd>
+  1b:   66 0f 7e c0             movd   %xmm0,%eax
+  1f:   89 45 fc                mov    %eax,-0x4(%rbp)
+  22:   b8 00 00 00 00          mov    $0x0,%eax
+  27:   c9                      leave
+  28:   c3                      ret
+        \end{commandline}
+
+    \centering
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Линковка}
+
+    \centering
+
+    \begin{tikzpicture}[node distance=5cm]
+
+        \matrix (objs) [row sep=0.1cm, column sep=0.1cm] {
+            \node (bin1) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; &
+            \node (bin2) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; \\
+            \node (bin3) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; &
+            \node (bin4) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; \\
+        };
+
+        \node (exe) [right=of objs] {
+            \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+        };
+
+        \draw[->, ultra thick] (objs.east) -- (exe.west)
+            node[midway, above] {Линковка};
+
+    \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Линковка}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.4\textwidth}
+
+            \begin{listing}[H]
+                \inputminted[
+                    frame=single,
+                    fontsize=\tiny,
+                    linenos,
+                    xleftmargin=1em
+                ]{cpp}
+                    {Presentations/2-Phases-of-translation/link-example.h}
+                \caption{link-example.h}
+            \end{listing}
+
+            \begin{listing}[H]
+                \inputminted[
+                    frame=single,
+                    fontsize=\tiny,
+                    linenos,
+                    xleftmargin=1em
+                ]{cpp}
+                    {Presentations/2-Phases-of-translation/link-example.cpp}
+                \caption{link-example.cpp}
+            \end{listing}
+
+            \begin{listing}[H]
+                \inputminted[
+                    frame=single,
+                    fontsize=\tiny,
+                    linenos,
+                    xleftmargin=1em
+                ]{cpp}
+                    {Presentations/2-Phases-of-translation/link-example-main.cpp}
+                \caption{link-example-main.cpp}
+            \end{listing}
+
+        \end{column}
+
+        \begin{column}{0.6\textwidth}
+
+            \begin{commandline}
+$ \textbf{g++ -c link-example.cpp}
+$ \textbf{g++ -c link-example-main.cpp}
+$ \textbf{g++ link-example.o link-example-main.o}
+$ \textbf{./a.out}
+Hello!
+$ \textbf{file a.out}
+a.out: ELF \colorbox{green}{64-bit} LSB executable, \colorbox{green}{x86-64}, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=9e6a23c78b72c21d9e51a783409c9ec5064a8d55, for GNU/Linux 3.2.0, not stripped
+            \end{commandline}
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\end{document}
