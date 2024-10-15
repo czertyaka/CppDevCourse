@@ -3,7 +3,7 @@ ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 TEXFILES := \
 	$(ROOT_DIR)/Presentations/1-Intro/intro.tex \
 	$(ROOT_DIR)/Presentations/2-Phases-of-translation/phases_of_translation.tex \
-	$(ROOT_DIR)/Homeworks/1-SetUp/set-up.tex
+	$(ROOT_DIR)/Homeworks/1-Hello-World/hello_world.tex
 
 PDFFILES := $(TEXFILES:$(ROOT_DIR)/%.tex=build/%.pdf)
 
@@ -21,8 +21,9 @@ endef
 	clean \
 	dockerimage \
 	help \
-	pr-1-intro \
-	pr-2-phases-of-translation
+	pr-1 \
+	pr-2 \
+	hw-1
 
 all: build
 
@@ -35,16 +36,19 @@ clean:
 	rm -rf texput.log build
 
 help:
-	@printf "all\t\t\t\tbuild all presentations and homeworks\n"
-	@printf "build\t\t\t\tbuild all presentations and homeworks\n"
-	@printf "clean\t\t\t\tremove build artifacts\n"
-	@printf "help\t\t\t\tprint this message\n"
-	@printf "install\t\t\t\tinstall all presentations and homeworks to <PREFIX>\n"
-	@printf "pr-1-intro\t\t\tbuild presentation intro.pdf\n"
-	@printf "pr-2-phases-of-translation\tbuild presentation phases_of_translation.pdf\n"
+	@printf "all\tbuild all presentations and homeworks\n"
+	@printf "build\tbuild all presentations and homeworks\n"
+	@printf "clean\tremove build artifacts\n"
+	@printf "help\tprint this message\n"
+	@printf "install\tinstall all presentations and homeworks to <PREFIX>\n"
+	@printf "pr-1\tbuild presentation intro.pdf\n"
+	@printf "pr-2\tbuild presentation phases_of_translation.pdf\n"
+	@printf "hw-1\tbuild homework hello_world.pdf\n"
 
-pr-1-intro: build/Presentations/1-Intro/intro.pdf
-pr-2-phases-of-translation: build/Presentations/2-Phases-of-translation/phases_of_translation.pdf
+pr-1: build/Presentations/1-Intro/intro.pdf
+pr-2: build/Presentations/2-Phases-of-translation/phases_of_translation.pdf
+
+hw-1: build/Homeworks/1-Hello-World/hello_world.pdf
 
 build/%.pdf: %.tex Dockerfile
 	$(MAKE) dockerimage
@@ -86,3 +90,6 @@ build/Presentations/2-Phases-of-translation/phases_of_translation.pdf: \
 	$(wildcard Presentations/2-Phases-of-translation/*.h) \
 	Packages/consolewindow.sty \
 	Packages/cpplisting.sty
+
+build/Homeworks/1-Hello-World/hello_world.pdf: \
+	Homeworks/homeworktemplate.sty
