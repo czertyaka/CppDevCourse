@@ -89,7 +89,13 @@ build/Presentations/2-Phases-of-translation/phases_of_translation.pdf: \
 	$(wildcard Presentations/2-Phases-of-translation/*.cpp) \
 	$(wildcard Presentations/2-Phases-of-translation/*.h) \
 	Packages/consolewindow.sty \
+	Presentations/Packages/prconsolewindow.sty \
 	Packages/cpplisting.sty
 
 build/Homeworks/1-Hello-World/hello_world.pdf: \
-	Homeworks/homeworktemplate.sty
+	Homeworks/homeworktemplate.sty \
+	$(wildcard Homeworks/1-Hello-World/*.cpp) \
+	$(wildcard Homeworks/1-Hello-World/*.txt) \
+	$(wildcard Homeworks/1-Hello-World/*.h) \
+	Packages/consolewindow.sty \
+	Packages/cpplisting.sty
