@@ -80,17 +80,16 @@ build/Presentations/1-Intro/intro.pdf: \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/1-Intro/*.cpp) \
 	$(wildcard Presentations/1-Intro/*.h) \
-	Packages/consolewindow.sty \
-	Packages/cpplisting.sty
+	Presentations/Packages/prconsolewindow.sty \
+	Presentations/Packages/prlisting.sty
 
 build/Presentations/2-Phases-of-translation/phases_of_translation.pdf: \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/2-Phases-of-translation/*.cpp) \
 	$(wildcard Presentations/2-Phases-of-translation/*.h) \
-	Packages/consolewindow.sty \
 	Presentations/Packages/prconsolewindow.sty \
-	Packages/cpplisting.sty
+	Presentations/Packages/prlisting.sty
 
 build/Homeworks/1-Hello-World/hello_world.pdf: \
 	Homeworks/homeworktemplate.sty \
