@@ -96,5 +96,5 @@ build/Homeworks/1-Hello-World/hello_world.pdf: \
 	$(wildcard Homeworks/1-Hello-World/*.cpp) \
 	$(wildcard Homeworks/1-Hello-World/*.txt) \
 	$(wildcard Homeworks/1-Hello-World/*.h) \
-	Packages/consolewindow.sty \
-	Packages/cpplisting.sty
+	Homeworks/Packages/hwconsolewindow.sty \
+	Homeworks/Packages/hwlisting.sty

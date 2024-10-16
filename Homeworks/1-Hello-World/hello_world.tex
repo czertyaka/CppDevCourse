@@ -1,6 +1,8 @@
 \documentclass[14pt]{extarticle}
 
 \usepackage{homeworktemplate}
+\usepackage{hwconsolewindow}
+\usepackage{hwlisting}
 
 \title{Домашняя работа 1 \\ Hello World!}
 
@@ -46,8 +48,6 @@ GCC, Make, CMake и Visual Studio Code.
 
     \item для Debian GNU/Linux и других ОС, основанных на ней (Ubuntu, Kali Linux, Linux Mint и др.):
 
-        \vspace{2mm}
-
         \begin{consolewindow}[\small]
 !\shellcommand{sudo apt-get install wget gpg}!
 !\shellcommand{wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg}!
@@ -60,8 +60,6 @@ GCC, Make, CMake и Visual Studio Code.
 
     \item для RedHat Linux, Fedora, CentOS:
 
-        \vspace{2mm}
-
         \begin{consolewindow}[\small]
 !\shellcommand{sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc}!
 !\shellcommand{echo -e "[code]\\nname=Visual Studio Code\\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\\nenabled=1\\ngpgcheck=1\\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null}!
@@ -73,9 +71,7 @@ GCC, Make, CMake и Visual Studio Code.
 
 Для проверки успешности установки инструментов разработки, предлагается выполнить команды:
 
-\vspace{2mm}
-
-\begin{consolewindow}[\normalsize]
+\begin{consolewindow}
 !\shellcommand{g++ --version}!
 !\shellcommand{make --version}!
 !\shellcommand{cmake --version}!
@@ -90,57 +86,39 @@ GCC, Make, CMake и Visual Studio Code.
 После установки редактора необходимо его запустить и в магазине расширений найти и установить
 расширение для работы с файловой системой WSL:
 
-\vspace{2mm}
-
 \begin{center}
     \includegraphics[width=0.8\textwidth]{Homeworks/1-Hello-World/wsl-extension.png}
 \end{center}
-
-\vspace{2mm}
 
 Исчерпывающее руководство по установке WSL представлено
 \href{https://learn.microsoft.com/ru-ru/windows/wsl/setup/environment}{тут}.
 Установка сводится к выполнению в командной строке Windows команды:
 
-\vspace{2mm}
-
-\begin{consolewindow}[\normalsize]
+\begin{consolewindow}
 !\shellcommand{wsl --install}!
 \end{consolewindow}
-
-\vspace{2mm}
 
 После выполнения этой команды и перезагрузки компьютера в списке установленных приложений
 должно появиться приложение Ubuntu.
 Для проверки совместной работы WSL и VSCode на хостовой системе можно в консоли WSL выполнить
 команду:
 
-\vspace{2mm}
-
-\begin{consolewindow}[\normalsize]
+\begin{consolewindow}
 !\shellcommand{code .}!
 \end{consolewindow}
-
-\vspace{2mm}
 
 Должен открыться редактор VSCode в директории, из которой была выполнения команда.
 
 После этого можно установить в WSL компилятор и другие инструменты разработки:
 
-\vspace{2mm}
-
-\begin{consolewindow}[\normalsize]
+\begin{consolewindow}
 !\shellcommand{apt update}!
 !\shellcommand{apt install -y build-essential cmake}!
 \end{consolewindow}
 
-\vspace{2mm}
-
 Для проверки успешности установки инструментов разработки, предлагается выполнить команды:
 
-\vspace{2mm}
-
-\begin{consolewindow}[\normalsize]
+\begin{consolewindow}
 !\shellcommand{g++ --version}!
 !\shellcommand{make --version}!
 !\shellcommand{cmake --version}!
@@ -155,46 +133,40 @@ GCC, Make, CMake и Visual Studio Code.
 \begin{enumerate}
 
         \item В рабочей директории создать директорию hello-world и перейти в нее:
-            \vspace{2mm}
 
-            \begin{consolewindow}[\normalsize]
+            \begin{consolewindow}
 !\shellcommand{mkdir hello-world}!
 !\shellcommand{cd hello-world}!
             \end{consolewindow}
 
         \item Открыть VSCode в директории hello-world:
-            \vspace{2mm}
 
-            \begin{consolewindow}[\normalsize]
+            \begin{consolewindow}
 !\shellcommand{code .}!
             \end{consolewindow}
 
         \item В VSCode создать файл main.cpp со следующим содержимым:
-            \vspace{2mm}
 
             \cppinputlisting[\normalsize]
                 {Homeworks/1-Hello-World/}
                 {main.cpp}
 
         \item Создать проектный файл CMakeLists.txt со следующим содержимым:
-            \vspace{2mm}
 
             \cppinputlisting[\normalsize]
                 {Homeworks/1-Hello-World/}
                 {CMakeLists.txt}
 
         \item Собрать программу:
-            \vspace{2mm}
 
-            \begin{consolewindow}[\normalsize]
+            \begin{consolewindow}
 !\shellcommand{cmake -B build}!
 !\shellcommand{cmake --build build}!
             \end{consolewindow}
 
         \item Выполнить собранное приложение:
-            \vspace{2mm}
 
-            \begin{consolewindow}[\normalsize]
+            \begin{consolewindow}
 !\shellcommand{./build/main}!
             \end{consolewindow}
 

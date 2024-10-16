@@ -1,0 +1,62 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{hwlisting}
+
+\RequirePackage{minted}
+\RequirePackage[minted]{tcolorbox}
+
+\renewcommand{\theFancyVerbLine}{
+    \ttfamily\small\textcolor{gray}{\arabic{FancyVerbLine}}
+}
+\newtcbinputlisting{\cppinputlisting}[3][\normalsize]{
+    listing file={#2#3},
+    title=#3,
+    listing engine=minted,
+    minted options={
+        fontsize=#1,
+        breaklines,
+        breakanywhere,
+        linenos,
+        numbersep=2pt,
+    },
+    minted language=cpp,
+    listing only,
+    left skip=1mm,
+    right skip=1mm,
+    after skip=5mm,
+    before skip=5mm,
+    left=0mm,
+    right=0mm,
+    top=0mm,
+    bottom=0mm,
+    fonttitle=\it\normalsize,
+    boxrule=0.02cm,
+    colback=white,
+    colframe=black,
+    colbacktitle=gray!10!white,
+    coltitle=black,
+    sharp corners,
+}
+\newtcblisting{cppinplacelisting}[1][\normalsize]{
+    listing engine=minted,
+    minted options={
+        fontsize=#1,
+        breaklines,
+        breakanywhere,
+        escapeinside=!!,
+        linenos,
+        numbersep=2pt,
+    },
+    minted language=cpp,
+    listing only,
+    left skip=1mm,
+    right skip=1mm,
+    after skip=1mm,
+    before skip=1mm,
+    left=0mm,
+    right=0mm,
+    top=0mm,
+    bottom=0mm,
+    boxrule=0.02cm,
+    colback=white,
+    colframe=black,
+}
