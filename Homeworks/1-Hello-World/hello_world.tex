@@ -1,7 +1,7 @@
 \documentclass[14pt]{extarticle}
 
 \usepackage{homeworktemplate}
-\usepackage{hwconsolewindow}
+\usepackage{terminal}
 \usepackage{hwlisting}
 
 \title{Домашняя работа 1 \\ Hello World!}
@@ -48,7 +48,7 @@ GCC, Make, CMake и Visual Studio Code.
 
     \item для Debian GNU/Linux и других ОС, основанных на ней (Ubuntu, Kali Linux, Linux Mint и др.):
 
-        \begin{consolewindow}[\small]
+        \begin{terminalwindow}{terminalhomework}
 !\shellcommand{sudo apt-get install wget gpg}!
 !\shellcommand{wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg}!
 !\shellcommand{sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg}!
@@ -56,27 +56,27 @@ GCC, Make, CMake и Visual Studio Code.
 !\shellcommand{rm -f packages.microsoft.gpg}!
 !\shellcommand{sudo apt update}!
 !\shellcommand{sudo apt install -y build-essential cmake code}!
-        \end{consolewindow}
+        \end{terminalwindow}
 
     \item для RedHat Linux, Fedora, CentOS:
 
-        \begin{consolewindow}[\small]
+        \begin{terminalwindow}{terminalhomework}
 !\shellcommand{sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc}!
 !\shellcommand{echo -e "[code]\\nname=Visual Studio Code\\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\\nenabled=1\\ngpgcheck=1\\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null}!
 !\shellcommand{sudo dnf update}!
 !\shellcommand{sudo dnf install -y make cmake gcc gcc-c++ kernel-devel code}!
-        \end{consolewindow}
+        \end{terminalwindow}
 
 \end{itemize}
 
 Для проверки успешности установки инструментов разработки, предлагается выполнить команды:
 
-\begin{consolewindow}
+\begin{terminalwindow}{terminalhomework}
 !\shellcommand{g++ --version}!
 !\shellcommand{make --version}!
 !\shellcommand{cmake --version}!
 !\shellcommand{code --version}!
-\end{consolewindow}
+\end{terminalwindow}
 
 \subsection{Windows}
 
@@ -94,35 +94,35 @@ GCC, Make, CMake и Visual Studio Code.
 \href{https://learn.microsoft.com/ru-ru/windows/wsl/setup/environment}{тут}.
 Установка сводится к выполнению в командной строке Windows команды:
 
-\begin{consolewindow}
+\begin{terminalwindow}{terminalhomework}
 !\shellcommand{wsl --install}!
-\end{consolewindow}
+\end{terminalwindow}
 
 После выполнения этой команды и перезагрузки компьютера в списке установленных приложений
 должно появиться приложение Ubuntu.
 Для проверки совместной работы WSL и VSCode на хостовой системе можно в консоли WSL выполнить
 команду:
 
-\begin{consolewindow}
+\begin{terminalwindow}{terminalhomework}
 !\shellcommand{code .}!
-\end{consolewindow}
+\end{terminalwindow}
 
 Должен открыться редактор VSCode в директории, из которой была выполнения команда.
 
 После этого можно установить в WSL компилятор и другие инструменты разработки:
 
-\begin{consolewindow}
+\begin{terminalwindow}{terminalhomework}
 !\shellcommand{apt update}!
 !\shellcommand{apt install -y build-essential cmake}!
-\end{consolewindow}
+\end{terminalwindow}
 
 Для проверки успешности установки инструментов разработки, предлагается выполнить команды:
 
-\begin{consolewindow}
+\begin{terminalwindow}{terminalhomework}
 !\shellcommand{g++ --version}!
 !\shellcommand{make --version}!
 !\shellcommand{cmake --version}!
-\end{consolewindow}
+\end{terminalwindow}
 
 \section{Hello World!}
 
@@ -134,16 +134,16 @@ GCC, Make, CMake и Visual Studio Code.
 
         \item В рабочей директории создать директорию hello-world и перейти в нее:
 
-            \begin{consolewindow}
+            \begin{terminalwindow}{terminalhomework}
 !\shellcommand{mkdir hello-world}!
 !\shellcommand{cd hello-world}!
-            \end{consolewindow}
+            \end{terminalwindow}
 
         \item Открыть VSCode в директории hello-world:
 
-            \begin{consolewindow}
+            \begin{terminalwindow}{terminalhomework}
 !\shellcommand{code .}!
-            \end{consolewindow}
+            \end{terminalwindow}
 
         \item В VSCode создать файл main.cpp со следующим содержимым:
 
@@ -159,16 +159,16 @@ GCC, Make, CMake и Visual Studio Code.
 
         \item Собрать программу:
 
-            \begin{consolewindow}
+            \begin{terminalwindow}{terminalhomework}
 !\shellcommand{cmake -B build}!
 !\shellcommand{cmake --build build}!
-            \end{consolewindow}
+            \end{terminalwindow}
 
         \item Выполнить собранное приложение:
 
-            \begin{consolewindow}
+            \begin{terminalwindow}{terminalhomework}
 !\shellcommand{./build/main}!
-            \end{consolewindow}
+            \end{terminalwindow}
 
 \end{enumerate}
 

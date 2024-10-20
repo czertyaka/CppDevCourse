@@ -3,7 +3,7 @@
 \documentclass[compress]{beamer}
 
 \usepackage{presentationtemplate}
-\usepackage{prconsolewindow}
+\usepackage{terminal}
 \usepackage{prlisting}
 
 \subtitle{Введение}
@@ -133,11 +133,17 @@
         {Presentations/1-Intro/}
         {hello-world.cpp}
 
-    \begin{consolewindow}[\footnotesize]
+    \begin{terminalwindow}{%
+        terminalpresentation,
+        minted options={
+            fontsize=\footnotesize,
+            escapeinside=||
+        }
+    }
 |\shellcommand{g++ hello-world.cpp}|
 |\shellcommand{./a.out}|
 Hello, World!
-    \end{consolewindow}
+    \end{terminalwindow}
 
 \end{frame}
 

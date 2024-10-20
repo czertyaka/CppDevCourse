@@ -80,7 +80,7 @@ build/Presentations/1-Intro/intro.pdf: \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/1-Intro/*.cpp) \
 	$(wildcard Presentations/1-Intro/*.h) \
-	Presentations/Packages/prconsolewindow.sty \
+	Packages/terminal.sty \
 	Presentations/Packages/prlisting.sty
 
 build/Presentations/2-Phases-of-translation/phases_of_translation.pdf: \
@@ -88,7 +88,7 @@ build/Presentations/2-Phases-of-translation/phases_of_translation.pdf: \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/2-Phases-of-translation/*.cpp) \
 	$(wildcard Presentations/2-Phases-of-translation/*.h) \
-	Presentations/Packages/prconsolewindow.sty \
+	Packages/terminal.sty \
 	Presentations/Packages/prlisting.sty
 
 build/Homeworks/1-Hello-World/hello_world.pdf: \
@@ -96,5 +96,5 @@ build/Homeworks/1-Hello-World/hello_world.pdf: \
 	$(wildcard Homeworks/1-Hello-World/*.cpp) \
 	$(wildcard Homeworks/1-Hello-World/*.txt) \
 	$(wildcard Homeworks/1-Hello-World/*.h) \
-	Homeworks/Packages/hwconsolewindow.sty \
+	Packages/terminal.sty \
 	Homeworks/Packages/hwlisting.sty
