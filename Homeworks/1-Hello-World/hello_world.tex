@@ -2,7 +2,7 @@
 
 \usepackage{homeworktemplate}
 \usepackage{terminal}
-\usepackage{hwlisting}
+\usepackage[askip=3mm, bskip=3mm]{mylisting}
 
 \title{Домашняя работа 1 \\ Hello World!}
 
@@ -147,13 +147,13 @@ GCC, Make, CMake и Visual Studio Code.
 
         \item В VSCode создать файл main.cpp со следующим содержимым:
 
-            \cppinputlisting[\normalsize]
+            \myinputlisting[minted language=cpp]
                 {Homeworks/1-Hello-World/}
                 {main.cpp}
 
         \item Создать проектный файл CMakeLists.txt со следующим содержимым:
 
-            \cmakeinputlisting[\normalsize]
+            \myinputlisting[minted language=cmake]
                 {Homeworks/1-Hello-World/}
                 {CMakeLists.txt}
 

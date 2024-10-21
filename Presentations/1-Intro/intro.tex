@@ -4,7 +4,7 @@
 
 \usepackage{presentationtemplate}
 \usepackage{terminal}
-\usepackage{prlisting}
+\usepackage[fontsize=\footnotesize, linenosfontsize=\tiny, askip=3mm]{mylisting}
 
 \subtitle{Введение}
 
@@ -129,7 +129,7 @@
 
     \frametitle{Hello, world!}
 
-    \cppinputlisting[\footnotesize]
+    \myinputlisting[minted language=cpp]
         {Presentations/1-Intro/}
         {hello-world.cpp}
 
@@ -172,7 +172,7 @@ Hello, World!
 
         \begin{column}{0.6\textwidth}
 
-            \begin{cppinplacelisting}[\footnotesize]
+            \begin{myinplacelisting}[minted language=cpp]
 auto i = 3.14; // C++11
 
 // C++14
@@ -188,7 +188,7 @@ bool c = a <=> b;
 
 // C++23
 std::format("i={}\n", i);
-            \end{cppinplacelisting}
+            \end{myinplacelisting}
         \end{column}
 
     \end{columns}

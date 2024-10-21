@@ -81,7 +81,7 @@ build/Presentations/1-Intro/intro.pdf: \
 	$(wildcard Presentations/1-Intro/*.cpp) \
 	$(wildcard Presentations/1-Intro/*.h) \
 	Packages/terminal.sty \
-	Presentations/Packages/prlisting.sty
+	Packages/mylisting.sty
 
 build/Presentations/2-Phases-of-translation/phases_of_translation.pdf: \
 	Presentations/presentationtemplate.sty \
@@ -89,7 +89,7 @@ build/Presentations/2-Phases-of-translation/phases_of_translation.pdf: \
 	$(wildcard Presentations/2-Phases-of-translation/*.cpp) \
 	$(wildcard Presentations/2-Phases-of-translation/*.h) \
 	Packages/terminal.sty \
-	Presentations/Packages/prlisting.sty
+	Packages/mylisting.sty
 
 build/Homeworks/1-Hello-World/hello_world.pdf: \
 	Homeworks/homeworktemplate.sty \
@@ -97,4 +97,4 @@ build/Homeworks/1-Hello-World/hello_world.pdf: \
 	$(wildcard Homeworks/1-Hello-World/*.txt) \
 	$(wildcard Homeworks/1-Hello-World/*.h) \
 	Packages/terminal.sty \
-	Homeworks/Packages/hwlisting.sty
+	Packages/mylisting.sty

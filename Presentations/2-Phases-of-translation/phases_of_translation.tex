@@ -4,7 +4,7 @@
 
 \usepackage{presentationtemplate}
 \usepackage{terminal}
-\usepackage{prlisting}
+\usepackage[fontsize=\tiny, linenosfontsize=\tiny, askip=3mm]{mylisting}
 \usepackage{makecell}
 \usepackage{tikz}
 
@@ -100,7 +100,7 @@
 
         \begin{column}{0.5\textwidth}
 
-            \cppinputlisting[\scriptsize]
+            \myinputlisting[minted language=cpp]
                 {Presentations/2-Phases-of-translation/}
                 {defines-example.cpp}
 
@@ -108,7 +108,7 @@
 
         \begin{column}{0.5\textwidth}
 
-            \begin{terminalwindow}{terminalpresentation}{terminalpresentation}
+            \begin{terminalwindow}{terminalpresentation}
 !\shellcommand{g++ \colorbox{yellow}{-E} defines-example.cpp}!
 # 0 "defines-example.cpp"
 # 0 "<built-in>"
@@ -140,7 +140,7 @@ int main() {
 
         \begin{column}{0.5\textwidth}
 
-            \cppinputlisting[\scriptsize]
+            \myinputlisting[minted language=cpp]
                 {Presentations/2-Phases-of-translation/}
                 {defines-param-example.cpp}
 
@@ -168,11 +168,11 @@ int main() {
 
         \begin{column}{0.5\textwidth}
 
-            \cppinputlisting[\scriptsize]
+            \myinputlisting[minted language=cpp]
                 {Presentations/2-Phases-of-translation/}
                 {include-header.h}
 
-            \cppinputlisting[\scriptsize]
+            \myinputlisting[minted language=cpp]
                 {Presentations/2-Phases-of-translation/}
                 {include-source.cpp}
 
@@ -212,11 +212,11 @@ int main() {
 
         \begin{column}{0.5\textwidth}
 
-            \cppinputlisting[\scriptsize]
+            \myinputlisting[minted language=cpp]
                 {Presentations/2-Phases-of-translation/}
                 {pragma-example.h}
 
-            \cppinputlisting[\scriptsize]
+            \myinputlisting[minted language=cpp]
                 {Presentations/2-Phases-of-translation/}
                 {pragma-example.cpp}
 
@@ -282,7 +282,7 @@ int main() {
 
         \begin{column}{0.25\textwidth}
 
-            \cppinputlisting
+            \myinputlisting[minted language=cpp]
                 {Presentations/2-Phases-of-translation/}
                 {comp-example.cpp}
 
@@ -394,15 +394,15 @@ Disassembly of section .text:
 
         \begin{column}{0.4\textwidth}
 
-            \cppinputlisting
+            \myinputlisting[minted language=cpp]
                 {Presentations/2-Phases-of-translation/}
                 {link-example.h}
 
-            \cppinputlisting
+            \myinputlisting[minted language=cpp]
                 {Presentations/2-Phases-of-translation/}
                 {link-example.cpp}
 
-            \cppinputlisting
+            \myinputlisting[minted language=cpp]
                 {Presentations/2-Phases-of-translation/}
                 {link-example-main.cpp}
 
