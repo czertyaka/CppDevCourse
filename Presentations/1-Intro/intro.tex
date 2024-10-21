@@ -3,7 +3,7 @@
 \documentclass[compress]{beamer}
 
 \usepackage{presentationtemplate}
-\usepackage{terminal}
+\usepackage[fontsize=\footnotesize, askip=3mm]{terminal}
 \usepackage[fontsize=\footnotesize, linenosfontsize=\tiny, askip=3mm]{mylisting}
 
 \subtitle{Введение}
@@ -133,13 +133,7 @@
         {Presentations/1-Intro/}
         {hello-world.cpp}
 
-    \begin{terminalwindow}{%
-        terminalpresentation,
-        minted options={
-            fontsize=\footnotesize,
-            escapeinside=||
-        }
-    }
+    \begin{terminalwindow}[||]
 |\shellcommand{g++ hello-world.cpp}|
 |\shellcommand{./a.out}|
 Hello, World!

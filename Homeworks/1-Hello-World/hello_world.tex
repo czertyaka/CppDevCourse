@@ -1,7 +1,7 @@
 \documentclass[14pt]{extarticle}
 
 \usepackage{homeworktemplate}
-\usepackage{terminal}
+\usepackage[askip=3mm, bskip=3mm]{terminal}
 \usepackage[askip=3mm, bskip=3mm]{mylisting}
 
 \title{Домашняя работа 1 \\ Hello World!}
@@ -48,7 +48,7 @@ GCC, Make, CMake и Visual Studio Code.
 
     \item для Debian GNU/Linux и других ОС, основанных на ней (Ubuntu, Kali Linux, Linux Mint и др.):
 
-        \begin{terminalwindow}{terminalhomework}
+        \begin{terminalwindow}
 !\shellcommand{sudo apt-get install wget gpg}!
 !\shellcommand{wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg}!
 !\shellcommand{sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg}!
@@ -60,7 +60,7 @@ GCC, Make, CMake и Visual Studio Code.
 
     \item для RedHat Linux, Fedora, CentOS:
 
-        \begin{terminalwindow}{terminalhomework}
+        \begin{terminalwindow}
 !\shellcommand{sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc}!
 !\shellcommand{echo -e "[code]\\nname=Visual Studio Code\\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\\nenabled=1\\ngpgcheck=1\\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null}!
 !\shellcommand{sudo dnf update}!
@@ -71,7 +71,7 @@ GCC, Make, CMake и Visual Studio Code.
 
 Для проверки успешности установки инструментов разработки, предлагается выполнить команды:
 
-\begin{terminalwindow}{terminalhomework}
+\begin{terminalwindow}
 !\shellcommand{g++ --version}!
 !\shellcommand{make --version}!
 !\shellcommand{cmake --version}!
@@ -94,7 +94,7 @@ GCC, Make, CMake и Visual Studio Code.
 \href{https://learn.microsoft.com/ru-ru/windows/wsl/setup/environment}{тут}.
 Установка сводится к выполнению в командной строке Windows команды:
 
-\begin{terminalwindow}{terminalhomework}
+\begin{terminalwindow}
 !\shellcommand{wsl --install}!
 \end{terminalwindow}
 
@@ -103,7 +103,7 @@ GCC, Make, CMake и Visual Studio Code.
 Для проверки совместной работы WSL и VSCode на хостовой системе можно в консоли WSL выполнить
 команду:
 
-\begin{terminalwindow}{terminalhomework}
+\begin{terminalwindow}
 !\shellcommand{code .}!
 \end{terminalwindow}
 
@@ -111,14 +111,14 @@ GCC, Make, CMake и Visual Studio Code.
 
 После этого можно установить в WSL компилятор и другие инструменты разработки:
 
-\begin{terminalwindow}{terminalhomework}
+\begin{terminalwindow}
 !\shellcommand{apt update}!
 !\shellcommand{apt install -y build-essential cmake}!
 \end{terminalwindow}
 
 Для проверки успешности установки инструментов разработки, предлагается выполнить команды:
 
-\begin{terminalwindow}{terminalhomework}
+\begin{terminalwindow}
 !\shellcommand{g++ --version}!
 !\shellcommand{make --version}!
 !\shellcommand{cmake --version}!
@@ -134,14 +134,14 @@ GCC, Make, CMake и Visual Studio Code.
 
         \item В рабочей директории создать директорию hello-world и перейти в нее:
 
-            \begin{terminalwindow}{terminalhomework}
+            \begin{terminalwindow}
 !\shellcommand{mkdir hello-world}!
 !\shellcommand{cd hello-world}!
             \end{terminalwindow}
 
         \item Открыть VSCode в директории hello-world:
 
-            \begin{terminalwindow}{terminalhomework}
+            \begin{terminalwindow}
 !\shellcommand{code .}!
             \end{terminalwindow}
 
@@ -159,14 +159,14 @@ GCC, Make, CMake и Visual Studio Code.
 
         \item Собрать программу:
 
-            \begin{terminalwindow}{terminalhomework}
+            \begin{terminalwindow}
 !\shellcommand{cmake -B build}!
 !\shellcommand{cmake --build build}!
             \end{terminalwindow}
 
         \item Выполнить собранное приложение:
 
-            \begin{terminalwindow}{terminalhomework}
+            \begin{terminalwindow}
 !\shellcommand{./build/main}!
             \end{terminalwindow}
 
