@@ -4,6 +4,7 @@
 \RequirePackage{minted}
 \RequirePackage[minted]{tcolorbox}
 \RequirePackage{kvoptions}
+\RequirePackage{accsupp}
 
 \SetupKeyvalOptions{
     family=MLS,
@@ -17,8 +18,12 @@
 
 \ProcessKeyvalOptions*
 
+\newcommand{\HideFromCopy}[1]{%
+    \BeginAccSupp{ActualText={}}#1\EndAccSupp{}%
+}
+
 \renewcommand{\theFancyVerbLine}{
-    \MLS@linenosfontsize\ttfamily\textcolor{gray}{\arabic{FancyVerbLine}}
+    \HideFromCopy{\MLS@linenosfontsize\ttfamily\textcolor{gray}{\arabic{FancyVerbLine}}}
 }
 
 \tcbset{
