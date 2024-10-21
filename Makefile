@@ -47,6 +47,7 @@ help:
 
 pr-1: build/Presentations/1-Intro/intro.pdf
 pr-2: build/Presentations/2-Phases-of-translation/phases_of_translation.pdf
+pr-3: build/Presentations/3-Fundamental-types/fundamental_types.pdf
 
 hw-1: build/Homeworks/1-Hello-World/hello_world.pdf
 
@@ -88,6 +89,13 @@ build/Presentations/2-Phases-of-translation/phases_of_translation.pdf: \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/2-Phases-of-translation/*.cpp) \
 	$(wildcard Presentations/2-Phases-of-translation/*.h) \
+	Packages/terminal.sty \
+	Packages/mylisting.sty
+
+build/Presentations/3-Fundamental-types/fundamental_types.pdf: \
+	Presentations/presentationtemplate.sty \
+	$(wildcard Presentations/images/*-logo.png) \
+	$(wildcard Presentations/3-Fundamental-types/*.cpp) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 

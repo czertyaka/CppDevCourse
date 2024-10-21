@@ -1,0 +1,152 @@
+% !TeX TS-program = xelatex
+
+\documentclass[compress]{beamer}
+
+\usepackage{presentationtemplate}
+\usepackage[fontsize=\scriptsize, askip=3mm, bskip=3mm]{terminal}
+\usepackage[fontsize=\scriptsize, linenosfontsize=\tiny, askip=3mm, bskip=3mm]{mylisting}
+\usepackage[dvipsnames]{xcolor}
+
+\title{Фундаментальные типы данных}
+
+\begin{document}
+
+\frame[plain]{\titlepage}
+
+\begin{frame}
+
+    \frametitle{Что такое тип объекта?}
+
+    Тип объекта
+    \footnote{Помимо объектов типами также обладают
+    ссылки, функции и выражения.}
+    определяет:
+
+    \begin{itemize}
+
+        \item семантическое значение объекта, представленного
+            набором бит в памяти;
+
+        \item набор и реализацию операций, которые можно производить
+            над объектом.
+
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Семантика объекта}
+
+    \myinputlisting[minted language=cpp]
+        {Presentations/3-Fundamental-types/}
+        {semantics.cpp}
+
+    \begin{terminalwindow}
+!\shellcommand{g++ semantics.cpp}!
+!\shellcommand{./a.out}!
+b=1, s=65, c=A
+    \end{terminalwindow}
+
+    \scriptsize
+
+    Объекты, представленные одним и тем же набором бит в памяти, можно
+    наделить разной семантикой: они будут по-разному интерпретироваться
+    программистом, компилятором, средой выполнения и т.д.
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Набор операций над типом}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{myinplacelisting}[minted language=cpp]
+int a = 0;
+a + 1;
+a * 2;
+
+void foo() {}
+// ...
+foo();
+
+float f = 0.1;
+float* ptr = &f;
+*ptr;
+            \end{myinplacelisting}
+
+            \scriptsize
+
+            Для арифметических типов разрешены операции сложения
+            и умножения, для функций разрешен оператор вызова,
+            для указателей --- оператор разыменования и т.д.
+
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+            \scriptsize
+
+            Нельзя вызвать \verb|char| как функцию или разыменовать, как
+            указатель, создать переменную с типом \verb|void| или
+            применить оператор битового сдвига к переменной с типом
+            плавающей точки.
+
+            \begin{myinplacelisting}[minted language=cpp]
+char c = 0;
+c(); // compilation error
+*c;  // compilation error
+
+void v; // compilation error
+
+float f;
+f << 10; // compilation
+         // error
+            \end{myinplacelisting}
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Набор операций над типом}
+
+    \myinputlisting[minted language=cpp]
+        {Presentations/3-Fundamental-types/}
+        {indirection-on-int.cpp}
+
+    \begin{terminalwindow}
+!\shellcommand{g++ indirection-on-int.cpp}!
+indirection-on-int.cpp: In function ‘int !\textcolor{teal}{main}!()’:
+indirection-on-int.cpp:5:18: !\color{red}{error}!: invalid type argument of unary ‘*’ (have ‘int’)
+    5 |     std::cout << !\textcolor{red}{*i}! << std::cout;
+      |
+    \end{terminalwindow}
+
+    \scriptsize
+
+    Допустимость проведения операции над объектом проверяется во время
+    компиляции. Это прямое следствие того, что C++ --- статически
+    типизированный язык.
+
+\end{frame}
+
+\begin{frame}
+
+    \frametitle{Источники и литаратура}
+
+    \begin{itemize}
+
+        \item \url{https://en.cppreference.com/w/cpp/language/type}
+
+    \end{itemize}
+
+\end{frame}
+
+\end{document}
