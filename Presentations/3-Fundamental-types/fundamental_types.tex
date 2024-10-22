@@ -1,39 +1,60 @@
 % !TeX TS-program = xelatex
 
-\documentclass[compress]{beamer}
+\documentclass[compress, 8pt]{beamer}
 
 \usepackage{presentationtemplate}
-\usepackage[fontsize=\scriptsize, askip=3mm, bskip=3mm]{terminal}
-\usepackage[fontsize=\scriptsize, linenosfontsize=\tiny, askip=3mm, bskip=3mm]{mylisting}
+\usepackage[askip=3mm, bskip=3mm]{terminal}
+\usepackage[linenosfontsize=\tiny, askip=3mm, bskip=3mm]{mylisting}
 \usepackage[dvipsnames, table]{xcolor}
 \usepackage{tikz}
 \usetikzlibrary{positioning}
+\usepackage{array}
+\usepackage{multirow}
+
+\renewcommand{\arraystretch}{1.2}
 
 \newenvironment{sixteenbit}{%
-    \scriptsize
-        \begin{center}
-            \begin{tabular}{ |c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|  }
-                \hline
-}{
+    \begin{center}
+        \begin{tabular}{ |c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|  }
             \hline
-            \multicolumn{1}{c}{\color{gray}\tiny{15}} &
-            \multicolumn{1}{c}{\color{gray}\tiny{14}} &
-            \multicolumn{1}{c}{\color{gray}\tiny{13}} &
-            \multicolumn{1}{c}{\color{gray}\tiny{12}} &
-            \multicolumn{1}{c}{\color{gray}\tiny{11}} &
-            \multicolumn{1}{c}{\color{gray}\tiny{10}} &
-            \multicolumn{1}{c}{\color{gray}\tiny{9}} &
-            \multicolumn{1}{c}{\color{gray}\tiny{8}} &
-            \multicolumn{1}{c}{\color{gray}\tiny{7}} &
-            \multicolumn{1}{c}{\color{gray}\tiny{6}} &
-            \multicolumn{1}{c}{\color{gray}\tiny{5}} &
-            \multicolumn{1}{c}{\color{gray}\tiny{4}} &
-            \multicolumn{1}{c}{\color{gray}\tiny{3}} &
-            \multicolumn{1}{c}{\color{gray}\tiny{2}} &
-            \multicolumn{1}{c}{\color{gray}\tiny{1}} &
-            \multicolumn{1}{c}{\color{gray}\tiny{0}} \\
-            \end{tabular}
-        \end{center}
+}{
+        \hline
+        \multicolumn{1}{c}{\color{gray}\tiny{15}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{14}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{13}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{12}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{11}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{10}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{9}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{8}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{7}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{6}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{5}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{4}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{3}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{2}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{1}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{0}} \\
+        \end{tabular}
+    \end{center}
+}
+
+\newenvironment{eightbit}{%
+    \begin{center}
+        \begin{tabular}{ |c|c|c|c|c|c|c|c|  }
+            \hline
+}{
+        \hline
+        \multicolumn{1}{c}{\color{gray}\tiny{7}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{6}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{5}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{4}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{3}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{2}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{1}} &
+        \multicolumn{1}{c}{\color{gray}\tiny{0}} \\
+        \end{tabular}
+    \end{center}
 }
 
 \title{Фундаментальные типы данных}
@@ -77,8 +98,6 @@
 b=1, s=65, c=A
     \end{terminalwindow}
 
-    \scriptsize
-
     Объекты, представленные одним и тем же набором бит в памяти, можно
     наделить разной семантикой: они будут по-разному интерпретироваться
     программистом, компилятором, средой выполнения и т.д.
@@ -107,8 +126,6 @@ float* ptr = &f;
 *ptr;
             \end{myinplacelisting}
 
-            \scriptsize
-
             Для арифметических типов разрешены операции сложения
             и умножения, для функций разрешен оператор вызова,
             для указателей --- оператор разыменования и т.д.
@@ -116,8 +133,6 @@ float* ptr = &f;
         \end{column}
 
         \begin{column}{0.5\textwidth}
-
-            \scriptsize
 
             Нельзя вызвать \verb|char| как функцию или разыменовать, как
             указатель, создать переменную с типом \verb|void| или
@@ -158,8 +173,6 @@ indirection-on-int.cpp:5:18: !\color{red}{error}!: invalid type argument of unar
       |
     \end{terminalwindow}
 
-    \scriptsize
-
     Допустимость проведения операции над объектом проверяется во время
     компиляции. Это прямое следствие того, что C++ --- статически
     типизированный язык.
@@ -178,8 +191,6 @@ indirection-on-int.cpp:5:18: !\color{red}{error}!: invalid type argument of unar
 !\shellcommand{g++ -std=c++23 sum.cpp}!
     \end{terminalwindow}
 
-    \scriptsize
-
     Выражения сумм \verb|u + u| и \verb|f + f| различаются семантикой, но не
     синтаксисом.
 
@@ -189,21 +200,18 @@ indirection-on-int.cpp:5:18: !\color{red}{error}!: invalid type argument of unar
 
     \frametitle{Различие в реализациях операций \\ над разными типами}
 
-    \scriptsize
     \verb|f = 2.0, u = 16384|
 
     \begin{sixteenbit}
         0 & \cellcolor{gray}{1} & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
     \end{sixteenbit}
 
-    \scriptsize
     \verb|f + f = 4.0|
 
     \begin{sixteenbit}
         0 & \cellcolor{gray}{1} & 0 & 0 & 0 & \cellcolor{gray}{1} & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
     \end{sixteenbit}
 
-    \scriptsize
     \verb|u + u = 32768|
 
     \begin{sixteenbit}
@@ -215,8 +223,6 @@ indirection-on-int.cpp:5:18: !\color{red}{error}!: invalid type argument of unar
 \begin{frame}[fragile]
 
     \frametitle{Классификация \\ фундаментальных типов}
-
-    \scriptsize
 
     \begin{tikzpicture}
         \tikzstyle{every node}=[draw]
@@ -273,13 +279,270 @@ indirection-on-int.cpp:5:18: !\color{red}{error}!: invalid type argument of unar
 
 \end{frame}
 
+\begin{frame}[fragile]
+
+    \frametitle{Тип \texttt{bool}}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}
+
+            \verb|false|
+
+            \begin{eightbit}
+                0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+            \end{eightbit}
+
+            \verb|true|
+
+            \begin{eightbit}
+                0 & 0 & 0 & 0 & 0 & 0 & 0 & \cellcolor{gray}{1} \\
+            \end{eightbit}
+
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+            Размер объекта типа \verb|bool| не определен стандартом,
+            но на большинстве платформ равен 1 байту. \hfill \break
+
+            \verb|true| и \verb|false| называются boolean literals
+            \footnote{\tiny\url{https://en.cppreference.com/w/cpp/language/bool_literal}}.
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Символьные типы}
+
+    Таблица ASCII
+
+    \scriptsize
+
+    \begin{center}
+        \begin{tabular}{|@{\space}m{0.30cm}m{0.35cm}|%
+                         @{\space}m{0.30cm}m{0.35cm}|%
+                         @{\space}m{0.30cm}m{0.35cm}|%
+                         @{\space}m{0.30cm}m{0.35cm}|%
+                         @{\space}m{0.30cm}m{0.35cm}|%
+                         @{\space}m{0.30cm}m{0.35cm}|%
+                         @{\space}m{0.30cm}m{0.35cm}|%
+                         @{\space}m{0.30cm}m{0.35cm}|}
+            \hline
+            Hex & Char & Hex & Char & Hex & Char & Hex & Char &
+            Hex & Char & Hex & Char & Hex & Char & Hex & Char \\
+            \hline
+            \hline
+            \verb|00| & \verb|NUL| & \verb|10| & \verb|DLE| &
+            \verb|20| & \verb|SP|  & \verb|30| & \verb|0|   &
+            \verb|40| & \verb|@|   & \verb|50| & \verb|P|   &
+            \verb|60| & \verb|`|   & \verb|70| & \verb|p|   \\
+            \verb|01| & \verb|SOH| & \verb|11| & \verb|DC1| &
+            \verb|21| & \verb|!|   & \verb|31| & \verb|1|   &
+            \verb|41| & \verb|A|   & \verb|51| & \verb|Q|   &
+            \verb|61| & \verb|a|   & \verb|71| & \verb|q|   \\
+            \verb|02| & \verb|STX| & \verb|12| & \verb|DC2| &
+            \verb|22| & \verb|"|   & \verb|32| & \verb|2|   &
+            \verb|42| & \verb|B|   & \verb|52| & \verb|R|   &
+            \verb|62| & \verb|b|   & \verb|72| & \verb|r|   \\
+            \verb|03| & \verb|ETX| & \verb|13| & \verb|DC3| &
+            \verb|23| & \verb|#|   & \verb|33| & \verb|3|   &
+            \verb|43| & \verb|C|   & \verb|53| & \verb|S|   &
+            \verb|63| & \verb|c|   & \verb|73| & \verb|s|   \\
+            \verb|04| & \verb|EOT| & \verb|14| & \verb|DC4| &
+            \verb|24| & \verb|$|   & \verb|34| & \verb|4|   &
+            \verb|44| & \verb|D|   & \verb|54| & \verb|T|   &
+            \verb|64| & \verb|d|   & \verb|74| & \verb|t|   \\
+            \verb|05| & \verb|ENQ| & \verb|15| & \verb|NAK| &
+            \verb|25| & \verb|%|   & \verb|35| & \verb|5|   &
+            \verb|45| & \verb|E|   & \verb|55| & \verb|U|   &
+            \verb|65| & \verb|e|   & \verb|75| & \verb|u|   \\
+            \verb|06| & \verb|ACK| & \verb|16| & \verb|SYN| &
+            \verb|26| & \verb|&|   & \verb|36| & \verb|6|   &
+            \verb|46| & \verb|F|   & \verb|56| & \verb|V|   &
+            \verb|66| & \verb|f|   & \verb|76| & \verb|v|   \\
+            \verb|07| & \verb|BEL| & \verb|17| & \verb|ETB| &
+            \verb|27| & \verb|'|   & \verb|37| & \verb|7|   &
+            \verb|47| & \verb|G|   & \verb|57| & \verb|W|   &
+            \verb|67| & \verb|g|   & \verb|77| & \verb|w|   \\
+            \verb|08| & \verb|BS|  & \verb|18| & \verb|CAN| &
+            \verb|28| & \verb|(|   & \verb|38| & \verb|8|   &
+            \verb|48| & \verb|H|   & \verb|58| & \verb|X|   &
+            \verb|68| & \verb|h|   & \verb|78| & \verb|x|   \\
+            \verb|09| & \verb|HT|  & \verb|19| & \verb|EM|  &
+            \verb|29| & \verb|)|   & \verb|39| & \verb|9|   &
+            \verb|49| & \verb|I|   & \verb|59| & \verb|Y|   &
+            \verb|69| & \verb|i|   & \verb|79| & \verb|y|   \\
+            \verb|0A| & \verb|LF|  & \verb|1A| & \verb|SUB| &
+            \verb|2A| & \verb|*|   & \verb|3A| & \verb|:|   &
+            \verb|4A| & \verb|J|   & \verb|5A| & \verb|Z|   &
+            \verb|6A| & \verb|j|   & \verb|7A| & \verb|z|   \\
+            \verb|0B| & \verb|VT|  & \verb|1B| & \verb|ESC| &
+            \verb|2B| & \verb|+|   & \verb|3B| & \verb|;|   &
+            \verb|4B| & \verb|K|   & \verb|5B| & \verb|[|   &
+            \verb|6B| & \verb|k|   & \verb|7B| & \verb|{|   \\
+            \verb|0C| & \verb|FF|  & \verb|1C| & \verb|FS|  &
+            \verb|2C| & \verb|,|   & \verb|3C| & \verb|<|   &
+            \verb|4C| & \verb|L|   & \verb|5C| & \verb|\|   &
+            \verb|6C| & \verb|l|   & \verb|7C| & \verb!|!   \\
+            \verb|0D| & \verb|CR|  & \verb|1D| & \verb|GS|  &
+            \verb|2D| & \verb|-|   & \verb|3D| & \verb|=|   &
+            \verb|4D| & \verb|M|   & \verb|5D| & \verb|]|   &
+            \verb|6D| & \verb|m|   & \verb|7D| & \verb|}|   \\
+            \verb|0E| & \verb|SO|  & \verb|1E| & \verb|RS|  &
+            \verb|2E| & \verb|.|   & \verb|3E| & \verb|>|   &
+            \verb|4E| & \verb|N|   & \verb|5E| & \verb|^|   &
+            \verb|6E| & \verb|n|   & \verb|7E| & \verb|~|   \\
+            \verb|0E| & \verb|SI|  & \verb|1E| & \verb|US|  &
+            \verb|2E| & \verb|/|   & \verb|3E| & \verb|?|   &
+            \verb|4E| & \verb|O|   & \verb|5E| & \verb|_|   &
+            \verb|6E| & \verb|o|   & \verb|7E| & \verb|DEL| \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Символьные типы}
+
+    \begin{itemize}
+        \item \verb|signed char| --- знаковый тип представления символа.
+        \item \verb|unsigned char| --- беззнаковый тип представления символа.
+        \item \verb|char| --- тип представления символа, знаковость зависит от
+            компилятора и целевой платформы.
+        \item \verb|wchar_t|, \verb|char16_t|, ...
+    \end{itemize}
+
+    \hfill \break
+    Стандарт C++ гарантирует, что \verb|1 == sizeof(char)|.
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Символьные типы}
+
+    \begin{center}
+        \begin{tabular}{|c|c|c|}
+            \hline
+            Тип & Размер & Диапазон значений \\
+            \hline
+            \hline
+            \verb|signed char| & 1 & \([-128_{10}, 127_{10}]\) \\
+            \verb|unsigned char| & 1 & \([0, 255_{10}]\) \\
+            \verb|char| & 1 & возможны оба варианта \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Символьные типы}
+
+    \myinputlisting[minted language=cpp]
+        {Presentations/3-Fundamental-types/}
+        {char.cpp}
+
+    \begin{terminalwindow}
+!\shellcommand{g++ char.cpp}!
+!\shellcommand{./a.out}!
+A
+b
+this is tab     and this '
+' is newline
+    \end{terminalwindow}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Остальные интегральные типы}
+
+    Базовым интегральным типом является \verb|int|.
+    Другие интегральные типы образуются комбинацией ключевого слова \verb|int| с модификаторами
+    \verb|signed|, \verb|unsigned|, \verb|short| и \verb|long|.
+    При комбинации с модификаторами допускается пропускать ключевое слово \verb|int|.
+
+    \hfill \break
+    Примеры допустимых типов:
+
+    \begin{itemize}
+        \item \verb|short int|
+        \item \verb|int long|
+        \item \verb|short|
+        \item \verb|signed long long|
+        \item \verb|long unsigned|
+        \item ...
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Размеры интегральных типов}
+
+    \begin{center}
+        \begin{tabular}{|c|c|}
+            \hline
+            Минимальное количество бит & Типы \\
+            \hline
+            \hline
+            \multirow{4}{4em}{16} & \verb|int| \\
+            & \verb|unsigned int| \\
+            & \verb|short int| \\
+            & \verb|unsigned short int| \\
+            \hline
+            \multirow{2}{4em}{32} & \verb|long int| \\
+            & \verb|unsigned long int| \\
+            \hline
+            \multirow{2}{4em}{64} & \verb|long long int| \\
+            & \verb|unsigned long long int| \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+    \hfill \break
+    Стандарт C++ гарантирует, что
+
+    \begin{center}
+        \verb|sizeof(char) ≤ sizeof(short) ≤ sizeof(int)|
+        \verb|≤ sizeof(long) ≤ sizeof(long long)|
+    \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Представление знаковых \\ интегральных типов}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Представление беззнаковых \\ интегральных типов}
+
+\end{frame}
+
 \begin{frame}
 
-    \frametitle{Источники и литаратура}
+    \frametitle{Источники и литература}
 
     \begin{itemize}
 
-        \item \url{https://en.cppreference.com/w/cpp/language/type}
+        \item \href{https://en.cppreference.com/w/cpp/language/type}
+            {Классификация типов на cppreference}
+        \item \href{https://habr.com/ru/companies/wunderfund/articles/777850/}
+            {Статья про Unicode}
+        \item \href{https://github.com/Nekrolm/ubbook/blob/master/numeric/overflow.md}
+            {Переполнение целых знаковых типов}
 
     \end{itemize}
 
