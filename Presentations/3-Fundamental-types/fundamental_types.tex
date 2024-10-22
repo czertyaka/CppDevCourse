@@ -10,6 +10,7 @@
 \usetikzlibrary{positioning}
 \usepackage{array}
 \usepackage{multirow}
+\usepackage[flushleft]{threeparttable}
 
 \renewcommand{\arraystretch}{1.2}
 
@@ -489,25 +490,34 @@ this is tab     and this '
 
     \frametitle{Размеры интегральных типов}
 
-    \begin{center}
-        \begin{tabular}{|c|c|}
-            \hline
-            Минимальное количество бит & Типы \\
-            \hline
-            \hline
-            \multirow{4}{4em}{16} & \verb|int| \\
-            & \verb|unsigned int| \\
-            & \verb|short int| \\
-            & \verb|unsigned short int| \\
-            \hline
-            \multirow{2}{4em}{32} & \verb|long int| \\
-            & \verb|unsigned long int| \\
-            \hline
-            \multirow{2}{4em}{64} & \verb|long long int| \\
-            & \verb|unsigned long long int| \\
-            \hline
-        \end{tabular}
-    \end{center}
+
+    \begin{table}[H]
+        \begin{threeparttable}
+            \begin{tabular}{|c|c|}
+                \hline
+                Минимальное количество бит & Типы \\
+                \hline
+                \hline
+                \multirow{4}{4em}{16}
+                & \verb|int|\tnote{*} \\
+                & \verb|unsigned int| \\
+                & \verb|short int| \\
+                & \verb|unsigned short int| \\
+                \hline
+                \multirow{2}{4em}{32} & \verb|long int| \\
+                & \verb|unsigned long int| \\
+                \hline
+                \multirow{2}{4em}{64} & \verb|long long int| \\
+                & \verb|unsigned long long int| \\
+                \hline
+            \end{tabular}
+            \begin{tablenotes}
+            \small
+            \item[*] Для большинства платформ
+                \verb|int| имеет размер 32 бита.
+            \end{tablenotes}
+        \end{threeparttable}
+    \end{table}
 
     \hfill \break
     Стандарт C++ гарантирует, что
@@ -522,6 +532,43 @@ this is tab     and this '
 \begin{frame}[fragile]
 
     \frametitle{Представление беззнаковых \\ интегральных типов}
+
+    Для представления беззнаковых интегральных типов в оперативной
+    памяти каждому разряду числа в его двоичном представлении
+    ставится в соответствие бит в памяти.
+
+    \hfill \break
+    Зная количество бит \(N\) и значения битов \(a_k\) из множества
+    \(\{0,1\}\) (где \(k\) --- номер бита), можно рассчитать значение
+    числа в памяти в десятичном исчислении:
+
+    \begin{displaymath}
+\sum_{i=0}^{N-1}{a_i 2^i}
+    \end{displaymath}
+
+    Пример:
+
+    \begin{eightbit}
+        0 & 0 & \cellcolor{gray}{1} & 0 & 0 & \cellcolor{gray}{1} & 0 & 0 \\
+    \end{eightbit}
+
+    \begin{displaymath}
+0 \times 2^0 + 0 \times 2^1 + 1 \times 2^2 + 0 \times 2^3 + 0 \times 2^4
+        + 1 \times 2^5 + 0 \times 2^6 + 0 \times 2^7 = 36
+    \end{displaymath}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Представление беззнаковых \\ интегральных типов}
+
+    Для беззнакового целого типа максимальное число, которое можно
+    сохранить в объекте такого типа:
+
+    \begin{displaymath}
+2^N-1
+    \end{displaymath}
 
 \end{frame}
 
