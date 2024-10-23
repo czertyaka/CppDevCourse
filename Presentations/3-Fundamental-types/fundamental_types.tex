@@ -910,10 +910,10 @@ u1 = u1 - 3;  // u1 = 255
             1 \times 2^2 +
             0 \times 2^3 +
             0 \times 2^4 =
-            5
+            6
     \end{displaymath}
     \begin{displaymath}
-        value = (-1) \times 2^{5-15} \times (
+        value = (-1) \times 2^{6-15} \times (
             1 +
             1 \times 2^{-1} +
             1 \times 2^{-6} +
@@ -923,15 +923,105 @@ u1 = u1 - 3;  // u1 = 255
         ) =
     \end{displaymath}
     \begin{displaymath}
-        = (-1) \times 2^{-10} \times (
+        = (-1) \times 2^{-9} \times (
             1 +
             2^{-1} +
             2^{-6} +
             2^{-7} +
             2^{-8} +
             2^{-10}
-        ) \approx -0.00149
+        ) \approx -0.002985
     \end{displaymath}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Представление специальных \\ значений}
+
+    Отрицательный ноль (\verb|-0.0|):
+
+    \begin{sixteenbit}
+        \cellcolor{blue!40!white}{1} &
+        \cellcolor{green!40!white}{0} &
+        \cellcolor{green!40!white}{0} &
+        \cellcolor{green!40!white}{0} &
+        \cellcolor{green!40!white}{0} &
+        \cellcolor{green!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} \\
+    \end{sixteenbit}
+
+    Положительная бесконечость (\verb|-inf|):
+
+    \begin{sixteenbit}
+        \cellcolor{blue!40!white}{0} &
+        \cellcolor{green!40!white}{1} &
+        \cellcolor{green!40!white}{1} &
+        \cellcolor{green!40!white}{1} &
+        \cellcolor{green!40!white}{1} &
+        \cellcolor{green!40!white}{1} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} \\
+    \end{sixteenbit}
+
+    Отрицательная бесконечость (\verb|-inf|):
+
+    \begin{sixteenbit}
+        \cellcolor{blue!40!white}{1} &
+        \cellcolor{green!40!white}{1} &
+        \cellcolor{green!40!white}{1} &
+        \cellcolor{green!40!white}{1} &
+        \cellcolor{green!40!white}{1} &
+        \cellcolor{green!40!white}{1} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} \\
+    \end{sixteenbit}
+
+    Not-a-number (\verb|NaN|):
+
+    \begin{sixteenbit}
+        \cellcolor{blue!40!white}{0} &
+        \cellcolor{green!40!white}{1} &
+        \cellcolor{green!40!white}{1} &
+        \cellcolor{green!40!white}{1} &
+        \cellcolor{green!40!white}{1} &
+        \cellcolor{green!40!white}{1} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{0} &
+        \cellcolor{red!40!white}{1} \\
+    \end{sixteenbit}
 
 \end{frame}
 
@@ -939,11 +1029,34 @@ u1 = u1 - 3;  // u1 = 255
 
     \frametitle{Арифметические типы \\ фиксированного размера}
 
-\end{frame}
+    В таблице представлены некоторые арифметические типы
+    фиксированного размера.
 
-\begin{frame}[fragile]
-
-    \frametitle{Префиксы и суффиксы}
+    \begin{table}[H]
+        \begin{threeparttable}
+            \begin{tabular}{|c|c|c|}
+                \hline
+                Количество бит & integer & floating-point \\
+                \hline
+                \hline
+                8 & \verb|int8_t|\tnote{*}, \verb|uint8_t| & - \\
+                16 & \verb|int16_t|, \verb|uint16_t| & \verb|float16_t|\tnote{**} \\
+                32 & \verb|int32_t|, \verb|uint32_t| & \verb|float32_t| \\
+                64 & \verb|int64_t|, \verb|uint64_t| & \verb|float64_t| \\
+                128 & - & \verb|float128_t| \\
+                \hline
+            \end{tabular}
+            \begin{tablenotes}
+            \small
+            \item[*] Интегральные типы с фиксированной шириной появились
+                в стандарте C++11, для использования необходимо подключить
+                заголовочный файл \verb|<cstdint>|.
+            \item[**] Типы с плавающей точкой с фиксированной шириной появились
+                в стандарте C++23, для использования необходимо подключить
+                заголовочный файл \verb|<stdfloat>|.
+            \end{tablenotes}
+        \end{threeparttable}
+    \end{table}
 
 \end{frame}
 
@@ -951,11 +1064,43 @@ u1 = u1 - 3;  // u1 = 255
 
     \frametitle{Квалификатор \texttt{const}}
 
+    Добавление \verb|const| к типу сообщает компилятору, что
+    любое изменение объекта должно завершаться ошибкой компиляции.
+    Константные объекты должны быть проинициализированы в момент
+    создания.
+    Компилятор рассматривает \verb|const| типы как новые,
+    т.е. \verb|const bool != bool|.
+
+    \myinputlisting[minted language=cpp]
+        {Presentations/3-Fundamental-types/}
+        {const.cpp}
+
+    \begin{terminalwindow}
+!\shellcommand{g++ const.cpp}!
+const.cpp: In function ‘int !\textcolor{teal}{main}!()’:
+const.cpp:3:7: !\textcolor{red}{error}!: assignment of read-only variable ‘i’
+    3 |     !\textcolor{red}{i = 1}!;
+      |      !\textcolor{red}{~~\^{}~~}!
+    \end{terminalwindow}
+
 \end{frame}
 
 \begin{frame}[fragile]
 
     \frametitle{Квалификатор \texttt{volatile}}
+
+    Правило "как если" (\textbf{as-if rule}) в C++ позволяет компиляторам
+    выполнять любые оптимизации кода, при условии что они не изменяют
+    "наблюдаемое поведение" программы.
+
+    \hfill \break
+
+    Добавление \verb|volatile| к типу сообщает компилятору, что
+    любое взаимодействие с переменной этого типа является
+    видимым изве программы. Компилятор, скорее всего, не
+    будет оптимизировать код, связанный с такой переменной.
+    Компилятор рассматривает \verb|volatile| типы как новые,
+    т.е. \verb|volatile int != int|.
 
 \end{frame}
 
@@ -973,6 +1118,8 @@ u1 = u1 - 3;  // u1 = 255
             {Переполнение целых знаковых типов}
         \item \href{https://ru.wikipedia.org/wiki/\%D0\%94\%D0\%BE\%D0\%BF\%D0\%BE\%D0\%BB\%D0\%BD\%D0\%B8\%D1\%82\%D0\%B5\%D0\%BB\%D1\%8C\%D0\%BD\%D1\%8B\%D0\%B9_\%D0\%BA\%D0\%BE\%D0\%B4}
             {Дополнительный код}
+        \item \href{https://en.cppreference.com/w/cpp/language/as\_if}
+            {The as-if rule на cppreference}
 
     \end{itemize}
 
