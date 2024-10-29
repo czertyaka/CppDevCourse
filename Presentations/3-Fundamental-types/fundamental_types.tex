@@ -693,10 +693,10 @@ this is tab     and this '
                 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
             \end{eightbit}
 
-            \verb|signed char u_min = 0|
+            \verb|signed char s_min = -128|
 
             \begin{eightbit}
-                0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+                1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
             \end{eightbit}
 
         \end{column}
@@ -716,7 +716,7 @@ this is tab     and this '
                 \color{red}{?} \\
             \end{eightbit}
 
-            \verb|u_min - 1|
+            \verb|s_min - 1|
 
             \begin{eightbit}
                 \color{red}{?} &
@@ -790,10 +790,10 @@ u1 = u1 - 3;  // u1 = 255
 
     \hfill \break
 
-    \verb|signed char u_min = 0|
+    \verb|signed char s_max = 127|
 
     \begin{eightbit}
-        0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
     \end{eightbit}
 
     \verb|u_min - 1|
