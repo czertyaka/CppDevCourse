@@ -1,19 +1,5 @@
 ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
-TEXFILES := \
-	$(ROOT_DIR)/Presentations/1-Intro/intro.tex \
-	$(ROOT_DIR)/Presentations/2-Phases-of-translation/phases_of_translation.tex \
-	$(ROOT_DIR)/Homeworks/1-Hello-World/hello_world.tex
-
-PDFFILES := $(TEXFILES:$(ROOT_DIR)/%.tex=build/%.pdf)
-
-define INSTALL_PDF
-$(eval FILE = $(1:build/%=%))
-	$(eval INSTALL_DIR = $(PREFIX)/$(dir ${FILE}))
-	mkdir -p ${INSTALL_DIR}
-	cp $(1) ${INSTALL_DIR}
-endef
-
 .PHONY: \
 	all \
 	build \
@@ -27,10 +13,11 @@ endef
 
 all: build
 
-build: $(PDFFILES)
-
-install: build
-	$(foreach PDFFILE,$(PDFFILES),$(call INSTALL_PDF,$(PDFFILE)))
+build: \
+	pr-1 \
+	pr-2 \
+	pr-3 \
+	hw-1
 
 clean:
 	rm -rf texput.log build
@@ -40,9 +27,9 @@ help:
 	@printf "build\tbuild all presentations and homeworks\n"
 	@printf "clean\tremove build artifacts\n"
 	@printf "help\tprint this message\n"
-	@printf "install\tinstall all presentations and homeworks to <PREFIX>\n"
 	@printf "pr-1\tbuild presentation intro.pdf\n"
 	@printf "pr-2\tbuild presentation phases_of_translation.pdf\n"
+	@printf "pr-3\tbuild presentation fundamental_types.pdf\n"
 	@printf "hw-1\tbuild homework hello_world.pdf\n"
 
 pr-1: build/Presentations/1-Intro/intro.pdf
