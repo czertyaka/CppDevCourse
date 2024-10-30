@@ -9,6 +9,8 @@ ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 	help \
 	pr-1 \
 	pr-2 \
+	pr-3 \
+	pr-4 \
 	hw-1
 
 all: build
@@ -17,6 +19,7 @@ build: \
 	pr-1 \
 	pr-2 \
 	pr-3 \
+	pr-4 \
 	hw-1
 
 clean:
@@ -35,6 +38,7 @@ help:
 pr-1: build/Presentations/1-Intro/intro.pdf
 pr-2: build/Presentations/2-Phases-of-translation/phases_of_translation.pdf
 pr-3: build/Presentations/3-Fundamental-types/fundamental_types.pdf
+pr-4: build/Presentations/4-Variables/variables.pdf
 
 hw-1: build/Homeworks/1-Hello-World/hello_world.pdf
 
@@ -83,6 +87,16 @@ build/Presentations/3-Fundamental-types/fundamental_types.pdf: \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/3-Fundamental-types/*.cpp) \
+	Packages/terminal.sty \
+	Packages/mylisting.sty
+
+build/Presentations/4-Variables/variables.pdf: \
+	Presentations/presentationtemplate.sty \
+	$(wildcard Presentations/images/*-logo.png) \
+	$(wildcard Presentations/4-Variables/*cpp) \
+	$(wildcard Presentations/4-Variables/*.h) \
+	$(wildcard Presentations/4-Variables/**/*cpp) \
+	$(wildcard Presentations/4-Variables/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 
