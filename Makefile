@@ -22,6 +22,15 @@ build: \
 	pr-4 \
 	hw-1
 
+install:
+	mkdir -p $(PREFIX)/Presentations
+	cp build/Presentations/1-Intro/intro.pdf "$(PREFIX)/Presentations/1 Введение.pdf"
+	cp build/Presentations/2-Phases-of-translation/phases_of_translation.pdf "$(PREFIX)/Presentations/2 Фазы трансляции.pdf"
+	cp build/Presentations/3-Fundamental-types/fundamental_types.pdf "$(PREFIX)/Presentations/3 Фундаментальные типы.pdf"
+	cp build/Presentations/4-Variables/variables.pdf "$(PREFIX)/Presentations/4 Переменные.pdf"
+	mkdir -p $(PREFIX)/Homeworks
+	cp build/Homeworks/1-Hello-World/hello_world.pdf "$(PREFIX)/Homeworks/1 Hello World.pdf"
+
 clean:
 	rm -rf texput.log build
 
