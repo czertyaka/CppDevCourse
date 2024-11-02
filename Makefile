@@ -49,6 +49,7 @@ clean:
 help:
 	@printf "all\tbuild all presentations and homeworks\n"
 	@printf "build\tbuild all presentations and homeworks\n"
+	@printf "install\tinstall all presentations and homeworks\n"
 	@printf "clean\tremove build artifacts\n"
 	@printf "help\tprint this message\n"
 	@printf "pr-1\tbuild presentation intro.pdf\n"
