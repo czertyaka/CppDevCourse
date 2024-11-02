@@ -54,6 +54,7 @@ help:
 	@printf "pr-1\tbuild presentation intro.pdf\n"
 	@printf "pr-2\tbuild presentation phases_of_translation.pdf\n"
 	@printf "pr-3\tbuild presentation fundamental_types.pdf\n"
+	@printf "pr-4\tbuild presentation variables.pdf\n"
 	@printf "hw-1\tbuild homework hello_world.pdf\n"
 
 pr-1: Presentations/1-Intro/intro.pdf
