@@ -4,6 +4,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     texlive-lang-cyrillic \
     texlive-latex-extra \
     texlive-latex-recommended \
+    texlive-luatex \
     && rm -rf /var/lib/apt/lists/*
 
 ARG UNAME=cppdevcourse

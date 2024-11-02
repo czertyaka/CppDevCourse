@@ -24,15 +24,27 @@ build: \
 
 install: build
 	mkdir -p $(PREFIX)/Presentations
-	cp build/Presentations/1-Intro/intro.pdf "$(PREFIX)/Presentations/1 Введение.pdf"
-	cp build/Presentations/2-Phases-of-translation/phases_of_translation.pdf "$(PREFIX)/Presentations/2 Фазы трансляции.pdf"
-	cp build/Presentations/3-Fundamental-types/fundamental_types.pdf "$(PREFIX)/Presentations/3 Фундаментальные типы.pdf"
-	cp build/Presentations/4-Variables/variables.pdf "$(PREFIX)/Presentations/4 Переменные.pdf"
+	cp intro.pdf "$(PREFIX)/Presentations/1 Введение.pdf"
+	cp phases_of_translation.pdf "$(PREFIX)/Presentations/2 Фазы трансляции.pdf"
+	cp fundamental_types.pdf "$(PREFIX)/Presentations/3 Фундаментальные типы.pdf"
+	cp variables.pdf "$(PREFIX)/Presentations/4 Переменные.pdf"
 	mkdir -p $(PREFIX)/Homeworks
-	cp build/Homeworks/1-Hello-World/hello_world.pdf "$(PREFIX)/Homeworks/1 Hello World.pdf"
+	cp hello_world.pdf "$(PREFIX)/Homeworks/1 Hello World.pdf"
 
 clean:
-	rm -rf texput.log build
+	rm -rf \
+		*.aux \
+		*.fdb_latexmk \
+		*.fls \
+		*.listing \
+		*.log \
+		*.nav \
+		*.out \
+		*.pdf \
+		*.snm \
+		*.toc \
+		*.vrb \
+		_minted-*
 
 help:
 	@printf "all\tbuild all presentations and homeworks\n"
@@ -44,16 +56,15 @@ help:
 	@printf "pr-3\tbuild presentation fundamental_types.pdf\n"
 	@printf "hw-1\tbuild homework hello_world.pdf\n"
 
-pr-1: build/Presentations/1-Intro/intro.pdf
-pr-2: build/Presentations/2-Phases-of-translation/phases_of_translation.pdf
-pr-3: build/Presentations/3-Fundamental-types/fundamental_types.pdf
-pr-4: build/Presentations/4-Variables/variables.pdf
+pr-1: Presentations/1-Intro/intro.pdf
+pr-2: Presentations/2-Phases-of-translation/phases_of_translation.pdf
+pr-3: Presentations/3-Fundamental-types/fundamental_types.pdf
+pr-4: Presentations/4-Variables/variables.pdf
 
-hw-1: build/Homeworks/1-Hello-World/hello_world.pdf
+hw-1: Homeworks/1-Hello-World/hello_world.pdf
 
-build/%.pdf: %.tex Dockerfile
+%.pdf: %.tex Dockerfile
 	$(MAKE) dockerimage
-	mkdir -p build/$(dir $<)
 	docker run \
 		--rm \
 		-u $(shell id -u):$(shell id -g) \
@@ -61,10 +72,10 @@ build/%.pdf: %.tex Dockerfile
 		-e TEXINPUTS='/workdir//:' \
 		cppdevcourse/texlive:latest \
 		latexmk \
-			-synctex=1 \
-			-latexoption='-halt-on-error' \
-			-xelatex \
-			-output-directory=build/$(dir $<) \
+			-halt-on-error \
+			-shell-escape \
+			-verbose \
+			-lualatex \
 			$<
 
 dockerimage:
@@ -74,7 +85,7 @@ dockerimage:
 		-t cppdevcourse/texlive:latest \
 		$(ROOT_DIR)
 
-build/Presentations/1-Intro/intro.pdf: \
+Presentations/1-Intro/intro.pdf: \
 	Presentations/presentationtemplate.sty \
 	Presentations/images/binary-file.png \
 	Presentations/images/source_code.png \
@@ -84,7 +95,7 @@ build/Presentations/1-Intro/intro.pdf: \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 
-build/Presentations/2-Phases-of-translation/phases_of_translation.pdf: \
+Presentations/2-Phases-of-translation/phases_of_translation.pdf: \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/2-Phases-of-translation/*.cpp) \
@@ -92,14 +103,14 @@ build/Presentations/2-Phases-of-translation/phases_of_translation.pdf: \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 
-build/Presentations/3-Fundamental-types/fundamental_types.pdf: \
+Presentations/3-Fundamental-types/fundamental_types.pdf: \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/3-Fundamental-types/*.cpp) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 
-build/Presentations/4-Variables/variables.pdf: \
+Presentations/4-Variables/variables.pdf: \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/4-Variables/*cpp) \
@@ -109,7 +120,7 @@ build/Presentations/4-Variables/variables.pdf: \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 
-build/Homeworks/1-Hello-World/hello_world.pdf: \
+Homeworks/1-Hello-World/hello_world.pdf: \
 	Homeworks/homeworktemplate.sty \
 	$(wildcard Homeworks/1-Hello-World/*.cpp) \
 	$(wildcard Homeworks/1-Hello-World/*.txt) \
