@@ -22,7 +22,7 @@ build: \
 	pr-4 \
 	hw-1
 
-install:
+install: build
 	mkdir -p $(PREFIX)/Presentations
 	cp build/Presentations/1-Intro/intro.pdf "$(PREFIX)/Presentations/1 Введение.pdf"
 	cp build/Presentations/2-Phases-of-translation/phases_of_translation.pdf "$(PREFIX)/Presentations/2 Фазы трансляции.pdf"
