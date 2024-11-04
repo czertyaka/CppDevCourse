@@ -11,7 +11,8 @@ ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 	pr-2 \
 	pr-3 \
 	pr-4 \
-	hw-1
+	hw-1 \
+	hw-2
 
 all: build
 
@@ -20,7 +21,8 @@ build: \
 	pr-2 \
 	pr-3 \
 	pr-4 \
-	hw-1
+	hw-1 \
+	hw-2
 
 install: build
 	mkdir -p $(PREFIX)/Presentations
@@ -30,6 +32,7 @@ install: build
 	cp variables.pdf "$(PREFIX)/Presentations/4 Переменные.pdf"
 	mkdir -p $(PREFIX)/Homeworks
 	cp hello_world.pdf "$(PREFIX)/Homeworks/1 Hello World.pdf"
+	cp git.pdf "$(PREFIX)/Homeworks/2 Git & Github.pdf"
 
 clean:
 	rm -rf \
@@ -57,6 +60,7 @@ help:
 	@printf "pr-3\tbuild presentation fundamental_types.pdf\n"
 	@printf "pr-4\tbuild presentation variables.pdf\n"
 	@printf "hw-1\tbuild homework hello_world.pdf\n"
+	@printf "hw-2\tbuild homework git.pdf\n"
 
 pr-1: Presentations/1-Intro/intro.pdf
 pr-2: Presentations/2-Phases-of-translation/phases_of_translation.pdf
@@ -64,6 +68,7 @@ pr-3: Presentations/3-Fundamental-types/fundamental_types.pdf
 pr-4: Presentations/4-Variables/variables.pdf
 
 hw-1: Homeworks/1-Hello-World/hello_world.pdf
+hw-2: Homeworks/2-Git/git.pdf
 
 %.pdf: %.tex Dockerfile
 	$(MAKE) dockerimage
@@ -127,5 +132,12 @@ Homeworks/1-Hello-World/hello_world.pdf: \
 	$(wildcard Homeworks/1-Hello-World/*.cpp) \
 	$(wildcard Homeworks/1-Hello-World/*.txt) \
 	$(wildcard Homeworks/1-Hello-World/*.h) \
+	Packages/terminal.sty \
+	Packages/mylisting.sty
+
+Homeworks/2-Git/git.pdf: \
+	Homeworks/homeworktemplate.sty \
+	$(wildcard Homeworks/2-Git/**/*.cpp) \
+	$(wildcard Homeworks/2-Git/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
