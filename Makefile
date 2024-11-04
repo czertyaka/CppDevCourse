@@ -26,13 +26,13 @@ build: \
 
 install: build
 	mkdir -p $(PREFIX)/Presentations
-	cp intro.pdf "$(PREFIX)/Presentations/1 Введение.pdf"
-	cp phases_of_translation.pdf "$(PREFIX)/Presentations/2 Фазы трансляции.pdf"
-	cp fundamental_types.pdf "$(PREFIX)/Presentations/3 Фундаментальные типы.pdf"
-	cp variables.pdf "$(PREFIX)/Presentations/4 Переменные.pdf"
+	cp pr-1.pdf "$(PREFIX)/Presentations/1 Введение.pdf"
+	cp pr-2.pdf "$(PREFIX)/Presentations/2 Фазы трансляции.pdf"
+	cp pr-3.pdf "$(PREFIX)/Presentations/3 Фундаментальные типы.pdf"
+	cp pr-4.pdf "$(PREFIX)/Presentations/4 Переменные.pdf"
 	mkdir -p $(PREFIX)/Homeworks
-	cp hello_world.pdf "$(PREFIX)/Homeworks/1 Hello World.pdf"
-	cp git.pdf "$(PREFIX)/Homeworks/2 Git & Github.pdf"
+	cp hw-1.pdf "$(PREFIX)/Homeworks/1 Hello World.pdf"
+	cp hw-2.pdf "$(PREFIX)/Homeworks/2 Git & Github.pdf"
 
 clean:
 	rm -rf \
@@ -55,22 +55,31 @@ help:
 	@printf "install\tinstall all presentations and homeworks\n"
 	@printf "clean\tremove build artifacts\n"
 	@printf "help\tprint this message\n"
-	@printf "pr-1\tbuild presentation intro.pdf\n"
-	@printf "pr-2\tbuild presentation phases_of_translation.pdf\n"
-	@printf "pr-3\tbuild presentation fundamental_types.pdf\n"
-	@printf "pr-4\tbuild presentation variables.pdf\n"
-	@printf "hw-1\tbuild homework hello_world.pdf\n"
-	@printf "hw-2\tbuild homework git.pdf\n"
+	@printf "pr-1\tbuild presentation pr-1.pdf\n"
+	@printf "pr-2\tbuild presentation pr-2.pdf\n"
+	@printf "pr-3\tbuild presentation pr-3.pdf\n"
+	@printf "pr-4\tbuild presentation pr-4.pdf\n"
+	@printf "hw-1\tbuild homework hw-1.pdf\n"
+	@printf "hw-2\tbuild homework hw-2.pdf\n"
 
-pr-1: Presentations/1-Intro/intro.pdf
-pr-2: Presentations/2-Phases-of-translation/phases_of_translation.pdf
-pr-3: Presentations/3-Fundamental-types/fundamental_types.pdf
-pr-4: Presentations/4-Variables/variables.pdf
+pr-1: pr-1.pdf
+pr-2: pr-2.pdf
+pr-3: pr-3.pdf
+pr-4: pr-4.pdf
 
-hw-1: Homeworks/1-Hello-World/hello_world.pdf
-hw-2: Homeworks/2-Git/git.pdf
+hw-1: hw-1.pdf
+hw-2: hw-2.pdf
 
-%.pdf: %.tex Dockerfile
+dockerimage:
+	docker build \
+		--build-arg UID=$(shell id -u) \
+		--build-arg GID=$(shell id -g) \
+		-t cppdevcourse/texlive:latest \
+		$(ROOT_DIR)
+
+%.pdf: Dockerfile
+
+define generate_pdf
 	$(MAKE) dockerimage
 	docker run \
 		--rm \
@@ -83,16 +92,12 @@ hw-2: Homeworks/2-Git/git.pdf
 			-shell-escape \
 			-verbose \
 			-lualatex \
-			$<
+			-jobname=$(subst .pdf,,$2) \
+			$1
+endef
 
-dockerimage:
-	docker build \
-		--build-arg UID=$(shell id -u) \
-		--build-arg GID=$(shell id -g) \
-		-t cppdevcourse/texlive:latest \
-		$(ROOT_DIR)
-
-Presentations/1-Intro/intro.pdf: \
+pr-1.pdf: \
+	Presentations/1-Intro/intro.tex \
 	Presentations/presentationtemplate.sty \
 	Presentations/images/binary-file.png \
 	Presentations/images/source_code.png \
@@ -101,23 +106,29 @@ Presentations/1-Intro/intro.pdf: \
 	$(wildcard Presentations/1-Intro/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
+	$(call generate_pdf,$<,$@)
 
-Presentations/2-Phases-of-translation/phases_of_translation.pdf: \
+pr-2.pdf: \
+	Presentations/2-Phases-of-translation/phases_of_translation.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/2-Phases-of-translation/*.cpp) \
 	$(wildcard Presentations/2-Phases-of-translation/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
+	$(call generate_pdf,$<,$@)
 
-Presentations/3-Fundamental-types/fundamental_types.pdf: \
+pr-3.pdf: \
+	Presentations/3-Fundamental-types/fundamental_types.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/3-Fundamental-types/*.cpp) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
+	$(call generate_pdf,$<,$@)
 
-Presentations/4-Variables/variables.pdf: \
+pr-4.pdf: \
+	Presentations/4-Variables/variables.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/4-Variables/*cpp) \
@@ -126,18 +137,23 @@ Presentations/4-Variables/variables.pdf: \
 	$(wildcard Presentations/4-Variables/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
+	$(call generate_pdf,$<,$@)
 
-Homeworks/1-Hello-World/hello_world.pdf: \
+hw-1.pdf: \
+	Homeworks/1-Hello-World/hello_world.tex \
 	Homeworks/homeworktemplate.sty \
 	$(wildcard Homeworks/1-Hello-World/*.cpp) \
 	$(wildcard Homeworks/1-Hello-World/*.txt) \
 	$(wildcard Homeworks/1-Hello-World/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
+	$(call generate_pdf,$<,$@)
 
-Homeworks/2-Git/git.pdf: \
+hw-2.pdf: \
+	Homeworks/2-Git/git.tex \
 	Homeworks/homeworktemplate.sty \
 	$(wildcard Homeworks/2-Git/**/*.cpp) \
 	$(wildcard Homeworks/2-Git/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
+	$(call generate_pdf,$<,$@)
