@@ -3,6 +3,8 @@
 \usepackage{homeworktemplate}
 \usepackage[askip=3mm, bskip=3mm]{terminal}
 \usepackage[askip=3mm, bskip=3mm]{mylisting}
+\usepackage{xurl}
+\usepackage{tcolorbox}
 
 \title{Домашняя работа 2 \\ Git \& GitHub}
 
@@ -11,5 +13,214 @@
 \maketitle
 
 \tableofcontents
+
+\section{Создание и настройка аккаунта GitHub}
+
+    Для проверки домашних работ необходимо будет создавать
+    удаленные Git-репозитории с кодом на платформе
+    \href{https://github.com/}{GitHub}.
+    Создание репозиториев требует обязательной регистрации.
+
+    \begin{tcolorbox}
+        \textbf{Инструкция для создания GitHub аккаунта
+        \footnote{Изменить язык инструкции можно в правом верхнем углу веб-интерфейса.}}: \\
+        \url{https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github}.
+    \end{tcolorbox}
+
+    Имя и почта пользователя, указанные при создании аккаунта, потребуются далее.
+
+    \subsection{Добавление SSH-ключа}
+
+        Команды клиента Git, работающие с удаленным репозиторием (например,
+        \verb|git push| или \verb|git pull|), должны аутентифицировать пользователя
+        для проверки, может ли он выполнять операции чтения или записи содержимого
+        репозитория.
+        Аутентифицироваться можно двумя способами: по логину и паролю и с использованием
+        пары SSH-ключей.
+
+        Аутентификация с логином и паролем требует их ввод после \textit{каждой}
+        команды, работающей с удаленным репозиторием.
+        Это не очень удобно.
+
+        Аутентификация при помощи пары SSH-ключей требует однократного добавления
+        приватного SSH-ключа в GitHub аккаунт.
+
+        \begin{tcolorbox}
+            \textbf{Инструкции для создания и добавления SSH-ключа}: \\
+            \begin{enumerate}
+                \item \url{https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent?platform=linux}
+                \item \url{https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account}
+            \end{enumerate}
+        \end{tcolorbox}
+
+\section{Установка и настройка клиента Git}
+
+    \subsection{Установка}
+
+        Клиент Git может быть уже установлен в систему.
+        В командной строке введите:
+
+        \begin{terminalwindow}
+!\shellcommand{git --version}!
+        \end{terminalwindow}
+
+        Если в выводе команды есть версия клиента Git, то установка не требуется.
+        В ином случае следуйте шагам по установке:
+
+        \begin{enumerate}
+
+            \item Если текущий пользователь --- не суперпользователь (root),
+                выполните команду смены пользователя (потребуется пароль
+                суперпользователя).
+
+                \begin{terminalwindow}
+!\shellcommand{su -}!
+                \end{terminalwindow}
+
+            \item Выполните команду установки клиента Git.
+
+                \begin{terminalwindow}
+!\shellcommand{apt-get install -y git}!
+                \end{terminalwindow}
+
+            \item Выполните команду завершения сессии суперпользователя.
+
+                \begin{terminalwindow}
+!\shellcommand{exit}!
+                \end{terminalwindow}
+
+        \end{enumerate}
+
+    \subsection{Настройка}
+
+        При создании коммитов клиенту Git необходимо имя пользователя и его почтовый
+        ящик.
+        Пусть \verb|<USERNAME>| и \verb|<EMAIL>| --- имя и почта пользователя,
+        указанные при создании аккаунта GitHub.
+        Выполните команды:
+
+        \begin{terminalwindow}
+!\shellcommand{git config --global user.name <USERNAME>}!
+!\shellcommand{git config --global user.email <EMAIL>}!
+        \end{terminalwindow}
+
+\section{Форк репозитория}
+
+    В домашнем задании вам необходимо написать код в собственной копии
+    репозитория \url{https://github.com/czertyaka/CppDevCourse-hw2}.
+    Такая копия в большинстве сервисов хостинга Git-репозиториев
+    (таких как GitHub, BitBucket и др.) называется \textbf{форком}
+    \footnote{\url{https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo\#about-forks}}
+    (fork).
+
+    В этом разделе вы выполните следующие шаги:
+
+    \begin{enumerate}
+        \item cоздадите форк репозитория \texttt{CppDevCourse-hw2};
+        \item склонируете собственный форк;
+        \item добавите файл \textit{main.cpp};
+        \item протестируете корректность добавленного кода;
+        \item отправите свои изменения в удаленный Git-репозиторий.
+    \end{enumerate}
+
+    \subsection{Создание форка репозитория}
+
+    Создайте форк репозитория \url{https://github.com/czertyaka/CppDevCourse-hw2}
+    согласно инструкции по ссылке ниже.
+
+    \begin{tcolorbox}
+        \textbf{Инструкция для создания форка репозитория}: \\
+        \url{https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo}.
+    \end{tcolorbox}
+
+    \subsection{Клонирование форка репозитория}
+
+    В веб-интерфейсе GitHub получите адрес для клонирования вашего форка.
+    Обратите внимание, что нужно выбрать адрес для клонирования с использолванием
+    ключей SSH.
+
+    \begin{tcolorbox}
+        \textbf{Инструкция для клонирования репозитория}: \\
+        \url{https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository}.
+    \end{tcolorbox}
+
+    Получив адрес \verb|<ADDRESS>|, выполните команды:
+
+    \begin{terminalwindow}
+!\shellcommand{git clone <ADDRESS>}!
+!\shellcommand{cd CppDevCourse-hw2/}!
+    \end{terminalwindow}
+
+    Убедитесь в корректности проделанных действий, выполнив команду \verb|ls -a1|
+    для вывода содержимого директории CppDevCourse-hw2.
+    Вывод команды должен совпадать с выводом ниже:
+
+    \begin{terminalwindow}
+!\shellcommand{ls -a1}!
+./
+../
+CMakeLists.txt
+.git/
+.github/
+README.md
+test.py
+    \end{terminalwindow}
+
+    \subsection{Добавление и тестирование кода}
+
+    В директории проекта создайте файл \textit{main.cpp} с простейшей программой,
+    выводящей в консоль строку \verb|"Hello, World!"| с символом новой строки в конце.
+
+    Убедитесь, что проект корректно собирается:
+
+    \begin{terminalwindow}
+!\shellcommand{cmake -B build}!
+!\shellcommand{cmake --build build}!
+    \end{terminalwindow}
+
+    Протестируйте собранное приложение:
+
+    \begin{terminalwindow}[||]
+|\shellcommand{./build/main}|
+Hello, World!
+|\shellcommand{ctest --test-dir build}|
+    Start 1: main
+1/1 Test #1: main .....................   Passed    0.04 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.04 sec
+    \end{terminalwindow}
+
+    \subsection{Отправка изменений}
+
+    Добавьте созданный файл \textit{main.cpp} в индекс Git, создайте коммит
+    с сообщением "added main.cpp" и отправьте изменения в форк:
+
+    \begin{terminalwindow}
+!\shellcommand{git add main.cpp}!
+!\shellcommand{git commit -m "added main.cpp"}!
+!\shellcommand{git push}!
+    \end{terminalwindow}
+
+    Вывод команды \verb|git status| должен быть похож на:
+
+    \begin{terminalwindow}
+!\shellcommand{git status}!
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        build/
+
+nothing added to commit but untracked files present (use "git add" to track)
+    \end{terminalwindow}
+
+\section{Пулл-реквест}
+
+\appendix
+
+\section{Cheat sheet команд Git}
 
 \end{document}
