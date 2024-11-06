@@ -11,6 +11,7 @@ ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 	pr-2 \
 	pr-3 \
 	pr-4 \
+	pr-5 \
 	hw-1 \
 	hw-2
 
@@ -21,6 +22,7 @@ build: \
 	pr-2 \
 	pr-3 \
 	pr-4 \
+	pr-5 \
 	hw-1 \
 	hw-2
 
@@ -30,6 +32,7 @@ install: build
 	cp pr-2.pdf "$(PREFIX)/Presentations/2 Фазы трансляции.pdf"
 	cp pr-3.pdf "$(PREFIX)/Presentations/3 Фундаментальные типы.pdf"
 	cp pr-4.pdf "$(PREFIX)/Presentations/4 Переменные.pdf"
+	cp pr-5.pdf "$(PREFIX)/Presentations/5 Циклы.pdf"
 	mkdir -p $(PREFIX)/Homeworks
 	cp hw-1.pdf "$(PREFIX)/Homeworks/1 Hello World.pdf"
 	cp hw-2.pdf "$(PREFIX)/Homeworks/2 Git & Github.pdf"
@@ -59,6 +62,7 @@ help:
 	@printf "pr-2\tbuild presentation pr-2.pdf\n"
 	@printf "pr-3\tbuild presentation pr-3.pdf\n"
 	@printf "pr-4\tbuild presentation pr-4.pdf\n"
+	@printf "pr-5\tbuild presentation pr-5.pdf\n"
 	@printf "hw-1\tbuild homework hw-1.pdf\n"
 	@printf "hw-2\tbuild homework hw-2.pdf\n"
 
@@ -66,6 +70,7 @@ pr-1: pr-1.pdf
 pr-2: pr-2.pdf
 pr-3: pr-3.pdf
 pr-4: pr-4.pdf
+pr-5: pr-5.pdf
 
 hw-1: hw-1.pdf
 hw-2: hw-2.pdf
@@ -135,6 +140,18 @@ pr-4.pdf: \
 	$(wildcard Presentations/4-Variables/*.h) \
 	$(wildcard Presentations/4-Variables/**/*cpp) \
 	$(wildcard Presentations/4-Variables/**/*.h) \
+	Packages/terminal.sty \
+	Packages/mylisting.sty
+	$(call generate_pdf,$<,$@)
+
+pr-5.pdf: \
+	Presentations/5-Selection-statements/selection-statements.tex \
+	Presentations/presentationtemplate.sty \
+	$(wildcard Presentations/images/*-logo.png) \
+	$(wildcard Presentations/5-Selection-statements/*cpp) \
+	$(wildcard Presentations/5-Selection-statements/*.h) \
+	$(wildcard Presentations/5-Selection-statements/**/*cpp) \
+	$(wildcard Presentations/5-Selection-statements/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)

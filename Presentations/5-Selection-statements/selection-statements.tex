@@ -1,0 +1,536 @@
+% !TeX TS-program = xelatex
+
+\documentclass[compress, 8pt]{beamer}
+
+\usepackage{presentationtemplate}
+\usepackage[askip=3mm, bskip=3mm]{terminal}
+\usepackage[linenosfontsize=\tiny, askip=3mm, bskip=3mm]{mylisting}
+\usepackage{tcolorbox}
+
+\newtcolorbox{task}{
+    colback=yellow!50!white,
+    boxrule=0.02cm,
+    colframe=black,
+    sharp corners,
+    left=0mm,
+    right=0mm,
+    top=0mm,
+    bottom=0mm,
+    before upper={\textbf{Задание}:\:},
+}
+
+\title{Условия}
+
+\begin{document}
+
+\frame[plain]{\titlepage}
+
+\begin{frame}[fragile]
+
+    \frametitle{Selection statements}
+
+    Операторы условий нужны для создания ветвлений в коде: выполнения тех или
+    иных частей программы на основе информации, доступной во время её выполнения.
+    В C++ имеется три selection statements:
+
+    \hfill \break
+
+    \begin{itemize}
+        \item оператор \verb|if|\footnotemark{}
+        \begin{myinplacelisting}[minted language=cpp]
+if (/*условие*/) {/*тело условия*/}
+        \end{myinplacelisting}
+
+        \item оператор \verb|if-else|
+        \begin{myinplacelisting}[minted language=cpp]
+if (/*условие*/) {/*тело условия*/} else {/*тело условия*/}
+        \end{myinplacelisting}
+
+        \item оператор \verb|switch|
+        \begin{myinplacelisting}[minted language=cpp]
+switch (/*условие*/) {/*тело условия*/}
+        \end{myinplacelisting}
+    \end{itemize}
+
+    \footnotetext{Здесь и далее обращение с терминологией может быть несколько
+    вольным и может не всегда соотвествовать слову стандарта. Так, “оператор if”
+    в этом контексте соответсвует \texttt{if~statement} в стандарте языка.}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Оператор \texttt{if}}
+
+    Простейший пример использования оператора \verb|if|:
+
+    \begin{myinplacelisting}[minted language=cpp]
+bool get_input_from_user();
+void do_something();
+
+int main() {
+
+    const bool condition = get_input_from_user();
+    if (condition) {    // если condition равно true,
+        do_something(); // то выполняем функцию do_something
+    }
+
+    // или
+
+    if (get_input_from_user()) {
+        do_something();
+    }
+
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Оператор \texttt{if}}
+
+    Поместить одну инструкцию (statement) в тело условия можно
+    без фигурных скобок:
+
+    \begin{myinplacelisting}[minted language=cpp]
+bool get_input_from_user();
+void do_something();
+void do_something_else();
+
+int main() {
+    const bool condition = get_input_from_user();
+    if (condition)
+        do_something();
+        do_something_else();
+
+    // эквивалентно
+
+    if (condition) {
+        do_something();
+    }
+    do_something_else();
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Оператор \texttt{if}}
+
+    Использовать тело условия без явного указания его
+    границ может быть опасно.
+
+    \begin{task}
+        Найдите проблемы в коде на листинге
+    \end{task}
+
+    \begin{myinplacelisting}[minted language=cpp]
+#include <iostream>
+
+#define PRINT_SQUARE(X)                 \
+    auto square = X * X;                \
+    std::cout << "square of " << X      \
+        << " = " << square << std::endl;
+
+int main() {
+    int x = 2;
+    if (true)
+        PRINT_SQUARE(x);
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Оператор \texttt{if-else}}
+
+    Простейший пример использования оператора \verb|if-else|:
+
+    \begin{myinplacelisting}[minted language=cpp]
+bool get_input_from_user();
+void do_something();
+void do_something_else();
+
+int main() {
+    const bool condition = get_input_from_user();
+    if (condition) {
+        do_something();
+    }
+    else {                      // если condition равно
+                                // false,
+        do_something_else();    // то выполняем функцию
+                                // do_something_else
+    }
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Оператор \texttt{if-else}}
+
+    Как и в случае с оператором \verb|if|, ограничивать
+    тела условий в \verb|if-else| фигурными скобками необязательно.
+    Но это может привести к нежелательным последствиям.
+
+    \begin{task}
+        Найдите проблемы в коде на листинге
+    \end{task}
+
+    \begin{myinplacelisting}[minted language=cpp]
+#include <iostream>
+
+bool user_authenticated();
+bool user_is_admin();
+
+int main() {
+    if (user_authenticated())
+        if (user_is_admin())
+            std::cout << "user is admin\n";
+    else
+        std::cout << "user is not authenticated\n";
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Оператор \texttt{if-else}}
+
+    С помощью оператора \verb|if-else| можно проверить несколько условий.
+
+    \begin{myinplacelisting}[minted language=cpp]
+#include <iostream>
+
+bool user_not_authenticated();
+bool user_is_admin();
+
+int main() {
+    if (user_not_authenticated()) {
+        std::cout << "user is not authenticated\n";
+    }
+    else if (user_is_admin()) {
+        std::cout << "user is admin\n";
+    }
+    else {
+        std::cout << "regular user\n";
+    }
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Операторы сравнения}
+
+    Для арифметических типов и указателей опеределены операторы сравнения.
+    Операторы сравнения бинарны: из двух объектов арифметических типов образуют
+    выражение, возвращающее объект типа \verb|bool|.
+
+    \hfill\break
+    В C++ существуют следующие операторы сравнения
+    \footnote{За исключением оператора
+        \href{https://en.cppreference.com/w/cpp/language/operator\_comparison}{трехстороннего сравнения}}
+    :
+
+    \begin{itemize}
+        \item строгое и нестрогое \textbf{БОЛЬШЕ} \verb|>| и \verb|>=|;
+        \item строгое и нестрогое \textbf{МЕНЬШЕ} \verb|<| и \verb|<=|;
+        \item \textbf{РАВНО} \verb|==|;
+        \item \textbf{НЕ РАВНО} \verb|!=|.
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Операторы сравнения}
+
+    Примеры использования операторов сравнения:
+
+    \begin{myinplacelisting}[minted language=cpp]
+bool a = 3 >= 3;    // true
+bool b = 3.0 > 2.0; // true
+
+bool c = (5 == 6);  // false
+bool d = 2 < 1;     // false
+
+int get_x();
+int get_y();
+
+if (get_x() >= 0) {
+    std::cout << "x is greater than 0\n";
+}
+else if (get_x() == get_y()) {
+    std::cout << "x == y, both are < 0\n";
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Операторы сравнения}
+
+    \begin{task}
+        Найдите логическую ошибку в коде на листинге
+    \end{task}
+
+    \begin{myinplacelisting}[minted language=cpp]
+#include <iostream>
+
+int get_score();
+
+int main() {
+    const int score = get_score();
+    if (score >= 40) {
+        std::cout << "satisfactory\n";
+    }
+    else if (score >= 60) {
+        std::cout << "good\n";
+    }
+    else if (score >= 80) {
+        std::cout << "excellent\n";
+    }
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Логические операторы}
+
+    Логические операторы позволяют создавать составные условия из
+    других условий.
+
+    \hfill \break
+
+    В C++ существует три логических оператора:
+
+    \begin{itemize}
+        \item логическое \textbf{ИЛИ} \verb!||!;
+        \item логическое \textbf{И} \verb|&&|;
+        \item логическое \textbf{НЕ} \verb|!|.
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Логические операторы}
+
+    Пример использования логических операторов:
+
+    \begin{myinplacelisting}[%
+        minted language=cpp,
+        minted options={
+            fontsize=\normalsize,
+            breaklines,
+            breakanywhere,
+            linenos,
+            escapeinside=??,
+            numbersep=2pt
+        },
+    ]
+#include <iostream>
+
+int get_number_from_user();
+
+int main {
+    int x = get_x();
+    if (x != 7 && x != 8) {
+        std::cout << "x is neither seven nor eight!\n";
+    }
+    if (x == 7 || x == 8 || x == 9) {
+        std::cout << "x is either seven or eight or"
+            << " nine!\n";
+    }
+    if (!(x != 7 && x != 8)) {
+        std::cout << "x is either seven or eight\n";
+    }
+}
+\end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Логические операторы}
+
+    \begin{task}
+        Объясните, в чем ошибка использования логических операторов
+        в коде на листинге
+    \end{task}
+
+    \begin{myinplacelisting}[%
+        minted language=cpp,
+        minted options={
+            fontsize=\normalsize,
+            breaklines,
+            breakanywhere,
+            linenos,
+            escapeinside=??,
+            numbersep=2pt
+        },
+    ]
+int a = get_a();
+int b = get_b();
+a < b && b < a;
+a < b || b < a;
+!(a < b) || (b > a);
+
+unsigned x = get_x();
+x >= 0 && x < 3;
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Оператор \texttt{switch}}
+
+    Представим, что нам необходимо написать очень простую программу анализа
+    ответа на HTTP-запрос.
+    В случае, если код ответа равен 200, программа должна вывести сообщение
+    об успешности обработки отправленного запроса, для кода ответа, равного
+    404, — о том, что запрашиваемый ресурс не был найден, а для 500 — о
+    внутренней ошибке сервера
+    \footnote{Полный список всех кодов статуса HTTP:
+        \url{https://developer.mozilla.org/en-US/docs/Web/HTTP/Status}}.
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Оператор \texttt{switch}}
+
+    \begin{myinplacelisting}[minted language=cpp]
+#include <iostream>
+
+#define HTTP_OK 200
+#define HTTP_NOT_FOUND 404
+#define HTTP_INTERNAL_SERVER_ERROR 500
+
+void process_http_status_code(const int code) {
+    if (code == HTTP_OK) {
+        std::cout << "success" << std::endl;
+    }
+    else if (code == HTTP_NOT_FOUND) {
+        std::cout << "not found" << std::endl;
+    }
+    else if (code == HTTP_INTERNAL_SERVER_ERROR) {
+        std::cout << "internal server error" << std::endl;
+    }
+    else {
+        std::cout << "unknown code: " << code << std::endl;
+    }
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Оператор \texttt{switch}}
+
+    \hfill \break
+
+    Для создания ветвления на основе результата вычисления выражения,
+    возвращающего значение интегрального типа, можно использовать
+    оператор \verb|switch|.
+
+    \begin{myinplacelisting}[%
+        minted language=cpp,
+        minted options={
+            fontsize=\footnotesize,
+            breaklines,
+            breakanywhere,
+            linenos,
+            escapeinside=||,
+            numbersep=2pt
+        },
+    ]
+#include <iostream>
+
+#define HTTP_OK 200
+#define HTTP_NOT_FOUND 404
+#define HTTP_INTERNAL_SERVER_ERROR 500
+
+void process_http_status_code(const int code) {
+    switch(code) {
+        case HTTP_OK:
+            std::cout << "success" << std::endl;
+            break;
+        case HTTP_NOT_FOUND:
+            std::cout << "not found" << std::endl;
+            break;
+        case HTTP_INTERNAL_SERVER_ERROR:
+            std::cout << "internal server error" << std::endl;
+            break;
+        default:
+            std::cout << "unknown code: " << code << std::endl;
+            break;
+    }
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Оператор \texttt{switch}}
+
+    \hfill \break
+
+    В случае удачной проверки одного из \verb|case|, выполнится не только
+    код этого \verb|case|, но и код в остальных \verb|case|, которые
+    расположены ниже текущего.
+    Эта особенность в английских источниках называется \textbf{fallthrough}.
+
+    \begin{myinplacelisting}[%
+        minted language=cpp,
+        minted options={
+            fontsize=\footnotesize,
+            breaklines,
+            breakanywhere,
+            linenos,
+            escapeinside=||,
+            numbersep=2pt
+        },
+    ]
+#include <iostream>
+
+#define HTTP_OK 200
+#define HTTP_NOT_FOUND 404
+#define HTTP_INTERNAL_SERVER_ERROR 500
+#define HTTP_SERVICE_UNAVALABLE 503
+
+void process_http_status_code(const int code) {
+    switch(code) {
+        case HTTP_OK:
+            std::cout << "success" << std::endl;
+            break;
+        case HTTP_NOT_FOUND:
+            std::cout << "not found" << std::endl;
+            break;
+        case HTTP_INTERNAL_SERVER_ERROR:
+        case HTTP_SERVICE_UNAVAILABLE:
+            std::cout << "server error" << std::endl;
+            break;
+        default:
+            std::cout << "unknown code: " << code << std::endl;
+            break;
+    }
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\end{document}
