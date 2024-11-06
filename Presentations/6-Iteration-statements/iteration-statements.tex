@@ -1,0 +1,342 @@
+% !TeX TS-program = xelatex
+
+\documentclass[compress, 8pt]{beamer}
+
+\usepackage{presentationtemplate}
+\usepackage[askip=3mm, bskip=3mm]{terminal}
+\usepackage[linenosfontsize=\tiny, askip=3mm, bskip=3mm]{mylisting}
+\usepackage{tcolorbox}
+
+\newtcolorbox{task}{
+    colback=yellow!50!white,
+    boxrule=0.02cm,
+    colframe=black,
+    sharp corners,
+    left=0mm,
+    right=0mm,
+    top=0mm,
+    bottom=0mm,
+    before upper={\textbf{Задание}:\:},
+}
+
+\title{Циклы}
+
+\begin{document}
+
+\frame[plain]{\titlepage}
+
+\begin{frame}[fragile]
+
+    \frametitle{Iteration statements}
+
+    \hfill \break
+
+    Циклы представляют собой последовательность инструкций, которая будет
+    выполняться снова и снова до тех пор, пока не будет истинно специально
+    заданное условие или пока не будет осуществлен принудительный выход из
+    цикла.
+
+    \begin{itemize}
+
+        \item \textbf{for loop}
+        \begin{myinplacelisting}[minted language=cpp]
+for (/*объявление*/; /*условие*/; /*выражение*/)
+{/*тело цикла*/};
+        \end{myinplacelisting}
+
+        \item \textbf{range-based for}
+        \begin{myinplacelisting}[minted language=cpp]
+for (/*объявление*/: /*выражение*/) {/*тело цикла*/};
+        \end{myinplacelisting}
+
+        \item \textbf{while loop}
+        \begin{myinplacelisting}[minted language=cpp]
+while (/*условие*/) {/*тело цикла*/};
+        \end{myinplacelisting}
+
+        \item \textbf{do-while loop}
+        \begin{myinplacelisting}[minted language=cpp]
+do {/*тело цикла*/} while(/*условие*/);
+        \end{myinplacelisting}
+
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Цикл \texttt{for}}
+
+    \myinputlisting[minted language=cpp]
+        {Presentations/6-Iteration-statements/for-loop-0/}
+        {main.cpp}
+
+    \begin{terminalwindow}
+!\shellcommand{g++ main.cpp -o main}!
+!\shellcommand{./main}!
+Number of this iteration is 0
+Number of this iteration is 1
+Number of this iteration is 2
+    \end{terminalwindow}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Цикл \texttt{for}}
+
+    Объявления и выражения в круглых скобках цикла for необязательны.
+    Это может быть полезно, если необходимо объявить переменную счетчика
+    вне цикла (так она будет доступна за его пределами):
+
+    \begin{myinplacelisting}[minted language=cpp]
+void foo(const int i);
+
+int main() {
+    int i = 0;
+    for (; i < 3; i++) {
+        std::cout << i << std::endl;
+    }
+
+    foo(i);
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Цикл \texttt{for}}
+
+    Можно менять переменную счетчика не в каждой итерации:
+
+    \begin{myinplacelisting}[minted language=cpp]
+bool foo();
+
+int main() {
+    for (int i = 10; i > 0;) {
+        // пусть нам необходимо изменять
+        // переменную i только в том случае
+        // если функция foo вернула true
+        if (foo()) {
+            i--;
+        }
+    }
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Цикл \texttt{for}}
+
+    С помощью цикла \verb|for| можно составить бесконечный
+    цикл\footnotemark{}:
+
+    \footnotetext{Несмотря на то, что бесконечные циклы используются в
+    программировании на C++ достаточно часто (например, когда завершение
+    работы программы не предусматривается), стандарт языка рассматривает
+    их как неопределенное поведение.}
+
+    \begin{myinplacelisting}[minted language=cpp]
+void foo();
+
+int main() {
+    for (;;) {
+        // этот цикл не закончится никогда
+        foo();
+    }
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Цикл \texttt{for}}
+
+    \begin{task}
+        Попробуйте найти логическую ошибку в коде на листинге,
+        которая приведет к неопределенному поведению, и предложите
+        исправление
+    \end{task}
+
+    \begin{myinplacelisting}[minted language=cpp]
+bool foo();
+
+int main() {
+    for (unsigned i = 0; i == 10; i++) {
+        if (foo()) {
+            i += 2;
+        }
+    }
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Цикл \texttt{for}}
+
+    \begin{task}
+        Попробуйте найти логическую ошибку в коде на листинге,
+        которая приведет к неопределенному поведению, и предложите
+        исправление.
+        Назовите оба вида неопределенного поведения, которые возникнут
+        при выполнении программы.
+    \end{task}
+
+    \begin{myinplacelisting}[minted language=cpp]
+#include <iostream>
+
+int main() {
+    signed char i = 0;
+    for (; i < 200; i++) {
+        std::cout << "i = " << i << std::endl;
+    }
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Цикл \texttt{while}}
+
+    \hfill \break
+
+    В случае, когда для реализации цикла переменная кажется излишней, можно
+    использовать цикл \verb|while|.
+    Тело цикла \verb|while| будет выполняться до тех пор, пока истинно
+    условие в круглых скобках после \verb|while|.
+
+    \begin{myinplacelisting}[minted language=cpp]
+#include <iostream>
+
+bool do_continue();
+int get_x();
+
+int main() {
+    while(do_continue()) {
+        const int x = get_x();
+        std::cout << "x^2 = " << (x * x) << std::endl;
+    }
+
+    // эквивалентно
+
+    for (; do_continue();) {
+        const int x = get_x();
+        // ...
+    }
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Цикл \texttt{do-while}}
+
+    В цикле \verb|while| условие проверяется до того, как тело цикла
+    выполнится в первый раз.
+    Если необходимо, чтобы первая итерация выполнялась безусловно, а
+    все последюущие — по условию, то можно использовать цикл
+    \verb|do-while|.
+
+    \begin{myinplacelisting}[minted language=cpp]
+#include <iostream>
+
+bool do_continue();
+int get_x();
+
+int main() {
+    do {
+        const int x = get_x();
+        std::cout << "x^2 = " << (x * x) << std::endl;
+    } while(do_continue());
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Выход из цикла}
+
+    \hfill \break
+
+    В теле цикла ключевое слово \verb|break| используется как оператор
+    принудительного выхода из цикла.
+    Такая необходимость может появиться, если невозможно или
+    неудобно учесть все сценарии прекращения итераций в блоке условий
+    (круглых скобках \verb|for| и \verb|while|).
+    Как только выполнение дойдет до ключевого слова \verb|break|,
+    управление будет передано коду, написанному ниже цикла.
+
+    \begin{myinplacelisting}[minted language=cpp]
+#include <iostream>
+
+bool do_continue();
+int get_x();
+
+int main() {
+    do {
+        const int x = get_x();
+        std::cout << "x^2 = " << (x * x) << std::endl;
+        if (!do_continue()) {
+            break;
+        }
+    } while(true);
+}
+    \end{myinplacelisting}
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Пропуск итерации}
+
+    \hfill \break
+
+    Ключевое слово \verb|continue| прерывает текущую итерацию,
+    после чего продолжается выполнение следующих итераций:
+
+    \begin{task}
+        Объясните, зачем потребовался пропуск итерации
+    \end{task}
+
+    \begin{myinplacelisting}[%
+        minted language=cpp,
+        minted options={
+            fontsize=\normalsize,
+            breaklines,
+            breakanywhere,
+            linenos,
+            escapeinside=??,
+            numbersep=2pt
+        },
+    ]
+#include <iostream>
+#include <cstdint>
+
+#define MAX_X 11
+
+bool do_continue();
+std::int8_t get_x();
+
+int main() {
+    do {
+        const std::int8_t x = get_x();
+        if (x > MAX_X || x < -MAX_X) {
+            continue;
+        }
+
+        std::cout << "x^2 = " << (x * x) << std::endl;
+    } while(do_continue());
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\end{document}
