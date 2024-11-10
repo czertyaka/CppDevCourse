@@ -5,6 +5,23 @@
 \usepackage[askip=3mm, bskip=3mm]{mylisting}
 \usepackage{xurl}
 \usepackage{tcolorbox}
+\usepackage{xltabular}
+\usepackage{array}
+\usepackage{pdflscape}
+\usepackage{everypage}
+
+\renewcommand{\arraystretch}{1.2}
+
+\newcommand{\Lpagenumber}{\ifdim\textwidth=\linewidth\else\bgroup
+  \dimendef\margin=0 %use \margin instead of \dimen0
+  \ifodd\value{page}\margin=\oddsidemargin
+  \else\margin=\evensidemargin
+  \fi
+  \raisebox{\dimexpr -\topmargin-\headheight-\headsep-0.5\linewidth}[0pt][0pt]{%
+    \rlap{\hspace{\dimexpr \margin+\textheight+\footskip}%
+    \llap{\rotatebox{90}{\thepage}}}}%
+\egroup\fi}
+\AddEverypageHook{\Lpagenumber}%
 
 \title{Домашняя работа 2 \\ Git \& GitHub}
 
@@ -28,6 +45,12 @@
     \end{tcolorbox}
 
     Имя и почта пользователя, указанные при создании аккаунта, потребуются далее.
+
+    Обратите внимание, что создать GitHub аккаунт нельзя с почтой из домена
+    \verb|ru| (т.е., \verb|@mail.ru|, \verb|@yandex.ru| и др.).
+    Для регистрации необходимо использовать или имеющийся почтовый ящик из другого
+    домена, или создать его.
+    Хорошими вариантами будут почтовые ящики \verb|@gmail.com| или \verb|@outlook.com|.
 
     \subsection{Добавление SSH-ключа}
 
@@ -219,8 +242,162 @@ nothing added to commit but untracked files present (use "git add" to track)
 
 \section{Пулл-реквест}
 
+    Из форка\footnotemark{} в оригинальный репозиторий можно создать \textbf{запрос на слияние}
+    (в англоязычных источниках pull-request или merge-request).
+    Пулл-реквест позволяет разработчику исходного репозитория обозревать изменения,
+    сделанные в форке, комментировать их, и, в конечном счете, либо соглашаться с ними,
+    добавляя эти изменения в исходный репозиторий, либо отказываться от них.
+
+    \footnotetext{Пулл-реквесты можно создать и внутри одного проекта из одной
+    \href{https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell}{ветки}
+    в другую.}
+
+    Создайте пулл-реквест из вашего форка в репозиторий
+    \url{https://github.com/czertyaka/CppDevCourse-hw2}.
+    Названием пулл-реквеста должны быть ФИО студента.
+
+    \begin{tcolorbox}
+        \textbf{Инструкция по созданию пулл-реквеста в GitHub}: \\
+        \url{https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork}.
+    \end{tcolorbox}
+
+    В веб-интерфейсе на странице пулл-реквеста доступны несколько вкладок:
+
+    \begin{itemize}
+
+        \item \textit{Conversation}. На этой вкладке видна история работы в пулл-реквесте:
+            добавление новых коммитов после открытия репозитория, комментарии
+            преподавателя и студента, результаты автоматических проверок и статус
+            пулл-реквеста.
+
+        \item \textit{Commits}. В этой вкладке можно найти список коммитов, которые
+            были созданы после создания форка.
+
+        \item \textit{Checks}. В этой вкладке находятся подробности выполнения
+            последней автоматизированной проверки.
+
+        \item \textit{Files changed}. В этой вкладке можно посмотреть все изменения
+            в пулл-реквесте.
+            Убедитесь, что в вашем пулл-реквесте нет других изменений, кроме
+            добавленного файла \textit{main.cpp}.
+
+    \end{itemize}
+
+    Домашнее задание считается выполненным, если:
+
+    \begin{enumerate}
+
+        \item пулл-реквест успешно создан;
+
+        \item в названии пулл-реквеста есть ФИО студента;
+
+        \item нет других изменений в пулл-реквесте, кроме добавленного файла
+            \textit{main.cpp};
+
+        \item пулл-реквест прошел автоматизированную проверку (во вкладке
+            \textit{Conversation} есть статус "All checks have passed").
+
+    \end{enumerate}
+
+    На рис.~\ref{fig:pr} скриншот правильно выполненного и оформленного пулл-реквеста.
+
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=\textwidth]{Homeworks/2-Git/pull-request.png}
+        \caption{Пример успешно выполненного домашнего задания.}
+        \label{fig:pr}
+    \end{figure}
+
+\clearpage
+
+\begin{landscape}
+
+\pagestyle{empty}
+
 \appendix
 
 \section{Cheat sheet команд Git}
+
+    \begin{xltabular}{\linewidth}{|X|X|}
+
+        \hline
+        \textbf{Команда} & \textbf{Описание} \\
+        \hline
+        \hline
+        \endfirsthead
+
+        \hline
+        \textbf{Команда} & \textbf{Описание} \\
+        \hline
+        \hline
+        \endhead
+
+        \hline
+        \endfoot
+
+        \hline
+        \endlastfoot
+
+        \verb|git status| &
+        Посмотреть текущее состояние рабочей директории и индекса. \\
+        \hline
+        \verb|git add [FILE ...]| &
+        Добавить файл(ы) в индекс Git, например, \verb|git add main.cpp foo.cpp|. \\
+        \hline
+        \verb|git commit [-m "<MESSAGE>"]| &
+        Создать коммит. При использовании флага \verb|-m| возможно установить
+        сообщение в коммите, например: \hfill \break
+        \verb|git commit -m "added main.cpp"|. \\
+        \hline
+        \verb|git push| &
+        Отправить изменения из ветку локального репозитория в ветку
+        удаленного репозитория. \\
+        \hline
+        \verb|git fetch| &
+        Скачать информацию о ветках в удаленном репозитории. \\
+        \hline
+        \verb|git pull| &
+        Влить ветку из удаленного репозитория в ветку
+        локального репозитория. \\
+        \hline
+        \verb|git show [<COMMIT>]| &
+        Показать информацию о коммите.
+        Если не указывать хэш коммита \verb|COMMIT|, то будет показана
+        информация о текущем коммите. \\
+        \hline
+        \verb|git log [--oneline --graph --decorate]| &
+        Показать историю коммитов текущей ветки.
+        Флаги \verb|--oneline --graph --decorate| сделают историю короче
+        и читаемее. \\
+        \hline
+        \verb|git restore [--staged] <FILE> ...| &
+        Обратить изменения в рабочей директории (без флага \verb|--staged|)
+        или в индексе (с флагом \verb|--staged|).
+        Примеры: \hfill \break
+        \verb|git restore main.cpp foo.cpp| \hfill \break
+        \verb|git restore --staged foo.h|. \\
+        \hline
+        \verb|git checkout [-b] <BRANCH>| &
+        Переключиться на ветку \verb|BRANCH|.
+        Если используется флаг \verb|b| и ветки \verb|BRANCH| не существует,
+        то она будет создана.
+        Примеры: \hfill \break
+        \verb|git checkout master| \hfill \break
+        \verb|git checkout -b feature|. \\
+
+    \end{xltabular}
+
+    Материалы для самостоятельного изучения:
+
+    \begin{itemize}
+
+        \item Git Pro Book:
+            \url{https://git-scm.com/book/ru/v2}.
+
+        \item Онлайн-тренажер LearnGitBranching:
+            \url{https://learngitbranching.js.org/?locale=ru\_RU}.
+    \end{itemize}
+
+\end{landscape}
 
 \end{document}
