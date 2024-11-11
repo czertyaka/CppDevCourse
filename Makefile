@@ -13,6 +13,7 @@ ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 	pr-4 \
 	pr-5 \
 	pr-6 \
+	pr-7 \
 	hw-1 \
 	hw-2
 
@@ -25,6 +26,7 @@ build: \
 	pr-4 \
 	pr-5 \
 	pr-6 \
+	pr-7 \
 	hw-1 \
 	hw-2
 
@@ -36,6 +38,7 @@ install: build
 	cp pr-4.pdf "$(PREFIX)/Presentations/4 Переменные.pdf"
 	cp pr-5.pdf "$(PREFIX)/Presentations/5 Условия.pdf"
 	cp pr-6.pdf "$(PREFIX)/Presentations/6 Циклы.pdf"
+	cp pr-7.pdf "$(PREFIX)/Presentations/7 Указатели и ссылки.pdf"
 	mkdir -p $(PREFIX)/Homeworks
 	cp hw-1.pdf "$(PREFIX)/Homeworks/1 Hello World.pdf"
 	cp hw-2.pdf "$(PREFIX)/Homeworks/2 Git & Github.pdf"
@@ -67,6 +70,7 @@ help:
 	@printf "pr-4\tbuild presentation pr-4.pdf\n"
 	@printf "pr-5\tbuild presentation pr-5.pdf\n"
 	@printf "pr-6\tbuild presentation pr-5.pdf\n"
+	@printf "pr-7\tbuild presentation pr-7.pdf\n"
 	@printf "hw-1\tbuild homework hw-1.pdf\n"
 	@printf "hw-2\tbuild homework hw-2.pdf\n"
 
@@ -76,6 +80,7 @@ pr-3: pr-3.pdf
 pr-4: pr-4.pdf
 pr-5: pr-5.pdf
 pr-6: pr-6.pdf
+pr-7: pr-7.pdf
 
 hw-1: hw-1.pdf
 hw-2: hw-2.pdf
@@ -141,9 +146,9 @@ pr-4.pdf: \
 	Presentations/4-Variables/variables.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
-	$(wildcard Presentations/4-Variables/*cpp) \
+	$(wildcard Presentations/4-Variables/*.cpp) \
 	$(wildcard Presentations/4-Variables/*.h) \
-	$(wildcard Presentations/4-Variables/**/*cpp) \
+	$(wildcard Presentations/4-Variables/**/*.cpp) \
 	$(wildcard Presentations/4-Variables/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
@@ -153,9 +158,9 @@ pr-5.pdf: \
 	Presentations/5-Selection-statements/selection-statements.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
-	$(wildcard Presentations/5-Selection-statements/*cpp) \
+	$(wildcard Presentations/5-Selection-statements/*.cpp) \
 	$(wildcard Presentations/5-Selection-statements/*.h) \
-	$(wildcard Presentations/5-Selection-statements/**/*cpp) \
+	$(wildcard Presentations/5-Selection-statements/**/*.cpp) \
 	$(wildcard Presentations/5-Selection-statements/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
@@ -165,10 +170,22 @@ pr-6.pdf: \
 	Presentations/6-Iteration-statements/iteration-statements.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
-	$(wildcard Presentations/6-Iteration-statements/*cpp) \
+	$(wildcard Presentations/6-Iteration-statements/*.cpp) \
 	$(wildcard Presentations/6-Iteration-statements/*.h) \
-	$(wildcard Presentations/6-Iteration-statements/**/*cpp) \
+	$(wildcard Presentations/6-Iteration-statements/**/*.cpp) \
 	$(wildcard Presentations/6-Iteration-statements/**/*.h) \
+	Packages/terminal.sty \
+	Packages/mylisting.sty
+	$(call generate_pdf,$<,$@)
+
+pr-7.pdf: \
+	Presentations/7-Pointers-and-References/ptrs-and-refs.tex \
+	Presentations/presentationtemplate.sty \
+	$(wildcard Presentations/images/*-logo.png) \
+	$(wildcard Presentations/7-Pointers-and-References/*.cpp) \
+	$(wildcard Presentations/7-Pointers-and-References/*.h) \
+	$(wildcard Presentations/7-Pointers-and-References/**/*.cpp) \
+	$(wildcard Presentations/7-Pointers-and-References/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
