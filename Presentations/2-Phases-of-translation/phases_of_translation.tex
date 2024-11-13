@@ -266,6 +266,7 @@ int main() {
         \node (binary) [right=of source] {
             \includegraphics[width=1.7cm]{Presentations/images/binary-file.png}
         };
+        \node [below=0mm of binary] { \texttt{*.o} };
 
         \draw[->, ultra thick] (source.east) -- (binary.west)
             node[midway, above] {Компиляция};
@@ -360,7 +361,7 @@ Disassembly of section .text:
 
     \begin{tikzpicture}[node distance=5cm]
 
-        \matrix (objs) [row sep=0.1cm, column sep=0.1cm] {
+        \matrix (objs) [row sep=0.5cm, column sep=0.1cm] {
             \node (bin1) {
                 \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
             }; &
@@ -374,10 +375,15 @@ Disassembly of section .text:
                 \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
             }; \\
         };
+        \node [below=0mm of bin1] { \texttt{*.o} };
+        \node [below=0mm of bin2] { \texttt{*.o} };
+        \node [below=0mm of bin3] { \texttt{*.o} };
+        \node [below=0mm of bin4] { \texttt{*.o} };
 
         \node (exe) [right=of objs] {
             \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
         };
+        \node [below=0mm of exe] { \texttt{ELF} };
 
         \draw[->, ultra thick] (objs.east) -- (exe.west)
             node[midway, above] {Линковка};
@@ -423,6 +429,270 @@ a.out: ELF |\colorbox{green}{64-bit}| LSB executable, |\colorbox{green}{x86-64}|
         \end{column}
 
     \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Статическая библиотека}
+
+    \centering
+
+    \begin{tikzpicture}[node distance=5cm]
+
+        \matrix (objs) [row sep=0.5cm, column sep=0.1cm] {
+            \node (bin1) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; &
+            \node (bin2) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; \\
+            \node (bin3) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; &
+            \node (bin4) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; \\
+        };
+        \node [below=0mm of bin1] { \texttt{*.o} };
+        \node [below=0mm of bin2] { \texttt{*.o} };
+        \node [below=0mm of bin3] { \texttt{*.o} };
+        \node [below=0mm of bin4] { \texttt{*.o} };
+
+        \node (exe) [right=of objs] {
+            \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+        };
+        \node [below=0mm of exe] { \texttt{lib*.a} };
+
+        \draw[->, ultra thick] (objs.east) -- (exe.west)
+            node[midway, above] {Создание архива};
+
+    \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Статическая библиотека}
+
+    \centering
+
+    \begin{tikzpicture}[node distance=5cm]
+
+        \matrix (objs) [row sep=0.5cm, column sep=0.1cm] {
+            \node (bin1) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; &
+            \node (bin2) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; \\
+            \node (bin3) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; &
+            \node (lib) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; \\
+        };
+        \node [below=0mm of bin1] { \texttt{*.o} };
+        \node [below=0mm of bin2] { \texttt{*.o} };
+        \node [below=0mm of bin3] { \texttt{*.o} };
+        \node [below=0mm of lib]  { \texttt{lib*.a} };
+
+        \node (exe) [right=of objs] {
+            \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+        };
+        \node [below=0mm of exe] { \texttt{ELF} };
+
+        \draw[->, ultra thick] (objs.east) -- (exe.west)
+            node[midway, above] {Линковка};
+
+    \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Статичеcкая библиотека}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}
+
+            \myinputlisting[minted language=cpp]
+                {Presentations/2-Phases-of-translation/library/}
+                {main.cpp}
+
+            \myinputlisting[minted language=cpp]
+                {Presentations/2-Phases-of-translation/library/}
+                {foo.cpp}
+
+            \myinputlisting[minted language=cpp]
+                {Presentations/2-Phases-of-translation/library/}
+                {bar.cpp}
+
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{terminalwindow}[||]
+|\shellcommand{g++ -c bar.cpp -o bar.o}|
+|\shellcommand{g++ -c foo.cpp -o foo.o}|
+|\shellcommand{\colorbox{green}{ar -r libfoo.a} foo.o bar.o}|
+|\shellcommand{g++ -c main.cpp -o main.o}|
+|\shellcommand{g++ main.o \colorbox{green}{-L\$(pwd) -lfoo} -o main}|
+|\shellcommand{./main}|
+Hello, world!
+            \end{terminalwindow}
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Динамическая библиотека}
+
+    \centering
+
+    \begin{tikzpicture}[node distance=5cm]
+
+        \matrix (objs) [row sep=0.5cm, column sep=0.1cm] {
+            \node (bin1) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; &
+            \node (bin2) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; \\
+            \node (bin3) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; &
+            \node (bin4) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; \\
+        };
+        \node [below=0mm of bin1] { \texttt{*.o} };
+        \node [below=0mm of bin2] { \texttt{*.o} };
+        \node [below=0mm of bin3] { \texttt{*.o} };
+        \node [below=0mm of bin4] { \texttt{*.o} };
+
+        \node (exe) [right=of objs] {
+            \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+        };
+        \node [below=0mm of exe] { \texttt{lib*.so} };
+
+        \draw[->, ultra thick] (objs.east) -- (exe.west)
+            node[midway, above, align=left] {Создание динамической \\ библиотеки};
+
+    \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Динамическая библиотека}
+
+    \centering
+
+    \begin{tikzpicture}[node distance=5cm]
+
+        \matrix (src) [row sep=0.5cm, column sep=0.1cm] {
+            \node (bin1) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; &
+            \node (bin2) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; \\
+            \node (bin3) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; &
+            \node (lib0) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; \\
+        };
+        \node [below=0mm of bin1] { \texttt{*.o} };
+        \node [below=0mm of bin2] { \texttt{*.o} };
+        \node [below=0mm of bin3] { \texttt{*.o} };
+        \node [below=0mm of lib0] { \texttt{lib*.so} };
+
+        \matrix (dst) [row sep=0.5cm, column sep=0.1cm, right=of src] {
+            \node (lib1) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; \\
+            \node (exe) {
+                \includegraphics[width=1.5cm]{Presentations/images/binary-file.png}
+            }; \\
+        };
+        \node [below=0mm of exe] { \texttt{executable} };
+        \node [below=0mm of lib1] { \texttt{lib*.so} };
+
+        \draw[->, ultra thick] (src.east) -- (dst.west)
+            node[midway, above, align=left] {Линковка};
+
+    \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Динамическая библиотека}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.4\textwidth}
+
+            \myinputlisting[minted language=cpp]
+                {Presentations/2-Phases-of-translation/library/}
+                {main.cpp}
+
+            \myinputlisting[minted language=cpp]
+                {Presentations/2-Phases-of-translation/library/}
+                {foo.cpp}
+
+            \myinputlisting[minted language=cpp]
+                {Presentations/2-Phases-of-translation/library/}
+                {bar.cpp}
+
+        \end{column}
+
+        \begin{column}{0.6\textwidth}
+
+            \begin{terminalwindow}[||]
+|\shellcommand{g++ -c -fPIC bar.cpp -o bar.o}|
+|\shellcommand{g++ -c -fPIC foo.cpp -o foo.o}|
+|\shellcommand{g++ \colorbox{green}{-shared} bar.o foo.o -o libfoo.so}|
+|\shellcommand{g++ -c main.cpp -o main.o}|
+|\shellcommand{g++ main.o \colorbox{green}{-L\$(pwd) -lfoo -Wl,-rpath=\$(pwd)} -o main}|
+|\shellcommand{./main}|
+Hello, world!
+            \end{terminalwindow}
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Источники, документация \\ и литература}
+
+    \begin{itemize}
+
+        \item Статья про фазы трансляции С++ на cppreference:
+            \url{https://en.cppreference.com/w/cpp/language/translation\_phases}
+
+        \item Перевод статьи Beginner's guide to linkers на Хабре:
+            \url{https://habr.com/ru/articles/150327/}
+
+        \item Цикл статей про архитектуру компьютера с фокусом на выполнение
+            процессов: \url{https://cpu.land/}
+
+        \item Создание статических и динамических библиотек при помощи
+            \texttt{gcc}: \url{https://renenyffenegger.ch/notes/development/languages/C-C-plus-plus/GCC/create-libraries/index}
+
+    \end{itemize}
 
 \end{frame}
 
