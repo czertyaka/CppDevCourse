@@ -1,0 +1,3 @@
+[submodule "Homeworks/3-TwoSum/CppDevCourse"]
+	path = Homeworks/3-TwoSum/CppDevCourse
+	url = git@github.com:czertyaka/CppDevCourse.git
