@@ -1,0 +1,695 @@
+% !TeX TS-program = xelatex
+
+\documentclass[compress, 8pt]{beamer}
+
+\usepackage{presentationtemplate}
+\usepackage[askip=3mm, bskip=3mm]{terminal}
+\usepackage[linenosfontsize=\tiny, askip=3mm, bskip=3mm]{mylisting}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\newtcolorbox{task}{
+    colback=yellow!50!white,
+    boxrule=0.02cm,
+    colframe=black,
+    sharp corners,
+    left=0mm,
+    right=0mm,
+    top=0mm,
+    bottom=0mm,
+    before upper={\textbf{Задание}:\:},
+}
+
+\title{Функции}
+
+\begin{document}
+
+\frame[plain]{\titlepage}
+
+\begin{frame}[fragile]
+
+    \frametitle{Функции}
+
+    \textbf{Функции} в C++ связывают последовательность инструкций (тело функции)
+    с именем (идентификатором) и набором параметров (возможно пустым).
+
+    \hfill\break
+    Одна из основных целей функций --- разбивать сложные вычисления на осмысленные
+    части и давать им имена.
+
+    \hfill\break
+    После вызова функции:
+
+    \begin{itemize}
+        \item инициализируются параметры из аргументов;
+        \item выполняются инструкции тела функции.
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Объявление функции}
+
+    В объявление функции входят:
+
+    \begin{itemize}
+        \item имя функции;
+        \item параметры функции (без имен);
+        \item спецификаторы \verb|constexpr|, \verb|inline|, \verb|static| и др.
+    \end{itemize}
+
+    \hfill\break
+    Ограничения на количество объявлений одной и той же функции нет.
+    Несколько эквивалентных объявлений:
+
+    \centering
+    \hfill\break
+    \begin{tikzpicture}[node distance=3cm]
+
+        \node (declarations) {
+            \begin{myinplacelisting}[minted language=cpp, width=6cm]
+int foo(double d, char c);
+int foo(const double d, char c);
+int foo(double, char);
+void foo(double d, char c);
+            \end{myinplacelisting}
+        };
+
+        \node (symbol) [right=of declarations] { \verb|_Z3foodc| };
+
+        \draw[->, thick] (declarations.east) -- (symbol.west)
+            node[midway, above] {Декорирование};
+
+    \end{tikzpicture}
+
+    \begin{task}
+        Объясните, зачем нужны объявление и декорирование функции.
+    \end{task}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Объявление функции}
+
+    Функция должна быть объявлена \textit{до} вызова.
+
+    \myinputlisting[minted language=cpp]
+        {Presentations/9-Functions/declaration-misuse/}
+        {main.cpp}
+
+    \begin{terminalwindow}
+!\shellcommand{g++ main.cpp}!
+main.cpp: In function ‘int !\textcolor{teal}{main}!()’:
+main.cpp:2:5: !\textcolor{red}{error}!: ‘foo’ was not declared in this scope
+    2 |     !\textcolor{red}{foo}!(); // compilation error
+      |     !\textcolor{red}{\^{}~~}!
+    \end{terminalwindow}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Определение функции}
+
+    Функция может быть определена как отдельно от объявления, так и вместе с ним.
+
+    \begin{myinplacelisting}[minted language=cpp]
+void foo(); // declaration
+
+void bar() { // declaration and definition
+    std::cout << "bar" << std::endl;
+}
+
+int main() {
+    foo();
+    bar();
+}
+
+void foo() { // definition
+    std::cout << "foo" << std::endl;
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Определение функции}
+
+    \hfill\break
+    Функция должна быть определена в программе только один раз\footnotemark{}.
+
+    \footnotetext{Несколько определений являются нарушением
+        \href{https://en.cppreference.com/w/cpp/language/definition}{One Defition Rule}
+        (ODR violation).}
+
+    \begin{task}
+        Объясните, почему не допускается определять функцию в заголовочном файле,
+        если он используется в нескольких единицах трансляции, и на каком этапе трансляции
+        происходит ошибка.
+    \end{task}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}
+
+            \myinputlisting[minted language=cpp]
+                {Presentations/9-Functions/ODR-violation/}
+                {foo.hpp}
+
+            \myinputlisting[minted language=cpp]
+                {Presentations/9-Functions/ODR-violation/}
+                {foo.cpp}
+
+            \myinputlisting[minted language=cpp]
+                {Presentations/9-Functions/ODR-violation/}
+                {main.cpp}
+
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{terminalwindow}
+!\shellcommand{g++ main.cpp foo.cpp}!
+/usr/bin/ld: /tmp/cctdCoR8.o: in function `foo()':
+foo.cpp:(.text+0x0): multiple definition of `foo()'; /tmp/cchYkLGd.o:main.cpp:(.text+0x0): first defined here
+collect2: error: ld returned 1 exit status
+            \end{terminalwindow}
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Параметры и аргументы}
+
+    \begin{itemize}
+
+        \item \textbf{Параметры} --- объекты, с которыми функция "работает" в своем теле.
+
+        \item \textbf{Аргументы} --- объекты, которые вызывающий контекст передает функции
+            для инициализации переменных.
+
+    \end{itemize}
+
+    \hfill\break
+    \begin{task}
+        Назовите параметры и аргументы в коде на листинге ниже.
+    \end{task}
+
+    \begin{myinplacelisting}[minted language=cpp]
+double bar();
+void foo(int i, double d);
+
+int main() {
+    foo(1 * 2, bar());
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Аргументы по-умолчанию}
+
+    \hfill\break
+    В объявлении функции некоторым параметрам можно задать аргументы по-умолчанию.
+    Аргументы по-умолчанию может иметь непрерывный набор последних параметров.
+    Не допускается повторно указывать аргументы по-умолчанию в определении функции.
+
+    \begin{myinplacelisting}[minted language=cpp]
+#include <iostream>
+
+void foo(int x, int y = 0); // y has default argument
+void bar(int x = 0, int y); // compilation error
+void bar(int x = 0, int y, int z = 0); // compilation error
+
+void foo(int x, int y = 0) {} // compilation error
+
+void foo(int x, int y/* = 0*/) {
+    std::cout << "x=" << x << ", y=" << y << std::endl;
+}
+
+int main() {
+    foo(1); // is equal with foo(1, 0);
+    foo(1, 2); // override default argument
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Передача аргумента по значению}
+
+    Значения аргументов \textit{всегда}\footnotemark{} копируются в функцию:
+
+    \footnotetext{За исключением оптимизации
+        \href{https://en.cppreference.com/w/cpp/language/copy\_elision}{Copy elision}.}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}
+
+            \myinputlisting[minted language=cpp]
+                {Presentations/9-Functions/pass-by-value/}
+                {main.cpp}
+
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{terminalwindow}
+!\shellcommand{g++ main.cpp -o main}!
+!\shellcommand{./main}!
+&x=0x7ffc91fee7ac
+&x=0x7ffc91fee78c
+x=1
+            \end{terminalwindow}
+
+            Такая передача аргумента называется \textbf{передачей по значению}
+            (pass by value).
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Передача аргумента по ссылке}
+
+    \hfill\break
+    Если необходимо менять переданный в функцию аргумент, можно передать ссылку или
+    указатель (pass by reference).
+
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}
+
+            \myinputlisting[minted language=cpp]
+                {Presentations/9-Functions/pass-by-ref/}
+                {main.cpp}
+
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{terminalwindow}
+!\shellcommand{g++ main.cpp -o main}!
+!\shellcommand{./main}!
+&x=0x7ffc91fee7ac
+&p=0x7ffcab72b540
+&p=0x7ffcab72b528
+x=-1
+            \end{terminalwindow}
+
+            Объект ссылочного типа (ссылка или указатель) все равно будут скопирован,
+            но позволит изменить объект, на который он ссылается.
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Возвращаемое значение функции}
+
+    Функция может возвращать результат своего выполнения в \textbf{возвращаемоем значении}
+    (return value).
+    Возвращаемое есть в определении функции, но не является частью её \textbf{сигнатуры}
+    (function signature\footnotemark{}).
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/language/function}}
+
+    \begin{myinplacelisting}[minted language=cpp]
+int foo(); // foo returns value of type int
+auto foo() -> int; // same, C++11
+    \end{myinplacelisting}
+
+    Отсутствие возвращаемого значения выражается с помощью типа \verb|void|.
+
+    \begin{myinplacelisting}[minted language=cpp]
+void foo(); // foo has no return value
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Возвращаемое значение функции}
+
+    Вызов в функций в выражениях создает временный объект с возвращаемым
+    значением функции.
+
+    \begin{myinplacelisting}[minted language=cpp]
+int foo();
+void bar();
+
+int main() {
+    int x = foo();
+    int* p = foo(); // compilation error
+    int y = bar(); // compilation error
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Инструкция \texttt{return}}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}
+
+            Если у функции нет возвращаемого значения, то инструкция \verb|return|
+            просто прекращает ее выполнение:
+
+            \begin{myinplacelisting}[minted language=cpp]
+#include <iostream>
+
+void foo() {
+    std::cout << __LINE__
+        << std::endl;
+    return;
+
+    // dead code
+    std::cout << __LINE__
+        << std::endl;
+}
+            \end{myinplacelisting}
+
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+            Если у функции есть возвращаемое значение, то оно указывается
+            совместно с инструкцией \verb|return|.
+
+            \begin{myinplacelisting}[minted language=cpp]
+bool condition();
+
+int foo() {
+    if (condition()) {
+        return 1;
+    }
+    return 0;
+}
+            \end{myinplacelisting}
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{NRVO}
+
+    Возвращаемое значение обычно копируется в вызывающий контекст.
+    Иногда компилятор может применить \textit{необязательную} варицию оптимизации
+    Copy elision, известную как Named Return Value Optimization (NRVO).
+    Эта оптимизация помещает возвращаемое значение сразу в вызывающий контекст
+    \textit{без копирования}.
+    Эта оптимизация может дать прирост производительности, если возвращаемое значение
+    --- большой объект составного типа.
+
+    \begin{myinplacelisting}[minted language=cpp]
+struct MyLargeObject { /* ... */ };
+
+MyLargeObject foo() {
+    MyLargeObject obj {};
+    return obl; // may be optimized with copy elision
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Рекурсия}
+
+    Вызов функции из тела той же функции называется \textbf{рекурсией} (recursion).
+
+    \begin{myinplacelisting}[minted language=cpp]
+unsigned factorial(unsigned n) {
+    if (n < 2) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Переполнение стека}
+
+    Неконтролируемая (бесконечнaя) рекурсия или рекурсия с очень большим число рекурсивных
+    вызовов может привести к ошибке \textbf{переполнения стека}\footnotemark{}
+    (stack overflow), потому что для каждого вызова функции на стеке аллоцируется память.
+
+    \footnotetext{\url{https://en.wikipedia.org/wiki/Stack\_Overflow}}
+
+    \begin{task}
+        Найдите возможное переполнение стека в программе на листинге ниже и предложите
+        исправление.
+    \end{task}
+
+    \begin{myinplacelisting}[%
+        minted language=cpp,
+        minted options={
+            fontsize=\normalsize,
+            breaklines,
+            breakanywhere,
+            linenos,
+            escapeinside=??,
+            numbersep=2pt
+        },
+    ]
+int factorial(int n) {
+    if (n == 0 || n == 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Переполнение стека}
+
+    Когда несколько функций имеют одно и то же имя, говорят, что они
+    \textbf{перегружены}\footnotemark{} (overloaded).
+    При вызове перегруженной функции компилятору на основе аргументов
+    необходимо решить, какую из функций вызвать.
+    Возможны ситуации, когда компилятор не в состоянии разрешить перегрузку.
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/language/overload\_resolution}}
+
+    \begin{myinplacelisting}[minted language=cpp]
+void foo(double);
+void foo(int);
+
+struct X {};
+
+int main() {
+    const X x {};
+    const double y {};
+    const int z {};
+    foo(x); // compilation error
+    foo(y);
+    foo(z);
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Связывание функций}
+
+    Функции могут иметь внешнее и внутреннее связывание (external and internal linkage).
+    Функции с внешним связыванием можно вызывать из других единиц трансляции
+    (если доступно их объявление).
+    Функции с внутренним связыванием доступны только из той единицы трансляции,
+    в которой находится их опрделение.
+
+    \hfill\break
+    Есть два способа сделать связывание функции внутренним:
+
+    \begin{itemize}
+
+        \item ключевое слово \verb|static|:
+            \begin{myinplacelisting}[minted language=cpp]
+static void foo();
+            \end{myinplacelisting}
+
+        \item безымянное пространство имен:
+            \begin{myinplacelisting}[minted language=cpp]
+namespace {
+    void foo();
+}
+            \end{myinplacelisting}
+
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Связывание функций}
+
+    \hfill\break
+    \myinputlisting[minted language=cpp]
+        {Presentations/9-Functions/linkage/}
+        {foo.cpp}
+
+    \myinputlisting[minted language=cpp]
+        {Presentations/9-Functions/linkage/}
+        {main.cpp}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Встраиваемые функции}
+
+    Функции, объявленные со спецификатором \verb|inline|\footnotemark{}, называются
+    \textbf{встраиваемыми} (inline functions).
+    Встраиваемые функции имеют следующие свойства:
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/language/inline}}
+
+    \begin{itemize}
+        \item определение встраиваемой функции должно быть в той же единице
+            трансляции, где она вызывается;
+        \item встраиваемые функции с внешним связыванием могут иметь более
+            одного определения во всей программе и должны быть объявлены
+            с \verb|inline| в каждой единице трансляции.
+    \end{itemize}
+
+    Компилятор может, но не обязан, применить встраиваение\footnotetext{} такой
+    функции в контекст вызова.
+    Не рекомендуется делать встраиваемыми очень большие функции, поскольку это
+    может привести к увеличение размера бинарного файла.
+
+    \footnotetext{\url{https://en.wikipedia.org/wiki/Inline\_expansion}}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Встраиваемые функции}
+
+    Пример использования \verb|inline| функции.
+
+    \myinputlisting[minted language=cpp]
+        {Presentations/9-Functions/inline/}
+        {foo.hpp}
+
+    \myinputlisting[minted language=cpp]
+        {Presentations/9-Functions/inline/}
+        {foo.cpp}
+
+    \myinputlisting[minted language=cpp]
+        {Presentations/9-Functions/inline/}
+        {main.cpp}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{\texttt{constexpr} функции}
+
+    C++ поддерживает два типа иммутабельности:
+
+    \begin{itemize}
+        \item \verb|const|;
+        \item \verb|constexpr|\footnotemark{} --- для выражений, вычислить которые
+            желательно во время компиляции.
+    \end{itemize}
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/language/constant\_expression\#Core\_constant\_expressions}}
+
+    \hfill\break
+    Обычные функции нельзя использовать в \verb|constexpr|, поскольку
+    их возвращаемое значение вычисляется во время выполнения программы, а не во время
+    компиляции:
+
+    \begin{myinplacelisting}[minted language=cpp]
+int foo() { return 1; }
+
+int main() {
+    constexpr int x = foo(); // compilation error
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{\texttt{constexpr} функции}
+
+    Пример \verb|constexpr| функции:
+
+    \begin{myinplacelisting}[minted language=cpp]
+unsigned get_from_user();
+
+constexpr unsigned factorial(const unsigned n) {
+    if (n < 2) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+
+int main() {
+    // must be evaluated at compile time
+    constexpr unsigned f1 = factorial(9);
+
+    // compilation error
+    constexpr unsigned f2 = factorial(get_from_user());
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Указатель на функцию}
+
+    С функциями можно работать через указатели на них.
+
+    \begin{myinplacelisting}[minted language=cpp]
+void foo() {}
+int bar(int x, int y) { return 1; }
+
+void callback(int (*p)(int, int)) {
+    const int x = (*p)(1, 2); // calling function which p
+                              // points to
+}
+
+int main() {
+    void (*pfoo)() = &foo; // pointer to function foo
+    int (*pbar)(int, int) = &bar; // pointer to function bar
+    callback(pbar);
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\end{document}
