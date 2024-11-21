@@ -1,3 +1,3 @@
-[submodule "Homeworks/3-TwoSum/CppDevCourse"]
-	path = Homeworks/3-TwoSum/CppDevCourse
-	url = git@github.com:czertyaka/CppDevCourse.git
+[submodule "Homeworks/3-TwoSum/hw-project"]
+	path = Homeworks/3-TwoSum/hw-project
+	url = git@github.com:czertyaka/CppDevCourse-hw3.git
