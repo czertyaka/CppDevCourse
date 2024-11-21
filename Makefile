@@ -17,7 +17,8 @@ ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 	pr-8 \
 	pr-9 \
 	hw-1 \
-	hw-2
+	hw-2 \
+	hw-3
 
 all: build
 
@@ -32,7 +33,8 @@ build: \
 	pr-8 \
 	pr-9 \
 	hw-1 \
-	hw-2
+	hw-2 \
+	hw-3
 
 install: build
 	mkdir -p $(PREFIX)/Presentations
@@ -48,6 +50,7 @@ install: build
 	mkdir -p $(PREFIX)/Homeworks
 	cp hw-1.pdf "$(PREFIX)/Homeworks/1 Hello World.pdf"
 	cp hw-2.pdf "$(PREFIX)/Homeworks/2 Git & Github.pdf"
+	cp hw-3.pdf "$(PREFIX)/Homeworks/3 Two Sum.pdf"
 
 clean:
 	rm -rf \
@@ -81,6 +84,7 @@ help:
 	@printf "pr-9\tbuild presentation pr-9.pdf\n"
 	@printf "hw-1\tbuild homework hw-1.pdf\n"
 	@printf "hw-2\tbuild homework hw-2.pdf\n"
+	@printf "hw-3\tbuild homework hw-3.pdf\n"
 
 pr-1: pr-1.pdf
 pr-2: pr-2.pdf
@@ -94,6 +98,7 @@ pr-9: pr-9.pdf
 
 hw-1: hw-1.pdf
 hw-2: hw-2.pdf
+hw-3: hw-3.pdf
 
 dockerimage:
 	docker build \
@@ -239,6 +244,15 @@ hw-2.pdf: \
 	Homeworks/homeworktemplate.sty \
 	$(wildcard Homeworks/2-Git/**/*.cpp) \
 	$(wildcard Homeworks/2-Git/**/*.h) \
+	Packages/terminal.sty \
+	Packages/mylisting.sty
+	$(call generate_pdf,$<,$@)
+
+hw-3.pdf: \
+	Homeworks/3-TwoSum/two-sum.tex \
+	Homeworks/homeworktemplate.sty \
+	$(wildcard Homeworks/3-TwoSum/**/*.cpp) \
+	$(wildcard Homeworks/3-TwoSum/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)

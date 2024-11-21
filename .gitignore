@@ -1,5 +1,5 @@
 texput.log
-_minted-*
+_minted*
 *.aux
 *.fdb_latexmk
 *.fls
