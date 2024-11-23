@@ -1,0 +1,24 @@
+name: Deploy to Yandex.Disk
+
+on:
+  workflow_run:
+    workflows: [Build]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'master' }}
+
+    steps:
+      - uses: ./.github/workflows/build.yml
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: pdf_files
+
+      - name: Deploy PDF
+        env:
+          TOKEN: ${{ secrets.YANDEX_DISK_TOKEN }}
+        run: python ci/deploy.py -t ${TOKEN} -d ./install/
