@@ -1,18 +1,23 @@
-name: Build
+name: Compile
 
-on: workflow_run
+on:
+  workflow_call: {}
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
 jobs:
-  build:
+  compile:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
 
-    - name: Generate PDF
+    - name: Compile PDF files
       run: PREFIX=install/ make install
 
-    - name: Upload PDF
+    - name: Upload PDF files
       uses: actions/upload-artifact@v4
       with:
         name: pdf
