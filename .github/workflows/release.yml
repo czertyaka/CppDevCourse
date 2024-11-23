@@ -1,0 +1,21 @@
+name: Release PDF Files
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  post-pdf:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download PDF
+        uses: actions/download-artifact@v3
+        with:
+          name: pdf_files
+
+      - name: Upload PDFs to GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: 'install/*.pdf'
+          token: ${{ secrets.GITHUB_TOKEN }}
