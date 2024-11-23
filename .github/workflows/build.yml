@@ -1,12 +1,7 @@
 name: Build
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-  release:
-    types: [created]
+  workflow_run: {}
 
 jobs:
   build:
@@ -21,5 +16,5 @@ jobs:
     - name: Upload PDF
       uses: actions/upload-artifact@v4
       with:
-        name: pdf_files
+        name: pdf
         path: install/

@@ -1,23 +1,27 @@
 name: Release PDF Files
 
 on:
-  workflow_run:
-    workflows: ["Build"]
-    types:
-      - completed
+  release:
+    types: [created]
 
 jobs:
-  post-pdf:
+  build:
+    uses: ./.github/workflows/build.yml
+
+  release:
     runs-on: ubuntu-latest
-
+    needs: build
     steps:
-      - name: Download PDF
-        uses: actions/download-artifact@v4
-        with:
-          name: pdf_files
+    - uses: actions/checkout@v3
 
-      - name: Upload PDFs to GitHub Release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: 'install/*.pdf'
-          token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Download PDF
+      uses: actions/download-artifact@v4
+      with:
+        name: pdf
+        path: install
+
+    - name: Upload PDFs to GitHub Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: 'install/*.pdf'
+        token: ${{ secrets.GITHUB_TOKEN }}
