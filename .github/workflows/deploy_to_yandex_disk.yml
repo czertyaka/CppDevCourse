@@ -1,0 +1,21 @@
+name: Deploy to Yandex.Disk
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: ./.github/workflows/build.yml
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: pdf_files
+
+      - name: Deploy PDF
+        env:
+          TOKEN: ${{ secrets.YANDEX_DISK_TOKEN }}
+        run: python ci/deploy.py -t ${TOKEN} -d ./install/
