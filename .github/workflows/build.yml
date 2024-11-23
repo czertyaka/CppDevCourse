@@ -5,7 +5,7 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-  workflow_call:
+  workflow_call: {}
 
 jobs:
   build:
@@ -13,7 +13,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Generate PDF
-      run: make
-    - name: Install PDF
       run: PREFIX=install/ make install
+
+    - name: Upload PDF
+      uses: actions/upload-artifact@v4
+      with:
+        name: pdf_files
+        path: install/
