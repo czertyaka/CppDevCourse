@@ -74,7 +74,7 @@ def main():
     api_url = "https://cloud-api.yandex.net/v1/disk/resources"
     token, directory = get_args()
     check_pdf_directory(directory)
-    base_path = "rest-api-test"
+    base_path = "ДПО Программирование современных логических устройств/2024"
     dirs = []
     files = []
     for path in Path(directory).rglob("*"):
