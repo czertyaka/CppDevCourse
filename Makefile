@@ -65,7 +65,7 @@ clean:
 		*.snm \
 		*.toc \
 		*.vrb \
-		_minted-*
+		_minted*
 
 help:
 	@printf "all\tbuild all presentations and homeworks\n"
