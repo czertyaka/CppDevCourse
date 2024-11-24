@@ -16,6 +16,7 @@ ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 	pr-7 \
 	pr-8 \
 	pr-9 \
+	pr-10 \
 	hw-1 \
 	hw-2 \
 	hw-3
@@ -32,6 +33,7 @@ build: \
 	pr-7 \
 	pr-8 \
 	pr-9 \
+	pr-10 \
 	hw-1 \
 	hw-2 \
 	hw-3
@@ -47,6 +49,7 @@ install: build
 	cp pr-7.pdf "$(PREFIX)/Презентации/7 Указатели и ссылки.pdf"
 	cp pr-8.pdf "$(PREFIX)/Презентации/8 Массивы.pdf"
 	cp pr-9.pdf "$(PREFIX)/Презентации/9 Функции.pdf"
+	cp pr-10.pdf "$(PREFIX)/Презентации/10 Приведения типов.pdf"
 	mkdir -p "$(PREFIX)/Домашние задания"
 	cp hw-1.pdf "$(PREFIX)/Домашние задания/1 Hello World.pdf"
 	cp hw-2.pdf "$(PREFIX)/Домашние задания/2 Git & Github.pdf"
@@ -82,6 +85,7 @@ help:
 	@printf "pr-7\tbuild presentation pr-7.pdf\n"
 	@printf "pr-8\tbuild presentation pr-8.pdf\n"
 	@printf "pr-9\tbuild presentation pr-9.pdf\n"
+	@printf "pr-10\tbuild presentation pr-10.pdf\n"
 	@printf "hw-1\tbuild homework hw-1.pdf\n"
 	@printf "hw-2\tbuild homework hw-2.pdf\n"
 	@printf "hw-3\tbuild homework hw-3.pdf\n"
@@ -95,6 +99,7 @@ pr-6: pr-6.pdf
 pr-7: pr-7.pdf
 pr-8: pr-8.pdf
 pr-9: pr-9.pdf
+pr-10: pr-10.pdf
 
 hw-1: hw-1.pdf
 hw-2: hw-2.pdf
@@ -225,6 +230,18 @@ pr-9.pdf: \
 	$(wildcard Presentations/9-Functions/*.h) \
 	$(wildcard Presentations/9-Functions/**/*.cpp) \
 	$(wildcard Presentations/9-Functions/**/*.h) \
+	Packages/terminal.sty \
+	Packages/mylisting.sty
+	$(call generate_pdf,$<,$@)
+
+pr-10.pdf: \
+	Presentations/10-Conversions/conversions.tex \
+	Presentations/presentationtemplate.sty \
+	$(wildcard Presentations/images/*-logo.png) \
+	$(wildcard Presentations/10-Conversions/*.cpp) \
+	$(wildcard Presentations/10-Conversions/*.h) \
+	$(wildcard Presentations/10-Conversions/**/*.cpp) \
+	$(wildcard Presentations/10-Conversions/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
