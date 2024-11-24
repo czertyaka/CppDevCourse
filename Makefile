@@ -37,7 +37,7 @@ build: \
 	hw-3
 
 install: build
-	mkdir -p $(PREFIX)/Presentations
+	mkdir -p "$(PREFIX)/Презентации"
 	cp pr-1.pdf "$(PREFIX)/Презентации/1 Введение.pdf"
 	cp pr-2.pdf "$(PREFIX)/Презентации/2 Фазы трансляции.pdf"
 	cp pr-3.pdf "$(PREFIX)/Презентации/3 Фундаментальные типы.pdf"
@@ -47,7 +47,7 @@ install: build
 	cp pr-7.pdf "$(PREFIX)/Презентации/7 Указатели и ссылки.pdf"
 	cp pr-8.pdf "$(PREFIX)/Презентации/8 Массивы.pdf"
 	cp pr-9.pdf "$(PREFIX)/Презентации/9 Функции.pdf"
-	mkdir -p $(PREFIX)/Homeworks
+	mkdir -p "$(PREFIX)/Домашние задания"
 	cp hw-1.pdf "$(PREFIX)/Домашние задания/1 Hello World.pdf"
 	cp hw-2.pdf "$(PREFIX)/Домашние задания/2 Git & Github.pdf"
 	cp hw-3.pdf "$(PREFIX)/Домашние задания/3 Two Sum.pdf"
