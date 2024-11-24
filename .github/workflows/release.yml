@@ -22,14 +22,14 @@ jobs:
         with:
           type: 'zip'
           filename: 'Presentations.zip'
-          path: 'Presentations/'
+          path: 'Презентации/'
 
       - name: Archive homeworks
         uses: thedoctor0/zip-release@0.7.5
         with:
           type: 'zip'
           filename: 'Homeworks.zip'
-          path: 'Homeworks/'
+          path: 'Домашние задания/'
 
       - name: Upload PDFs to GitHub Release
         uses: ncipollo/release-action@v1.12.0

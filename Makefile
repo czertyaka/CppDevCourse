@@ -38,19 +38,19 @@ build: \
 
 install: build
 	mkdir -p $(PREFIX)/Presentations
-	cp pr-1.pdf "$(PREFIX)/Presentations/1 Введение.pdf"
-	cp pr-2.pdf "$(PREFIX)/Presentations/2 Фазы трансляции.pdf"
-	cp pr-3.pdf "$(PREFIX)/Presentations/3 Фундаментальные типы.pdf"
-	cp pr-4.pdf "$(PREFIX)/Presentations/4 Переменные.pdf"
-	cp pr-5.pdf "$(PREFIX)/Presentations/5 Условия.pdf"
-	cp pr-6.pdf "$(PREFIX)/Presentations/6 Циклы.pdf"
-	cp pr-7.pdf "$(PREFIX)/Presentations/7 Указатели и ссылки.pdf"
-	cp pr-8.pdf "$(PREFIX)/Presentations/8 Массивы.pdf"
-	cp pr-9.pdf "$(PREFIX)/Presentations/9 Функции.pdf"
+	cp pr-1.pdf "$(PREFIX)/Презентации/1 Введение.pdf"
+	cp pr-2.pdf "$(PREFIX)/Презентации/2 Фазы трансляции.pdf"
+	cp pr-3.pdf "$(PREFIX)/Презентации/3 Фундаментальные типы.pdf"
+	cp pr-4.pdf "$(PREFIX)/Презентации/4 Переменные.pdf"
+	cp pr-5.pdf "$(PREFIX)/Презентации/5 Условия.pdf"
+	cp pr-6.pdf "$(PREFIX)/Презентации/6 Циклы.pdf"
+	cp pr-7.pdf "$(PREFIX)/Презентации/7 Указатели и ссылки.pdf"
+	cp pr-8.pdf "$(PREFIX)/Презентации/8 Массивы.pdf"
+	cp pr-9.pdf "$(PREFIX)/Презентации/9 Функции.pdf"
 	mkdir -p $(PREFIX)/Homeworks
-	cp hw-1.pdf "$(PREFIX)/Homeworks/1 Hello World.pdf"
-	cp hw-2.pdf "$(PREFIX)/Homeworks/2 Git & Github.pdf"
-	cp hw-3.pdf "$(PREFIX)/Homeworks/3 Two Sum.pdf"
+	cp hw-1.pdf "$(PREFIX)/Домашние задания/1 Hello World.pdf"
+	cp hw-2.pdf "$(PREFIX)/Домашние задания/2 Git & Github.pdf"
+	cp hw-3.pdf "$(PREFIX)/Домашние задания/3 Two Sum.pdf"
 
 clean:
 	rm -rf \
