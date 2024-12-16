@@ -18,6 +18,7 @@ ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 	pr-9 \
 	pr-10 \
 	pr-11 \
+	pr-12 \
 	hw-1 \
 	hw-2 \
 	hw-3
@@ -36,6 +37,7 @@ build: \
 	pr-9 \
 	pr-10 \
 	pr-11 \
+	pr-12 \
 	hw-1 \
 	hw-2 \
 	hw-3
@@ -53,6 +55,7 @@ install: build
 	cp pr-9.pdf "$(PREFIX)/Презентации/9 Функции.pdf"
 	cp pr-10.pdf "$(PREFIX)/Презентации/10 Приведения типов.pdf"
 	cp pr-11.pdf "$(PREFIX)/Презентации/11 Структуры и классы.pdf"
+	cp pr-12.pdf "$(PREFIX)/Презентации/12 Виртуальные методы и полиморфизм.pdf"
 	mkdir -p "$(PREFIX)/Домашние задания"
 	cp hw-1.pdf "$(PREFIX)/Домашние задания/1 Hello World.pdf"
 	cp hw-2.pdf "$(PREFIX)/Домашние задания/2 Git & Github.pdf"
@@ -105,6 +108,7 @@ pr-8: pr-8.pdf
 pr-9: pr-9.pdf
 pr-10: pr-10.pdf
 pr-11: pr-11.pdf
+pr-12: pr-12.pdf
 
 hw-1: hw-1.pdf
 hw-2: hw-2.pdf
@@ -253,6 +257,13 @@ pr-10.pdf: \
 
 pr-11.pdf: \
 	Presentations/11-Structs-and-classes/structs-and-classes.tex \
+	Presentations/presentationtemplate.sty \
+	$(wildcard Presentations/images/*-logo.png) \
+	Packages/mylisting.sty
+	$(call generate_pdf,$<,$@)
+
+pr-12.pdf: \
+	Presentations/12-Virtual-members/virtual-members.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	Packages/mylisting.sty
