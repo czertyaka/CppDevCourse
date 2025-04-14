@@ -3,11 +3,17 @@ ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 .PHONY: \
 	all \
 	build \
-	install \
 	clean \
 	dockerimage \
 	help \
+	hw-1 \
+	hw-2 \
+	hw-3 \
+	install \
 	pr-1 \
+	pr-10 \
+	pr-11 \
+	pr-12 \
 	pr-2 \
 	pr-3 \
 	pr-4 \
@@ -16,17 +22,18 @@ ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 	pr-7 \
 	pr-8 \
 	pr-9 \
-	pr-10 \
-	pr-11 \
-	pr-12 \
-	hw-1 \
-	hw-2 \
-	hw-3
+	prj-auth-lib
 
 all: build
 
 build: \
+	hw-1 \
+	hw-2 \
+	hw-3 \
 	pr-1 \
+	pr-10 \
+	pr-11 \
+	pr-12 \
 	pr-2 \
 	pr-3 \
 	pr-4 \
@@ -35,12 +42,7 @@ build: \
 	pr-7 \
 	pr-8 \
 	pr-9 \
-	pr-10 \
-	pr-11 \
-	pr-12 \
-	hw-1 \
-	hw-2 \
-	hw-3
+	prj-auth-lib
 
 install: build
 	mkdir -p "$(PREFIX)/Презентации"
@@ -60,6 +62,8 @@ install: build
 	cp hw-1.pdf "$(PREFIX)/Домашние задания/1 Hello World.pdf"
 	cp hw-2.pdf "$(PREFIX)/Домашние задания/2 Git & Github.pdf"
 	cp hw-3.pdf "$(PREFIX)/Домашние задания/3 Two Sum.pdf"
+	mkdir -p "$(PREFIX)/Проекты"
+	cp prj-auth-lib.pdf "$(PREFIX)/Проекты/Библиотека идентификации и аутентификации.pdf"
 
 clean:
 	rm -rf \
@@ -79,9 +83,14 @@ clean:
 help:
 	@printf "all\tbuild all presentations and homeworks\n"
 	@printf "build\tbuild all presentations and homeworks\n"
-	@printf "install\tinstall all presentations and homeworks\n"
 	@printf "clean\tremove build artifacts\n"
 	@printf "help\tprint this message\n"
+	@printf "hw-1\tbuild homework hw-1.pdf\n"
+	@printf "hw-2\tbuild homework hw-2.pdf\n"
+	@printf "hw-3\tbuild homework hw-3.pdf\n"
+	@printf "install\tinstall all presentations and homeworks\n"
+	@printf "pr-10\tbuild presentation pr-10.pdf\n"
+	@printf "pr-11\tbuild presentation pr-11.pdf\n"
 	@printf "pr-1\tbuild presentation pr-1.pdf\n"
 	@printf "pr-2\tbuild presentation pr-2.pdf\n"
 	@printf "pr-3\tbuild presentation pr-3.pdf\n"
@@ -91,11 +100,7 @@ help:
 	@printf "pr-7\tbuild presentation pr-7.pdf\n"
 	@printf "pr-8\tbuild presentation pr-8.pdf\n"
 	@printf "pr-9\tbuild presentation pr-9.pdf\n"
-	@printf "pr-10\tbuild presentation pr-10.pdf\n"
-	@printf "pr-11\tbuild presentation pr-11.pdf\n"
-	@printf "hw-1\tbuild homework hw-1.pdf\n"
-	@printf "hw-2\tbuild homework hw-2.pdf\n"
-	@printf "hw-3\tbuild homework hw-3.pdf\n"
+	@printf "prj-auth-lib\tbuild project prj-auth-lib.pdf\n"
 
 pr-1: pr-1.pdf
 pr-2: pr-2.pdf
@@ -113,6 +118,8 @@ pr-12: pr-12.pdf
 hw-1: hw-1.pdf
 hw-2: hw-2.pdf
 hw-3: hw-3.pdf
+
+prj-auth-lib: prj-auth-lib.pdf
 
 dockerimage:
 	docker build \
@@ -296,3 +303,10 @@ hw-3.pdf: \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
+
+prj-auth-lib.pdf: \
+	Projects/Identification-and-Authentication-Library/auth-library.tex \
+	Projects/projecttemplate.sty \
+	Packages/mylisting.sty
+	$(call generate_pdf,$<,$@)
+	
