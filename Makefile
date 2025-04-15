@@ -306,7 +306,8 @@ hw-3.pdf: \
 
 prj-auth-lib.pdf: \
 	Projects/Identification-and-Authentication-Library/auth-library.tex \
-	Projects/projectstemplate.sty \
-	Packages/mylisting.sty
+	$(wildcard Projects/images/*.jpg) \
+	Packages/mylisting.sty \
+	Projects/projectstemplate.sty
 	$(call generate_pdf,$<,$@)
 	
