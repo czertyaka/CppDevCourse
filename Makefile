@@ -22,7 +22,8 @@ ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 	pr-7 \
 	pr-8 \
 	pr-9 \
-	prj-auth-lib
+	prj-auth-lib \
+	prj-enc-exch
 
 all: build
 
@@ -42,7 +43,8 @@ build: \
 	pr-7 \
 	pr-8 \
 	pr-9 \
-	prj-auth-lib
+	prj-auth-lib \
+	prj-enc-exch
 
 install: build
 	mkdir -p "$(PREFIX)/Презентации"
@@ -64,6 +66,7 @@ install: build
 	cp hw-3.pdf "$(PREFIX)/Домашние задания/3 Two Sum.pdf"
 	mkdir -p "$(PREFIX)/Проекты"
 	cp prj-auth-lib.pdf "$(PREFIX)/Проекты/Библиотека идентификации и аутентификации.pdf"
+	cp prj-enc-exch.pdf "$(PREFIX)/Проекты/Baremetal шифрование обмена.pdf"
 
 clean:
 	rm -rf \
@@ -101,6 +104,7 @@ help:
 	@printf "pr-8\tbuild presentation pr-8.pdf\n"
 	@printf "pr-9\tbuild presentation pr-9.pdf\n"
 	@printf "prj-auth-lib\tbuild project prj-auth-lib.pdf\n"
+	@printf "prj-enc-exch\tbuild project prj-enc-exch.pdf\n"
 
 pr-1: pr-1.pdf
 pr-2: pr-2.pdf
@@ -120,6 +124,7 @@ hw-2: hw-2.pdf
 hw-3: hw-3.pdf
 
 prj-auth-lib: prj-auth-lib.pdf
+prj-enc-exch: prj-enc-exch.pdf
 
 dockerimage:
 	docker build \
@@ -311,3 +316,9 @@ prj-auth-lib.pdf: \
 	Projects/projectstemplate.sty
 	$(call generate_pdf,$<,$@)
 	
+prj-enc-exch.pdf: \
+	Projects/Baremetal-exchange-encryption/exchange-encryption.tex \
+	$(wildcard Projects/images/*.jpg) \
+	Packages/mylisting.sty \
+	Projects/projectstemplate.sty
+	$(call generate_pdf,$<,$@)
