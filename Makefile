@@ -117,6 +117,7 @@ prj-enc-exch: prj-enc-exch.pdf
 
 define generate_pdf
 	TEXINPUTS='$(shell pwd)//:' \
+	SOURCE_DATE_EPOCH='$(shell date +%s)' \
 	latexmk \
 		-lualatex \
 		-jobname=$(subst .pdf,,$2) \
