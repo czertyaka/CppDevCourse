@@ -6,64 +6,64 @@ BUILD_DIR := build
 	build \
 	clean \
 	help \
-	hw-1 \
-	hw-2 \
-	hw-3 \
+	hw-01 \
+	hw-02 \
+	hw-03 \
 	install \
-	pr-1 \
+	pr-01 \
+	pr-02 \
+	pr-03 \
+	pr-04 \
+	pr-05 \
+	pr-06 \
+	pr-07 \
+	pr-08 \
+	pr-09 \
 	pr-10 \
 	pr-11 \
 	pr-12 \
-	pr-2 \
-	pr-3 \
-	pr-4 \
-	pr-5 \
-	pr-6 \
-	pr-7 \
-	pr-8 \
-	pr-9 \
 	prj-auth-lib \
 	prj-enc-exch
 
 all: build
 
 build: \
-	hw-1 \
-	hw-2 \
-	hw-3 \
-	pr-1 \
+	hw-01 \
+	hw-02 \
+	hw-03 \
+	pr-01 \
+	pr-02 \
+	pr-03 \
+	pr-04 \
+	pr-05 \
+	pr-06 \
+	pr-07 \
+	pr-08 \
+	pr-09 \
 	pr-10 \
 	pr-11 \
 	pr-12 \
-	pr-2 \
-	pr-3 \
-	pr-4 \
-	pr-5 \
-	pr-6 \
-	pr-7 \
-	pr-8 \
-	pr-9 \
 	prj-auth-lib \
 	prj-enc-exch
 
 install: build
 	mkdir -p "$(PREFIX)/Презентации"
-	cp "$(BUILD_DIR)/pr-1.pdf" "$(PREFIX)/Презентации/1 Введение.pdf"
-	cp "$(BUILD_DIR)/pr-2.pdf" "$(PREFIX)/Презентации/2 Фазы трансляции.pdf"
-	cp "$(BUILD_DIR)/pr-3.pdf" "$(PREFIX)/Презентации/3 Фундаментальные типы.pdf"
-	cp "$(BUILD_DIR)/pr-4.pdf" "$(PREFIX)/Презентации/4 Переменные.pdf"
-	cp "$(BUILD_DIR)/pr-5.pdf" "$(PREFIX)/Презентации/5 Условия.pdf"
-	cp "$(BUILD_DIR)/pr-6.pdf" "$(PREFIX)/Презентации/6 Циклы.pdf"
-	cp "$(BUILD_DIR)/pr-7.pdf" "$(PREFIX)/Презентации/7 Указатели и ссылки.pdf"
-	cp "$(BUILD_DIR)/pr-8.pdf" "$(PREFIX)/Презентации/8 Массивы.pdf"
-	cp "$(BUILD_DIR)/pr-9.pdf" "$(PREFIX)/Презентации/9 Функции.pdf"
+	cp "$(BUILD_DIR)/pr-01.pdf" "$(PREFIX)/Презентации/01 Введение.pdf"
+	cp "$(BUILD_DIR)/pr-02.pdf" "$(PREFIX)/Презентации/02 Фазы трансляции.pdf"
+	cp "$(BUILD_DIR)/pr-03.pdf" "$(PREFIX)/Презентации/03 Фундаментальные типы.pdf"
+	cp "$(BUILD_DIR)/pr-04.pdf" "$(PREFIX)/Презентации/04 Переменные.pdf"
+	cp "$(BUILD_DIR)/pr-05.pdf" "$(PREFIX)/Презентации/05 Условия.pdf"
+	cp "$(BUILD_DIR)/pr-06.pdf" "$(PREFIX)/Презентации/06 Циклы.pdf"
+	cp "$(BUILD_DIR)/pr-07.pdf" "$(PREFIX)/Презентации/07 Указатели и ссылки.pdf"
+	cp "$(BUILD_DIR)/pr-08.pdf" "$(PREFIX)/Презентации/08 Массивы.pdf"
+	cp "$(BUILD_DIR)/pr-09.pdf" "$(PREFIX)/Презентации/09 Функции.pdf"
 	cp "$(BUILD_DIR)/pr-10.pdf" "$(PREFIX)/Презентации/10 Приведения типов.pdf"
 	cp "$(BUILD_DIR)/pr-11.pdf" "$(PREFIX)/Презентации/11 Структуры и классы.pdf"
 	cp "$(BUILD_DIR)/pr-12.pdf" "$(PREFIX)/Презентации/12 Виртуальные методы и полиморфизм.pdf"
 	mkdir -p "$(PREFIX)/Домашние задания"
-	cp "$(BUILD_DIR)/hw-1.pdf" "$(PREFIX)/Домашние задания/1 Hello World.pdf"
-	cp "$(BUILD_DIR)/hw-2.pdf" "$(PREFIX)/Домашние задания/2 Git & Github.pdf"
-	cp "$(BUILD_DIR)/hw-3.pdf" "$(PREFIX)/Домашние задания/3 Two Sum.pdf"
+	cp "$(BUILD_DIR)/hw-01.pdf" "$(PREFIX)/Домашние задания/01 Hello World.pdf"
+	cp "$(BUILD_DIR)/hw-02.pdf" "$(PREFIX)/Домашние задания/02 Git & Github.pdf"
+	cp "$(BUILD_DIR)/hw-03.pdf" "$(PREFIX)/Домашние задания/03 Two Sum.pdf"
 	mkdir -p "$(PREFIX)/Проекты"
 	cp "$(BUILD_DIR)/prj-auth-lib.pdf" "$(PREFIX)/Проекты/Библиотека идентификации и аутентификации.pdf"
 	cp "$(BUILD_DIR)/prj-enc-exch.pdf" "$(PREFIX)/Проекты/Baremetal шифрование обмена.pdf"
@@ -76,40 +76,41 @@ help:
 	@printf "build\tbuild all presentations and homeworks\n"
 	@printf "clean\tremove build artifacts\n"
 	@printf "help\tprint this message\n"
-	@printf "hw-1\tbuild homework hw-1.pdf\n"
-	@printf "hw-2\tbuild homework hw-2.pdf\n"
-	@printf "hw-3\tbuild homework hw-3.pdf\n"
+	@printf "hw-01\tbuild homework hw-01.pdf\n"
+	@printf "hw-02\tbuild homework hw-02.pdf\n"
+	@printf "hw-03\tbuild homework hw-03.pdf\n"
 	@printf "install\tinstall all presentations and homeworks\n"
+	@printf "pr-01\tbuild presentation pr-01.pdf\n"
+	@printf "pr-02\tbuild presentation pr-02.pdf\n"
+	@printf "pr-03\tbuild presentation pr-03.pdf\n"
+	@printf "pr-04\tbuild presentation pr-04.pdf\n"
+	@printf "pr-05\tbuild presentation pr-05.pdf\n"
+	@printf "pr-06\tbuild presentation pr-05.pdf\n"
+	@printf "pr-07\tbuild presentation pr-07.pdf\n"
+	@printf "pr-08\tbuild presentation pr-08.pdf\n"
+	@printf "pr-09\tbuild presentation pr-09.pdf\n"
 	@printf "pr-10\tbuild presentation pr-10.pdf\n"
 	@printf "pr-11\tbuild presentation pr-11.pdf\n"
-	@printf "pr-1\tbuild presentation pr-1.pdf\n"
-	@printf "pr-2\tbuild presentation pr-2.pdf\n"
-	@printf "pr-3\tbuild presentation pr-3.pdf\n"
-	@printf "pr-4\tbuild presentation pr-4.pdf\n"
-	@printf "pr-5\tbuild presentation pr-5.pdf\n"
-	@printf "pr-6\tbuild presentation pr-5.pdf\n"
-	@printf "pr-7\tbuild presentation pr-7.pdf\n"
-	@printf "pr-8\tbuild presentation pr-8.pdf\n"
-	@printf "pr-9\tbuild presentation pr-9.pdf\n"
+	@printf "pr-12\tbuild presentation pr-12.pdf\n"
 	@printf "prj-auth-lib\tbuild project prj-auth-lib.pdf\n"
 	@printf "prj-enc-exch\tbuild project prj-enc-exch.pdf\n"
 
-pr-1: pr-1.pdf
-pr-2: pr-2.pdf
-pr-3: pr-3.pdf
-pr-4: pr-4.pdf
-pr-5: pr-5.pdf
-pr-6: pr-6.pdf
-pr-7: pr-7.pdf
-pr-8: pr-8.pdf
-pr-9: pr-9.pdf
+pr-01: pr-01.pdf
+pr-02: pr-02.pdf
+pr-03: pr-03.pdf
+pr-04: pr-04.pdf
+pr-05: pr-05.pdf
+pr-06: pr-06.pdf
+pr-07: pr-07.pdf
+pr-08: pr-08.pdf
+pr-09: pr-09.pdf
 pr-10: pr-10.pdf
 pr-11: pr-11.pdf
 pr-12: pr-12.pdf
 
-hw-1: hw-1.pdf
-hw-2: hw-2.pdf
-hw-3: hw-3.pdf
+hw-01: hw-01.pdf
+hw-02: hw-02.pdf
+hw-03: hw-03.pdf
 
 prj-auth-lib: prj-auth-lib.pdf
 prj-enc-exch: prj-enc-exch.pdf
@@ -122,8 +123,8 @@ define generate_pdf
 		$1
 endef
 
-pr-1.pdf: \
-	Presentations/1-Intro/intro.tex \
+pr-01.pdf: \
+	Presentations/01-Intro/intro.tex \
 	Presentations/presentationtemplate.sty \
 	Presentations/images/binary-file.png \
 	Presentations/images/source_code.png \
@@ -134,8 +135,8 @@ pr-1.pdf: \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
 
-pr-2.pdf: \
-	Presentations/2-Phases-of-translation/phases_of_translation.tex \
+pr-02.pdf: \
+	Presentations/02-Phases-of-translation/phases_of_translation.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/2-Phases-of-translation/*.cpp) \
@@ -144,8 +145,8 @@ pr-2.pdf: \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
 
-pr-3.pdf: \
-	Presentations/3-Fundamental-types/fundamental_types.tex \
+pr-03.pdf: \
+	Presentations/03-Fundamental-types/fundamental_types.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/3-Fundamental-types/*.cpp) \
@@ -153,8 +154,8 @@ pr-3.pdf: \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
 
-pr-4.pdf: \
-	Presentations/4-Variables/variables.tex \
+pr-04.pdf: \
+	Presentations/04-Variables/variables.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/4-Variables/*.cpp) \
@@ -165,8 +166,8 @@ pr-4.pdf: \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
 
-pr-5.pdf: \
-	Presentations/5-Selection-statements/selection-statements.tex \
+pr-05.pdf: \
+	Presentations/05-Selection-statements/selection-statements.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/5-Selection-statements/*.cpp) \
@@ -177,8 +178,8 @@ pr-5.pdf: \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
 
-pr-6.pdf: \
-	Presentations/6-Iteration-statements/iteration-statements.tex \
+pr-06.pdf: \
+	Presentations/06-Iteration-statements/iteration-statements.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/6-Iteration-statements/*.cpp) \
@@ -189,8 +190,8 @@ pr-6.pdf: \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
 
-pr-7.pdf: \
-	Presentations/7-Pointers-and-References/ptrs-and-refs.tex \
+pr-07.pdf: \
+	Presentations/07-Pointers-and-References/ptrs-and-refs.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/7-Pointers-and-References/*.cpp) \
@@ -201,8 +202,8 @@ pr-7.pdf: \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
 
-pr-8.pdf: \
-	Presentations/8-Arrays/arrays.tex \
+pr-08.pdf: \
+	Presentations/08-Arrays/arrays.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/8-Arrays/*.cpp) \
@@ -213,8 +214,8 @@ pr-8.pdf: \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
 
-pr-9.pdf: \
-	Presentations/9-Functions/functions.tex \
+pr-09.pdf: \
+	Presentations/09-Functions/functions.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	$(wildcard Presentations/9-Functions/*.cpp) \
@@ -251,8 +252,8 @@ pr-12.pdf: \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
 
-hw-1.pdf: \
-	Homeworks/1-Hello-World/hello_world.tex \
+hw-01.pdf: \
+	Homeworks/01-Hello-World/hello_world.tex \
 	Homeworks/homeworktemplate.sty \
 	$(wildcard Homeworks/1-Hello-World/*.cpp) \
 	$(wildcard Homeworks/1-Hello-World/*.txt) \
@@ -261,8 +262,8 @@ hw-1.pdf: \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
 
-hw-2.pdf: \
-	Homeworks/2-Git/git.tex \
+hw-02.pdf: \
+	Homeworks/02-Git/git.tex \
 	Homeworks/homeworktemplate.sty \
 	$(wildcard Homeworks/2-Git/**/*.cpp) \
 	$(wildcard Homeworks/2-Git/**/*.h) \
@@ -270,8 +271,8 @@ hw-2.pdf: \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
 
-hw-3.pdf: \
-	Homeworks/3-TwoSum/two-sum.tex \
+hw-03.pdf: \
+	Homeworks/03-TwoSum/two-sum.tex \
 	Homeworks/homeworktemplate.sty \
 	$(wildcard Homeworks/3-TwoSum/**/*.cpp) \
 	$(wildcard Homeworks/3-TwoSum/**/*.h) \
