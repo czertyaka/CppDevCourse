@@ -410,7 +410,8 @@ int* p2 = static_cast<int*>(p1); // compilation error
     никаких гарантий.
 
     \begin{myinplacelisting}[minted language=cpp]
-typedef void(*t_func)(); // alias for type of pointer to function
+typedef void(*t_func)(); // alias for type of pointer
+                         // to function
 int x {};
 t_func f1 = static_cast<t_func>(&x); // compilation error
 t_func f2 = reinterpret_cast<t_func>(&x);
