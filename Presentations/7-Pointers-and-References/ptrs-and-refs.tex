@@ -282,7 +282,7 @@ int* const p1 = &c;
     \begin{myinplacelisting}[minted language=cpp]
 int a {};
 int b {};
-int* |\colorbox{yellow}{const}| p = &a;
+|\colorbox{yellow}{const}| int* p = &a;
 p = &b; // ok, p points to b
 *p = 1; // compilation error
     \end{myinplacelisting}
