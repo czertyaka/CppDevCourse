@@ -1,4 +1,5 @@
 ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+BUILD_DIR := build
 
 .PHONY: \
 	all \
@@ -47,25 +48,25 @@ build: \
 
 install: build
 	mkdir -p "$(PREFIX)/Презентации"
-	cp pr-1.pdf "$(PREFIX)/Презентации/1 Введение.pdf"
-	cp pr-2.pdf "$(PREFIX)/Презентации/2 Фазы трансляции.pdf"
-	cp pr-3.pdf "$(PREFIX)/Презентации/3 Фундаментальные типы.pdf"
-	cp pr-4.pdf "$(PREFIX)/Презентации/4 Переменные.pdf"
-	cp pr-5.pdf "$(PREFIX)/Презентации/5 Условия.pdf"
-	cp pr-6.pdf "$(PREFIX)/Презентации/6 Циклы.pdf"
-	cp pr-7.pdf "$(PREFIX)/Презентации/7 Указатели и ссылки.pdf"
-	cp pr-8.pdf "$(PREFIX)/Презентации/8 Массивы.pdf"
-	cp pr-9.pdf "$(PREFIX)/Презентации/9 Функции.pdf"
-	cp pr-10.pdf "$(PREFIX)/Презентации/10 Приведения типов.pdf"
-	cp pr-11.pdf "$(PREFIX)/Презентации/11 Структуры и классы.pdf"
-	cp pr-12.pdf "$(PREFIX)/Презентации/12 Виртуальные методы и полиморфизм.pdf"
+	cp "$(BUILD)/pr-1.pdf" "$(PREFIX)/Презентации/1 Введение.pdf"
+	cp "$(BUILD)/pr-2.pdf" "$(PREFIX)/Презентации/2 Фазы трансляции.pdf"
+	cp "$(BUILD)/pr-3.pdf" "$(PREFIX)/Презентации/3 Фундаментальные типы.pdf"
+	cp "$(BUILD)/pr-4.pdf" "$(PREFIX)/Презентации/4 Переменные.pdf"
+	cp "$(BUILD)/pr-5.pdf" "$(PREFIX)/Презентации/5 Условия.pdf"
+	cp "$(BUILD)/pr-6.pdf" "$(PREFIX)/Презентации/6 Циклы.pdf"
+	cp "$(BUILD)/pr-7.pdf" "$(PREFIX)/Презентации/7 Указатели и ссылки.pdf"
+	cp "$(BUILD)/pr-8.pdf" "$(PREFIX)/Презентации/8 Массивы.pdf"
+	cp "$(BUILD)/pr-9.pdf" "$(PREFIX)/Презентации/9 Функции.pdf"
+	cp "$(BUILD)/pr-10.pdf" "$(PREFIX)/Презентации/10 Приведения типов.pdf"
+	cp "$(BUILD)/pr-11.pdf" "$(PREFIX)/Презентации/11 Структуры и классы.pdf"
+	cp "$(BUILD)/pr-12.pdf" "$(PREFIX)/Презентации/12 Виртуальные методы и полиморфизм.pdf"
 	mkdir -p "$(PREFIX)/Домашние задания"
-	cp hw-1.pdf "$(PREFIX)/Домашние задания/1 Hello World.pdf"
-	cp hw-2.pdf "$(PREFIX)/Домашние задания/2 Git & Github.pdf"
-	cp hw-3.pdf "$(PREFIX)/Домашние задания/3 Two Sum.pdf"
+	cp "$(BUILD)/hw-1.pdf" "$(PREFIX)/Домашние задания/1 Hello World.pdf"
+	cp "$(BUILD)/hw-2.pdf" "$(PREFIX)/Домашние задания/2 Git & Github.pdf"
+	cp "$(BUILD)/hw-3.pdf" "$(PREFIX)/Домашние задания/3 Two Sum.pdf"
 	mkdir -p "$(PREFIX)/Проекты"
-	cp prj-auth-lib.pdf "$(PREFIX)/Проекты/Библиотека идентификации и аутентификации.pdf"
-	cp prj-enc-exch.pdf "$(PREFIX)/Проекты/Baremetal шифрование обмена.pdf"
+	cp "$(BUILD)/prj-auth-lib.pdf" "$(PREFIX)/Проекты/Библиотека идентификации и аутентификации.pdf"
+	cp "$(BUILD)/prj-enc-exch.pdf" "$(PREFIX)/Проекты/Baremetal шифрование обмена.pdf"
 
 clean:
 	rm -rf \
@@ -128,9 +129,6 @@ prj-enc-exch: prj-enc-exch.pdf
 define generate_pdf
 	TEXINPUTS='$(shell pwd)//:' \
 	latexmk \
-		-halt-on-error \
-		-shell-escape \
-		-verbose \
 		-lualatex \
 		-jobname=$(subst .pdf,,$2) \
 		$1
