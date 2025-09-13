@@ -4,7 +4,6 @@ ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 	all \
 	build \
 	clean \
-	dockerimage \
 	help \
 	hw-1 \
 	hw-2 \
@@ -126,30 +125,15 @@ hw-3: hw-3.pdf
 prj-auth-lib: prj-auth-lib.pdf
 prj-enc-exch: prj-enc-exch.pdf
 
-dockerimage:
-	docker build \
-		--build-arg UID=$(shell id -u) \
-		--build-arg GID=$(shell id -g) \
-		-t cppdevcourse/texlive:latest \
-		$(ROOT_DIR)
-
-%.pdf: Dockerfile
-
 define generate_pdf
-	$(MAKE) dockerimage
-	docker run \
-		--rm \
-		-u $(shell id -u):$(shell id -g) \
-		-v $(ROOT_DIR):/workdir/ \
-		-e TEXINPUTS='/workdir//:' \
-		cppdevcourse/texlive:latest \
-		latexmk \
-			-halt-on-error \
-			-shell-escape \
-			-verbose \
-			-lualatex \
-			-jobname=$(subst .pdf,,$2) \
-			$1
+	TEXINPUTS='$(shell pwd)//:' \
+	latexmk \
+		-halt-on-error \
+		-shell-escape \
+		-verbose \
+		-lualatex \
+		-jobname=$(subst .pdf,,$2) \
+		$1
 endef
 
 pr-1.pdf: \
