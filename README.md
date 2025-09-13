@@ -1,5 +1,7 @@
 # CppDevCourse
 
+[![Compile](https://github.com/czertyaka/CppDevCourse/actions/workflows/compile.yml/badge.svg)](https://github.com/czertyaka/CppDevCourse/actions/workflows/compile.yml)
+
 Презентации лекций и домашние задания курса "Введение в разработку на C++".
 Файлы с исходным кодом документов написаны на LaTeX, для генерации pdf-файлов используется LuaTeX.
 
