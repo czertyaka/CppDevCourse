@@ -69,19 +69,7 @@ install: build
 	cp "$(BUILD_DIR)/prj-enc-exch.pdf" "$(PREFIX)/Проекты/Baremetal шифрование обмена.pdf"
 
 clean:
-	rm -rf \
-		*.aux \
-		*.fdb_latexmk \
-		*.fls \
-		*.listing \
-		*.log \
-		*.nav \
-		*.out \
-		*.pdf \
-		*.snm \
-		*.toc \
-		*.vrb \
-		_minted*
+	rm -rf $(BUILD_DIR)
 
 help:
 	@printf "all\tbuild all presentations and homeworks\n"
