@@ -129,8 +129,8 @@ pr-01.pdf: \
 	Presentations/images/binary-file.png \
 	Presentations/images/source_code.png \
 	$(wildcard Presentations/images/*-logo.png) \
-	$(wildcard Presentations/1-Intro/*.cpp) \
-	$(wildcard Presentations/1-Intro/*.h) \
+	$(wildcard Presentations/01-Intro/*.cpp) \
+	$(wildcard Presentations/01-Intro/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
@@ -139,8 +139,8 @@ pr-02.pdf: \
 	Presentations/02-Phases-of-translation/phases_of_translation.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
-	$(wildcard Presentations/2-Phases-of-translation/*.cpp) \
-	$(wildcard Presentations/2-Phases-of-translation/*.h) \
+	$(wildcard Presentations/02-Phases-of-translation/*.cpp) \
+	$(wildcard Presentations/02-Phases-of-translation/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
@@ -149,7 +149,7 @@ pr-03.pdf: \
 	Presentations/03-Fundamental-types/fundamental_types.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
-	$(wildcard Presentations/3-Fundamental-types/*.cpp) \
+	$(wildcard Presentations/03-Fundamental-types/*.cpp) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
@@ -158,10 +158,10 @@ pr-04.pdf: \
 	Presentations/04-Variables/variables.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
-	$(wildcard Presentations/4-Variables/*.cpp) \
-	$(wildcard Presentations/4-Variables/*.h) \
-	$(wildcard Presentations/4-Variables/**/*.cpp) \
-	$(wildcard Presentations/4-Variables/**/*.h) \
+	$(wildcard Presentations/04-Variables/*.cpp) \
+	$(wildcard Presentations/04-Variables/*.h) \
+	$(wildcard Presentations/04-Variables/**/*.cpp) \
+	$(wildcard Presentations/04-Variables/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
@@ -170,10 +170,10 @@ pr-05.pdf: \
 	Presentations/05-Selection-statements/selection-statements.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
-	$(wildcard Presentations/5-Selection-statements/*.cpp) \
-	$(wildcard Presentations/5-Selection-statements/*.h) \
-	$(wildcard Presentations/5-Selection-statements/**/*.cpp) \
-	$(wildcard Presentations/5-Selection-statements/**/*.h) \
+	$(wildcard Presentations/05-Selection-statements/*.cpp) \
+	$(wildcard Presentations/05-Selection-statements/*.h) \
+	$(wildcard Presentations/05-Selection-statements/**/*.cpp) \
+	$(wildcard Presentations/05-Selection-statements/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
@@ -182,10 +182,10 @@ pr-06.pdf: \
 	Presentations/06-Iteration-statements/iteration-statements.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
-	$(wildcard Presentations/6-Iteration-statements/*.cpp) \
-	$(wildcard Presentations/6-Iteration-statements/*.h) \
-	$(wildcard Presentations/6-Iteration-statements/**/*.cpp) \
-	$(wildcard Presentations/6-Iteration-statements/**/*.h) \
+	$(wildcard Presentations/06-Iteration-statements/*.cpp) \
+	$(wildcard Presentations/06-Iteration-statements/*.h) \
+	$(wildcard Presentations/06-Iteration-statements/**/*.cpp) \
+	$(wildcard Presentations/06-Iteration-statements/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
@@ -194,10 +194,10 @@ pr-07.pdf: \
 	Presentations/07-Pointers-and-References/ptrs-and-refs.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
-	$(wildcard Presentations/7-Pointers-and-References/*.cpp) \
-	$(wildcard Presentations/7-Pointers-and-References/*.h) \
-	$(wildcard Presentations/7-Pointers-and-References/**/*.cpp) \
-	$(wildcard Presentations/7-Pointers-and-References/**/*.h) \
+	$(wildcard Presentations/07-Pointers-and-References/*.cpp) \
+	$(wildcard Presentations/07-Pointers-and-References/*.h) \
+	$(wildcard Presentations/07-Pointers-and-References/**/*.cpp) \
+	$(wildcard Presentations/07-Pointers-and-References/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
@@ -206,10 +206,10 @@ pr-08.pdf: \
 	Presentations/08-Arrays/arrays.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
-	$(wildcard Presentations/8-Arrays/*.cpp) \
-	$(wildcard Presentations/8-Arrays/*.h) \
-	$(wildcard Presentations/8-Arrays/**/*.cpp) \
-	$(wildcard Presentations/8-Arrays/**/*.h) \
+	$(wildcard Presentations/08-Arrays/*.cpp) \
+	$(wildcard Presentations/08-Arrays/*.h) \
+	$(wildcard Presentations/08-Arrays/**/*.cpp) \
+	$(wildcard Presentations/08-Arrays/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
@@ -218,10 +218,10 @@ pr-09.pdf: \
 	Presentations/09-Functions/functions.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
-	$(wildcard Presentations/9-Functions/*.cpp) \
-	$(wildcard Presentations/9-Functions/*.h) \
-	$(wildcard Presentations/9-Functions/**/*.cpp) \
-	$(wildcard Presentations/9-Functions/**/*.h) \
+	$(wildcard Presentations/09-Functions/*.cpp) \
+	$(wildcard Presentations/09-Functions/*.h) \
+	$(wildcard Presentations/09-Functions/**/*.cpp) \
+	$(wildcard Presentations/09-Functions/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
@@ -255,9 +255,9 @@ pr-12.pdf: \
 hw-01.pdf: \
 	Homeworks/01-Hello-World/hello_world.tex \
 	Homeworks/homeworktemplate.sty \
-	$(wildcard Homeworks/1-Hello-World/*.cpp) \
-	$(wildcard Homeworks/1-Hello-World/*.txt) \
-	$(wildcard Homeworks/1-Hello-World/*.h) \
+	$(wildcard Homeworks/01-Hello-World/*.cpp) \
+	$(wildcard Homeworks/01-Hello-World/*.txt) \
+	$(wildcard Homeworks/01-Hello-World/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
@@ -265,8 +265,8 @@ hw-01.pdf: \
 hw-02.pdf: \
 	Homeworks/02-Git/git.tex \
 	Homeworks/homeworktemplate.sty \
-	$(wildcard Homeworks/2-Git/**/*.cpp) \
-	$(wildcard Homeworks/2-Git/**/*.h) \
+	$(wildcard Homeworks/02-Git/**/*.cpp) \
+	$(wildcard Homeworks/02-Git/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
@@ -274,8 +274,8 @@ hw-02.pdf: \
 hw-03.pdf: \
 	Homeworks/03-TwoSum/two-sum.tex \
 	Homeworks/homeworktemplate.sty \
-	$(wildcard Homeworks/3-TwoSum/**/*.cpp) \
-	$(wildcard Homeworks/3-TwoSum/**/*.h) \
+	$(wildcard Homeworks/03-TwoSum/**/*.cpp) \
+	$(wildcard Homeworks/03-TwoSum/**/*.h) \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
 	$(call generate_pdf,$<,$@)
