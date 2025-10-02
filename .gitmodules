@@ -4,3 +4,6 @@
 [submodule "Homeworks/2-Git/hw-project"]
 	path = Homeworks/02-Git/hw-project
 	url = git@github.com:czertyaka/CppDevCourse-hw2.git
+[submodule "Homeworks/04-Guessing-Game/hw-project"]
+	path = Homeworks/04-Guessing-Game/hw-project
+	url = git@github.com:czertyaka/CppDevCourse-hw-guessing-game.git
