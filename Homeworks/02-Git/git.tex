@@ -9,6 +9,7 @@
 \usepackage{array}
 \usepackage{pdflscape}
 \usepackage{everypage}
+\usepackage{csquotes}
 
 \renewcommand{\arraystretch}{1.2}
 
@@ -218,7 +219,7 @@ Total Test time (real) =   0.04 sec
     \subsection{Отправка изменений}
 
     Добавьте созданный файл \textit{main.cpp} в индекс Git, создайте коммит
-    с сообщением "added main.cpp" и отправьте изменения в форк:
+    с сообщением \enquote{added main.cpp} и отправьте изменения в форк:
 
     \begin{terminalwindow}
 !\shellcommand{git add main.cpp}!
@@ -295,7 +296,7 @@ nothing added to commit but untracked files present (use "git add" to track)
             \textit{main.cpp};
 
         \item пулл-реквест прошел автоматизированную проверку (во вкладке
-            \textit{Conversation} есть статус "All checks have passed").
+            \textit{Conversation} есть статус \enquote{All checks have passed}).
 
     \end{enumerate}
 
