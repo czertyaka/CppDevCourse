@@ -323,6 +323,65 @@ x=-1
 
 \begin{frame}[fragile]
 
+    \frametitle{Аргументы функции: order of evaluation\footnote{\url{https://en.cppreference.com/w/cpp/language/eval\_order.html}}}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{myinplacelisting}[minted language=cpp]
+#include <iostream>
+
+int foo() {
+    std::cout << "foo\n";
+    return 1;
+}
+
+int bar() {
+    std::cout << "bar\n";
+    return 2;
+}
+
+void sum(int a, int b) {
+    std::cout << a + b
+        << '\n';
+}
+
+int main() {
+    sum(foo(), bar());
+}
+            \end{myinplacelisting}
+
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{terminalwindow}
+!\shellcommand{g++ -O0 main.cpp}!
+!\shellcommand{./a.out}!
+bar
+foo
+3
+!\shellcommand{clang++ -O0 main.cpp}!
+!\shellcommand{./a.out}!
+foo
+bar
+3
+            \end{terminalwindow}
+
+            Порядок вычисления значений аргументов функции является
+            \textbf{unspecified behaviour}\footnotemark{}.
+
+            \footnotetext{\url{https://en.wikipedia.org/wiki/Unspecified\_behavior}}
+
+        \end{column}
+
+    \end{columns}
+    
+\end{frame}
+
+\begin{frame}[fragile]
+
     \frametitle{Возвращаемое значение функции}
 
     Функция может возвращать результат своего выполнения в \textbf{возвращаемоем значении}
