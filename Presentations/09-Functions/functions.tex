@@ -58,7 +58,7 @@
     \begin{itemize}
         \item имя функции;
         \item параметры функции (без имен);
-        \item спецификаторы \verb|constexpr|, \verb|inline|, \verb|static| и др.
+        \item спецификаторы \verb|constexpr|, \verb|consteval|, \verb|inline|, \verb|static| и др.
     \end{itemize}
 
     \hfill\break
@@ -674,9 +674,9 @@ namespace {
 
 \begin{frame}[fragile]
 
-    \frametitle{\texttt{constexpr} функции}
+    \frametitle{\texttt{constexpr} выражения}
 
-    C++ поддерживает два типа иммутабельности:
+    C++ поддерживает два типа иммутабельности в выражениях:
 
     \begin{itemize}
         \item \verb|const|;
@@ -687,7 +687,7 @@ namespace {
     \footnotetext{\url{https://en.cppreference.com/w/cpp/language/constant\_expression\#Core\_constant\_expressions}}
 
     \hfill\break
-    Обычные функции нельзя использовать в \verb|constexpr|, поскольку
+    Обычные функции нельзя использовать в \verb|constexpr| выражении, поскольку
     их возвращаемое значение вычисляется во время выполнения программы, а не во время
     компиляции:
 
@@ -717,12 +717,41 @@ constexpr unsigned factorial(const unsigned n) {
     return n * factorial(n - 1);
 }
 
-int main() {
-    // must be evaluated at compile time
-    constexpr unsigned f1 = factorial(9);
+unsigned sum() {
+    // will be evaluated at compile time
+    unsigned f1 = factorial(4);
+
+    // will be evaluated at runtime
+    unsigned f2 = factorial(get_from_user());
+
+    return f1 + f2;
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{\texttt{consteval} функции}
+
+    В отличие от \verb|constexpr| функций, \verb|consteval| функции\footnotemark{}
+    \textit{обязаны} быть вычислены во время компиляции.
+    \verb|consteval| функции появились в стандарте C++20.
+
+    \footnotetext{\url{http://en.cppreference.com/w/cpp/language/consteval.html}}
+
+    \begin{myinplacelisting}[minted language=cpp]
+unsigned get_from_user();
+consteval unsigned factorial(const unsigned n) {/*...*/}
+
+unsigned sum() {
+    // **must** be evaluated at compile time
+    unsigned f1 = factorial(4);
 
     // compilation error
-    constexpr unsigned f2 = factorial(get_from_user());
+    unsigned f2 = factorial(get_from_user());
+
+    return f1 + f2;
 }
     \end{myinplacelisting}
 
