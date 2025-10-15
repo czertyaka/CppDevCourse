@@ -10,6 +10,7 @@ BUILD_DIR := build
 	hw-02 \
 	hw-03 \
 	hw-04 \
+	hw-05 \
 	install \
 	pr-01 \
 	pr-02 \
@@ -33,6 +34,7 @@ build: \
 	hw-02 \
 	hw-03 \
 	hw-04 \
+	hw-05 \
 	pr-01 \
 	pr-02 \
 	pr-03 \
@@ -67,6 +69,7 @@ install: build
 	cp "$(BUILD_DIR)/hw-02.pdf" "$(PREFIX)/Домашние задания/02 Git & Github.pdf"
 	cp "$(BUILD_DIR)/hw-03.pdf" "$(PREFIX)/Домашние задания/03 Two Sum.pdf"
 	cp "$(BUILD_DIR)/hw-04.pdf" "$(PREFIX)/Домашние задания/04 The Guessing Game.pdf"
+	cp "$(BUILD_DIR)/hw-05.pdf" "$(PREFIX)/Домашние задания/05 Hide Secret.pdf"
 	mkdir -p "$(PREFIX)/Проекты"
 	cp "$(BUILD_DIR)/prj-auth-lib.pdf" "$(PREFIX)/Проекты/Библиотека идентификации и аутентификации.pdf"
 	cp "$(BUILD_DIR)/prj-enc-exch.pdf" "$(PREFIX)/Проекты/Baremetal шифрование обмена.pdf"
@@ -83,6 +86,7 @@ help:
 	@printf "hw-02\tbuild homework hw-02.pdf\n"
 	@printf "hw-03\tbuild homework hw-03.pdf\n"
 	@printf "hw-04\tbuild homework hw-04.pdf\n"
+	@printf "hw-05\tbuild homework hw-05.pdf\n"
 	@printf "install\tinstall all presentations and homeworks\n"
 	@printf "pr-01\tbuild presentation pr-01.pdf\n"
 	@printf "pr-02\tbuild presentation pr-02.pdf\n"
@@ -116,6 +120,7 @@ hw-01: hw-01.pdf
 hw-02: hw-02.pdf
 hw-03: hw-03.pdf
 hw-04: hw-04.pdf
+hw-05: hw-05.pdf
 
 prj-auth-lib: prj-auth-lib.pdf
 prj-enc-exch: prj-enc-exch.pdf
@@ -286,6 +291,13 @@ hw-03.pdf: \
 
 hw-04.pdf: \
 	Homeworks/04-Guessing-Game/guessing-game.tex \
+	Homeworks/homeworktemplate.sty \
+	Packages/terminal.sty \
+	Packages/mylisting.sty
+	$(call generate_pdf,$<,$@)
+
+hw-05.pdf: \
+	Homeworks/05-Hide-Secret/hide-secret.tex \
 	Homeworks/homeworktemplate.sty \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
