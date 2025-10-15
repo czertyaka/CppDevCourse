@@ -8,6 +8,7 @@
 \usepackage{tcolorbox}
 \usepackage{tikz}
 \usetikzlibrary{positioning}
+\usepackage{csquotes}
 
 \newtcolorbox{task}{
     colback=yellow!50!white,
@@ -417,6 +418,43 @@ int main() {
 }
     \end{myinplacelisting}
 
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{C-строки}
+
+    Строковые литералы являются частным случаем хранения текста
+    в виде последовательности символов в памяти с нуль-терминатором
+    в качестве последнего символа.
+
+    \hfill \break
+    Такой способ хранения жаргонно называется \enquote{C-строками}
+    вне зависимости от расположения массива в памяти (в куче, на стеке или
+    в глобальном пространстве).
+    В документации на \href{https://en.cppreference.com/}{cppreference.com} они названы
+    \enquote{Null terminated byte strings}\footnotemark{}.
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/string/byte.html}}
+
+    \hfill \break
+    Полезно знать некоторые функции из стандартной библиотеки, которые
+    предназначены для работы с \enquote{C-строками}:
+
+    \begin{itemize}
+
+        \item \texttt{strlen} \textemdash \space для определения длины строки;
+
+        \item \texttt{strcmp}, \texttt{strncmp} \textemdash \space
+            для сравнения двух строк;
+
+        \item \texttt{strcpy}, \texttt{strncpy} \textemdash \space
+            для копирования строк;
+
+        \item и др.
+        
+    \end{itemize}
+    
 \end{frame}
 
 \end{document}
