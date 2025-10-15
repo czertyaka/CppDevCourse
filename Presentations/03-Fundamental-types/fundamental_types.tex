@@ -12,6 +12,7 @@
 \usepackage{multirow}
 \usepackage[flushleft]{threeparttable}
 \usepackage{emoji}
+\usepackage{csquotes}
 
 \setemojifont{AppleColorEmoji.ttf}[Path=Fonts/]
 
@@ -1099,9 +1100,9 @@ const.cpp:3:7: !\textcolor{red}{error}!: assignment of read-only variable ‘i�
 
     \frametitle{Квалификатор \texttt{volatile}}
 
-    Правило "как если" (\textbf{as-if rule}) в C++ позволяет компиляторам
+    Правило \enquote{как если} (\textbf{as-if rule}) в C++ позволяет компиляторам
     выполнять любые оптимизации кода, при условии что они не изменяют
-    "наблюдаемое поведение" программы.
+    \enquote{наблюдаемое поведение} программы.
 
     \hfill \break
 
