@@ -765,20 +765,141 @@ unsigned sum() {
 
     \begin{myinplacelisting}[minted language=cpp]
 void foo() {}
-int bar(int x, int y) { return 1; }
+int callback(int x, int y) { return 1; }
 
-void callback(int (*p)(int, int)) {
+void bar(int (*p)(int, int)) {
     const int x = (*p)(1, 2); // calling function which p
                               // points to
 }
 
 int main() {
     void (*pfoo)() = &foo; // pointer to function foo
-    int (*pbar)(int, int) = &bar; // pointer to function bar
-    callback(pbar);
+    void (*pnull)() = nullptr; // null pointer to function
+    // pointer to function callback
+    int (*pcallback)(int, int) = &callback;
+    bar(pcallback);
 }
     \end{myinplacelisting}
 
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Псевдоним типа указателя на функцию}
+
+    Синтаксис объявления типа указателя на функцию в случае
+    функций со сложной сигнатурой многословен.
+    Чтобы избежать избыточной многословности, можно использовать
+    \textbf{псевдоним типа}\footnotemark{}.
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/language/type\_alias.html}}
+
+    \begin{myinplacelisting}[minted language=cpp]
+using t_pfunc = int(*)(int, int);
+
+int callback(int x, int y);
+void bar(t_pfunc p);
+
+int main() {
+    t_pfunc pcallback = callback;
+    t_pfunc pcallback0 = &callback; // same
+    bar(pcallback);
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Псевдоним типа функции}
+
+    Псевдонимы типов можно использовать не только для
+    объявления указателей на функции, но и для
+    объявления самих функций.
+    Но создать объект с типом \enquote{функция}
+    все равно нельзя.
+
+    \begin{myinplacelisting}[minted language=cpp]
+void foo(int);
+using t_func = void(int);
+
+void bar(t_func callback) {
+    callback(1);
+}
+
+int main() {
+    t_func callback = foo; // compilation error
+    t_func* pcallback = foo;
+    bar(pcallback);
+}
+    \end{myinplacelisting}
+    
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Массив указателей на функцию}
+
+    Простой пример массива указателей на
+    функции:
+
+    \begin{myinplacelisting}[minted language=cpp]
+int a(); int b(); int c();
+
+int main() {
+    int (*arr0[])() = {a, b, c};
+
+    using t_pfunc = int(*)();
+    t_pfunc arr1[] = {a, b, c};
+
+    for (unsigned i = 0; i < 3; ++i) {
+        (*arr1[i])(); // calling a(), b()
+                      // c()
+    }
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Ссылки на функцию}
+
+    Помимо указателей на функцию, можно создавать
+    и ссылку на функцию.
+
+    \begin{myinplacelisting}[minted language=cpp]
+using t_rfunc = void(&)(char, double);
+void foo(char, double);
+
+void bar(t_rfunc callback) {
+    callback('c', 1.0);
+}
+
+int main() {
+    t_rfunc callback = foo;
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Работа с памятью и ссылочные типы на функции}
+
+    \begin{task}
+        Объясните, что произойдет после компиляции и выполнения
+        приложения на листинге ниже, и почему.
+    \end{task}
+
+    \begin{myinplacelisting}[minted language=cpp]
+int main() {
+    using t_func = void(*)();
+    t_func p = (t_func)(new int[100]);
+    (*p)();
+}
+    \end{myinplacelisting}
+    
 \end{frame}
 
 \end{document}
