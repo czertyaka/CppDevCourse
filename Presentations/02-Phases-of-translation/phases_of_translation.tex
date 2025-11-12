@@ -1,10 +1,10 @@
 % !TeX TS-program = xelatex
 
-\documentclass[compress]{beamer}
+\documentclass[compress, 10pt]{beamer}
 
 \usepackage{presentationtemplate}
-\usepackage[fontsize=\tiny, askip=3mm]{terminal}
-\usepackage[fontsize=\tiny, linenosfontsize=\tiny, askip=3mm]{mylisting}
+\usepackage[fontsize=\scriptsize, askip=3mm, bskip=3mm]{terminal}
+\usepackage[fontsize=\scriptsize, linenosfontsize=\tiny, askip=3mm, bskip=3mm]{mylisting}
 \usepackage{makecell}
 \usepackage{tikz}
 
@@ -671,6 +671,152 @@ Hello, world!
         \end{column}
 
     \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Релокации}
+
+    Во время компиляции одной единицы трансляции компилятор
+    не может знать адреса функций, которые не были определены
+    в данной единице трансляции.
+
+    \begin{myinplacelisting}[minted language=cpp]
+void foo();
+
+void bar() {
+    // Which address to put in assembly for `foo`?
+    foo();
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Релокации}
+
+    На этапе компиляции единицы трансляции компилятор сделает две вещи:
+
+    \begin{enumerate}
+
+        \item В инструкцию \texttt{call} компилятор
+            вместо адреса \texttt{foo} положит нули.
+
+        \item Компилятор создаст \textit{таблицу релокации}
+            в объектном файле,
+            в которой поставит в соответствие адресу
+            первого нуля имя нужной функции.
+
+    \end{enumerate}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  
+    \frametitle{Релокации}
+
+    \begin{terminalwindow}
+!\shellcommand{g++ -c bar.cpp}!
+
+!\shellcommand{objdump -dC bar.o}!
+
+0000000000000000 <bar()>:
+   0:   55                      push   %rbp
+   1:   48 89 e5                mov    %rsp,%rbp
+   !\colorbox{green}{4}!:  e8 !\colorbox{yellow}{00 00 00 00}!        call   9 <bar()+0x9>
+   9:   90                      nop
+   a:   5d                      pop    %rbp
+   b:   c3                      ret
+
+!\shellcommand{objdump -rC bar.o}!
+
+RELOCATION RECORDS FOR [.text]:
+OFFSET           TYPE              VALUE
+00000000000000!\colorbox{green}{05}! R_X86_64_PLT32   foo()-0x0000000000000004
+    \end{terminalwindow}
+
+    Первый \texttt{00} байт в инструкции \texttt{call} имеет адрес \texttt{5}
+    (\texttt{4}-ый адрес занимает opcode инструкции).
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Релокации}
+
+    На этапе линковки компилятор, используя таблицы релокаций, заполнит
+    все нулевые адреса.
+
+    \begin{columns}[T]
+
+        \begin{column}{0.4\textwidth}
+
+            \myinputlisting[minted language=cpp]
+                {Presentations/02-Phases-of-translation/relocations/}
+                {bar.cpp}
+
+            \myinputlisting[minted language=cpp]
+                {Presentations/02-Phases-of-translation/relocations/}
+                {foo.cpp}
+
+        \end{column}
+
+        \begin{column}{0.6\textwidth}
+
+            \begin{terminalwindow}
+!\shellcommand{objdump -dC main}!
+
+0000000000401106 <bar()>:
+  401106:       55
+  401107:       48 89 e5
+  40110a:       e8 !\colorbox{yellow}{03 00 00 00}!
+  # ...
+
+# ...
+
+0000000000401120 <main>:
+  401120:       55
+  401121:       48 89 e5
+  401124:       e8 !\colorbox{yellow}{dd ff ff ff}!
+  # ...
+
+# ...
+            \end{terminalwindow}
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Релокации}
+
+    Адрес функции из операнда \texttt{call} считается по формуле:
+    \begin{equation*}
+        address = next + operand
+    \end{equation*}
+
+    где \textit{next} \textemdash \space адрес инструкции,
+    следующей за \texttt{call} (\texttt{0x40110f});
+    \textit{operand} \textemdash \space смещение к этому адресу
+    из операнда \texttt{call} (\texttt{0x03}).
+
+    \begin{equation*}
+        \texttt{0x40110f} + \texttt{0x03} = \texttt{0x401112}
+    \end{equation*}
+
+    \begin{terminalwindow}
+0000000000401106 <bar()>:
+  40110a:       e8 !\colorbox{yellow}{03 00 00 00}!         call   401112 <foo()>
+  !\colorbox{yellow}{40110f}!:      90                      nop
+
+0000000000401112 <foo()>:
+  !\colorbox{green}{401112}!:       55                      push   %rbp
+    \end{terminalwindow}
 
 \end{frame}
 
