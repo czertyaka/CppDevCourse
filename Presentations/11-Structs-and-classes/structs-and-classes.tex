@@ -9,6 +9,18 @@
 \usetikzlibrary{positioning}
 \usepackage{csquotes}
 
+\newtcolorbox{task}{
+    colback=yellow!50!white,
+    boxrule=0.02cm,
+    colframe=black,
+    sharp corners,
+    left=0mm,
+    right=0mm,
+    top=0mm,
+    bottom=0mm,
+    before upper={\textbf{Задание}:\:},
+}
+
 \title{Структуры и классы}
 
 \begin{document}
@@ -697,6 +709,314 @@ private:
     int* ptr_;
 };
     \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{\texttt{new}\slash\texttt{delete} vs \texttt{malloc}\slash\texttt{free}}
+
+    Операторы \texttt{new} и \texttt{delete} вызовут конструктор и деструктор
+    объекта соответственно.
+
+    \begin{myinplacelisting}[minted language=cpp]
+struct Foo {
+    Foo() : a(-100) {}
+    int a;
+};
+
+int main() {
+    std::cout << (new Foo)->a << std::endl;
+    Foo* raw = (Foo*)std::malloc(sizeof(Foo));
+    std::cout << raw->a << std::endl;
+}
+    \end{myinplacelisting}
+
+    \begin{terminalwindow}
+!\shellcommand{c++ main.cpp -o main && ./main}!
+-100
+0
+    \end{terminalwindow}
+  
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Удаление методов}
+
+    Можно запрещать использование конструкторов, операторов
+    и методов при помощи ключевого слова \texttt{delete}.
+
+    \begin{myinplacelisting}[minted language=cpp]
+struct Foo {
+    Foo(int) = delete;
+    Foo(long long);
+    Foo& operator=(const Foo& o) = delete;
+    void* operator new(std::size_t) = delete;
+};
+
+int main() {
+    Foo f0 {1}; // compilation error
+    Foo f1 {5ll};
+    Foo* p = new Foo(5ll); // compilation error
+    f1 = f1; // compilation error
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Специальные методы}
+
+    Следующие методы называются \textit{специальными} и могут быть
+    быть сгенерированы компилятором, если их не предоставил пользователь.
+
+    \hfill \break
+
+    \begin{itemize}
+        \item Default constructor
+        \item Copy constructor 
+        \item Move constructor 
+        \item Copy assignment operator 
+        \item Move assignment operator 
+        \item Destructor
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Copy constructor (конструктор копирования)}
+
+    Конструктор копирования позволяет переопределить логику создания
+    копии объекта.
+    
+    \begin{myinplacelisting}[minted language=cpp]
+struct Foo {
+    Foo(int i) : ptr(new int) { *ptr = i; }
+    ~Foo() { delete ptr; }
+
+    // copy constructor
+    Foo(const Foo& o) : ptr(new int) {
+        *ptr = *o.ptr;
+    }
+
+    int* ptr = nullptr;
+};
+
+int main() {
+    Foo a {1};
+    Foo b {a};
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Move constructor (конструктор перемещения)}
+
+    Конструктор перемещения является частью
+    \textit{move-семантики}\footnotemark{}.
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/language/move\_constructor.html}}
+
+    \begin{myinplacelisting}[minted language=cpp]
+struct Foo {
+    Foo() : ptr(new int[1024]) {}
+    ~Foo() { if (ptr) delete[] ptr; }
+
+    // move constructor
+    Foo(Foo&& o) : ptr(o.ptr) {
+        o.ptr = nullptr;
+    }
+
+    int* ptr = nullptr;
+};
+
+int main() {
+    std::vector<Foo> v {};
+
+    Foo f {};
+    v.push_back(std::move(f));
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Assignment operators (операторы присваивания)}
+
+    \begin{task}
+        Найдите недостатки в коде оператора присваивания на листинге ниже.
+    \end{task}
+
+    \begin{myinplacelisting}[minted language=cpp]
+struct Foo {
+    Foo(int i) : ptr(new int) { *ptr = i; }
+    ~Foo() { if (ptr) delete ptr; }
+
+    // copy assignment
+    Foo& operator=(const Foo& o) {
+        ptr = new int;
+        *ptr = *o.ptr;
+        return *this;
+    }
+
+    int* ptr = nullptr;
+};
+
+int main() {
+    Foo a {1}, b {-1};
+    b = a;
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Assignment operators (операторы присваивания)}
+
+    \begin{myinplacelisting}[minted language=cpp]
+struct Foo {
+    Foo() : ptr(new int) {}
+    ~Foo() { if (ptr) delete ptr; }
+
+    // copy assignment
+    Foo& operator=(const Foo& o) {
+        if (this != &o) {
+            if (ptr) {
+                delete ptr;
+            }
+            ptr = new int[1024];
+            *ptr = *o.ptr;
+        }
+        return *this;
+    }
+
+    int* ptr = nullptr;
+};
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Assignment operators (операторы присваивания)}
+
+    \begin{myinplacelisting}[minted language=cpp]
+struct Foo {
+    Foo() : ptr(new int[1024]) {}
+    ~Foo() { if (ptr) delete[] ptr; }
+
+    // move assignment
+    Foo& operator=(Foo&& o) {
+        if (this != &o) {
+            int* tmp {ptr};
+            ptr = o.ptr;
+            o.ptr = tmp;
+        }
+        return *this;
+    }
+
+    int* ptr = nullptr;
+};
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Ключевое слово \texttt{default}}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{myinplacelisting}[minted language=cpp]
+#include <print>
+
+struct Bar {
+    Bar() {
+        std::println("New");
+    }
+};
+
+struct Foo {
+    Foo() = default;
+    Bar bar;
+};
+
+int main() {
+    Foo f {};
+}
+            \end{myinplacelisting}
+
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{terminalwindow}
+!\shellcommand{c++ -std=c++23 main.cpp}!
+!\shellcommand{./a.out}!
+New
+            \end{terminalwindow}
+
+            Можно дать явную инструкцию компилятору сгенерировать
+            один из специальных методов.
+            Для этого используется ключевое слово \texttt{default}.
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Ключевое слово \texttt{default}}
+
+    Для того, чтобы можно было использовать эту возможность, необходимо,
+    чтобы все конструкторы по-умолчанию были определены или сгенерированы.
+
+    \begin{myinplacelisting}[minted language=cpp]
+struct Bar {
+    Bar() = delete;
+};
+
+struct Foo {
+    Foo() = default;
+    Bar bar;
+};
+
+int main() {
+    Foo f {}; // compilation error
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Правило трех}
+
+    Если в классе потребовалось определить \textit{конструктор по-умолчанию},
+    \textit{copy assignment operator} или \textit{деструктор} с непустым телом, то,
+    вероятнее всего, требуется определить все три этих специальных метода.
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Правило пяти}
+
+    Если в классе определены \textit{деструктор}, \textit{конструктор копирования} или
+    \textit{copy assignment operator}, то, вероятнее всего, требуется определить и
+    \textit{конструктор перемещения} и \textit{move assignment operator}.
+    
 
 \end{frame}
 
