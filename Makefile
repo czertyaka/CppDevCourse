@@ -25,6 +25,7 @@ BUILD_DIR := build
 	pr-10 \
 	pr-11 \
 	pr-12 \
+	pr-13 \
 	prj-auth-lib \
 	prj-enc-exch
 
@@ -49,6 +50,7 @@ build: \
 	pr-10 \
 	pr-11 \
 	pr-12 \
+	pr-13 \
 	prj-auth-lib \
 	prj-enc-exch
 
@@ -65,7 +67,8 @@ install: build
 	cp "$(BUILD_DIR)/pr-09.pdf" "$(PREFIX)/Презентации/09 Функции.pdf"
 	cp "$(BUILD_DIR)/pr-10.pdf" "$(PREFIX)/Презентации/10 Приведения типов.pdf"
 	cp "$(BUILD_DIR)/pr-11.pdf" "$(PREFIX)/Презентации/11 Структуры и классы.pdf"
-	cp "$(BUILD_DIR)/pr-12.pdf" "$(PREFIX)/Презентации/12 Виртуальные методы и полиморфизм.pdf"
+	cp "$(BUILD_DIR)/pr-12.pdf" "$(PREFIX)/Презентации/12 Исключения.pdf"
+	cp "$(BUILD_DIR)/pr-13.pdf" "$(PREFIX)/Презентации/13 Виртуальные методы и полиморфизм.pdf"
 	mkdir -p "$(PREFIX)/Домашние задания"
 	cp "$(BUILD_DIR)/hw-01.pdf" "$(PREFIX)/Домашние задания/01 Hello World.pdf"
 	cp "$(BUILD_DIR)/hw-02.pdf" "$(PREFIX)/Домашние задания/02 Git & Github.pdf"
@@ -104,6 +107,7 @@ help:
 	@printf "pr-10\tbuild presentation pr-10.pdf\n"
 	@printf "pr-11\tbuild presentation pr-11.pdf\n"
 	@printf "pr-12\tbuild presentation pr-12.pdf\n"
+	@printf "pr-13\tbuild presentation pr-13.pdf\n"
 	@printf "prj-auth-lib\tbuild project prj-auth-lib.pdf\n"
 	@printf "prj-enc-exch\tbuild project prj-enc-exch.pdf\n"
 
@@ -119,6 +123,7 @@ pr-09: pr-09.pdf
 pr-10: pr-10.pdf
 pr-11: pr-11.pdf
 pr-12: pr-12.pdf
+pr-13: pr-13.pdf
 
 hw-01: hw-01.pdf
 hw-02: hw-02.pdf
@@ -155,6 +160,8 @@ pr-02.pdf: \
 	Presentations/02-Phases-of-translation/phases_of_translation.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
+	$(wildcard Presentations/02-Phases-of-translation/library/*.cpp) \
+	$(wildcard Presentations/02-Phases-of-translation/relocations/*.cpp) \
 	$(wildcard Presentations/02-Phases-of-translation/*.cpp) \
 	$(wildcard Presentations/02-Phases-of-translation/*.h) \
 	Packages/terminal.sty \
@@ -262,7 +269,14 @@ pr-11.pdf: \
 	$(call generate_pdf,$<,$@)
 
 pr-12.pdf: \
-	Presentations/12-Virtual-members/virtual-members.tex \
+	Presentations/12-Exceptions/exceptions.tex \
+	Presentations/presentationtemplate.sty \
+	$(wildcard Presentations/images/*-logo.png) \
+	Packages/mylisting.sty
+	$(call generate_pdf,$<,$@)
+
+pr-13.pdf: \
+	Presentations/13-Virtual-members/virtual-members.tex \
 	Presentations/presentationtemplate.sty \
 	$(wildcard Presentations/images/*-logo.png) \
 	Packages/mylisting.sty
