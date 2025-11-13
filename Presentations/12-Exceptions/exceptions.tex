@@ -392,11 +392,48 @@ void bar(int i) {
 
     \frametitle{Stack unwinding}
 
+    После выбрасывания исключению поток управления переходит
+    в ближайший блок \texttt{catch} вниз по стекам фрейма.
+    Вызываются деструкторы уже созданных объектов.
+    Этот процесс называется \textit{размоткой стека} (stack
+    unwinding).
+
+    \begin{myinplacelisting}[minted language=cpp]
+struct Foo {
+  std::string_view name_;
+  Foo(std::string_view name) : name_(name) {
+    std::println("New: {}", name_);
+  }
+  ~Foo() { std::println("Delete: {}", name_); }
+};
+
+void foo() { Foo f4 {"f4"}; throw 1; Foo f5 {"f5"}; };
+
+void bar() { Foo f2 {"f2"}; foo(); Foo f3 {"f3"}; };
+
+int main() {
+  try { Foo f0 {"f0"}; bar(); Foo f1 {"f1"}; }
+  catch (...) {}
+}
+    \end{myinplacelisting}
+
   \end{frame}
 
   \begin{frame}[fragile]
 
-    \frametitle{\texttt{noexcept} функции}
+    \frametitle{Stack unwinding}
+
+    Пример вывод приложения с прошлого слайда:
+
+    \begin{terminalwindow}
+!\shellcommand{./a.out}!
+New: f0
+New: f2
+New: f4
+Delete: f4
+Delete: f2
+Delete: f0
+    \end{terminalwindow}
 
   \end{frame}
 
@@ -404,17 +441,52 @@ void bar(int i) {
 
     \frametitle{Исключения и деструкторы}
 
+    В процессе размотки стека вызываются деструкторы.
+    Из-за этого нельзя выбрасывать новые исключения в самих
+    деструкторах \textemdash \space C++ runtime не сможет
+    выбросить новое исключение во время обработки уже имеющегося.
+    В этом случае будет вызвана функция \texttt{std::terminate}\footnotemark{}.
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/error/terminate.html}}
+
+    \begin{myinplacelisting}[minted language=cpp]
+struct Foo { ~Foo() { throw 1; } };
+
+int main() {
+  try { Foo f {}; throw 1; }
+  catch (...) {}
+}
+    \end{myinplacelisting}
+
+    \begin{terminalwindow}
+!\shellcommand{./a.out}!
+terminate called after throwing an instance of 'int'
+Aborted (core dumped)
+    \end{terminalwindow}
+
   \end{frame}
 
   \begin{frame}[fragile]
 
-    \frametitle{Исключения из стандартной библиотеки}
+    \frametitle{Спецификатор \texttt{noexcept}}
 
-  \end{frame}
+    Функции, помеченные спецификатором \texttt{noexcept},
+    приведут к вызову \texttt{std::terminate}, если их них
+    будет выброшено исключение.
 
-  \begin{frame}[fragile]
+    \begin{myinplacelisting}[minted language=cpp]
+void bar() { throw 1; }
 
-    \frametitle{Собственные типы исключений}
+void foo() noexcept { bar(); }
+
+int main() { foo(); }
+    \end{myinplacelisting}
+
+    \begin{terminalwindow}
+!\shellcommand{./a.out}!
+terminate called after throwing an instance of 'int'
+Aborted (core dumped)
+    \end{terminalwindow}
 
   \end{frame}
 
