@@ -1,15 +1,15 @@
 [submodule "Homeworks/3-TwoSum/hw-project"]
 	path = Homeworks/03-TwoSum/hw-project
-	url = git@github.com:czertyaka/CppDevCourse-hw3.git
+	url = ../hw-two-sum.git
 [submodule "Homeworks/2-Git/hw-project"]
 	path = Homeworks/02-Git/hw-project
-	url = git@github.com:czertyaka/CppDevCourse-hw2.git
+	url = ../hw-git.git
 [submodule "Homeworks/04-Guessing-Game/hw-project"]
 	path = Homeworks/04-Guessing-Game/hw-project
-	url = git@github.com:czertyaka/CppDevCourse-hw-guessing-game.git
+	url = ../hw-guessing-game.git
 [submodule "Homeworks/06-Hide-Secret/hw-project"]
 	path = Homeworks/05-Hide-Secret/hw-project
-	url = git@github.com:czertyaka/CppDevCourse-hw-hide-secret.git
+	url = ../hw-hide-secret.git
 [submodule "Homeworks/06-LIFO-Stack/hw-project"]
 	path = Homeworks/06-LIFO-Stack/hw-project
-	url = git@github.com:czertyaka/CppDevCourse-hw-lifo-stack.git
+	url = ../hw-lifo-stack.git
