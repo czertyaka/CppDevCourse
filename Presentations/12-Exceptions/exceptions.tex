@@ -1,0 +1,493 @@
+\documentclass[compress, 8pt]{beamer}
+
+\usepackage{presentationtemplate}
+\usepackage[askip=3mm, bskip=3mm]{terminal}
+\usepackage[linenosfontsize=\tiny, askip=3mm, bskip=3mm]{mylisting}
+\usepackage{csquotes}
+
+\newtcolorbox{task}{
+    colback=yellow!50!white,
+    boxrule=0.02cm,
+    colframe=black,
+    sharp corners,
+    left=0mm,
+    right=0mm,
+    top=0mm,
+    bottom=0mm,
+    before upper={\textbf{Задание}:\:},
+}
+
+\title{Исключения}
+
+\begin{document}
+
+  \frame[plain]{\titlepage}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Синтаксис}
+
+    Ключевые слова:
+
+    \begin{itemize}
+      \item \texttt{throw}
+      \item \texttt{try}
+      \item \texttt{catch}
+    \end{itemize}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Синтаксис}
+
+    Типовой упрощенный пример использования исключений:
+
+    \begin{myinplacelisting}[minted language=cpp]
+int foo(unsigned i) {
+    const int arr[] = {1, 2, 3};
+    if (i > 2) {
+        throw std::out_of_range("Too large index");
+    }
+    return arr[i];
+}
+
+unsigned get_index();
+
+int main() {
+    const auto index = get_index();
+    try {
+        std::println("arr[{}] = {}", index, foo(index));
+    }
+    catch (const std::exception& err) {
+        std::println(stderr, "Error: {}", err.what());
+    }
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Обработка ошибок}
+
+    В C++ существует два подхода к обработке ошибок:
+
+    \hfill \break
+
+    \begin{itemize}
+      \item Передача информации об ошибке в возвращаемом значении.
+      \item Механизм исключений.
+    \end{itemize}
+
+    \hfill \break
+
+    Каждый из них имеет свои преимущества и недостатки.
+    Исключения считаются более \enquote{идиоматическим} способом.
+    Рассмотрим сначала альтернативный способ.
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Ошибка в возвращаемом значении}
+
+    \textbf{Вариант 1} \textemdash \space в возвращаемом значении код ошибки,
+    а результаты выполнения передается по ссылке.
+
+    \begin{myinplacelisting}[minted language=cpp]
+enum class Result {
+    OK,
+    OUT_OF_RANGE
+};
+
+Result foo(unsigned i, int& result) {
+    constexpr int arr[] = {1, 2, 3};
+    if (i > 2) {
+        return Result::OUT_OF_RANGE;
+    }
+    result = arr[i];
+    return Result::OK;
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Ошибка в возвращаемом значении}
+
+    \textbf{Вариант 1} \textemdash \space в возвращаемом значении код ошибки,
+    а результаты выполнения передается по ссылке.
+
+    \begin{myinplacelisting}[minted language=cpp]
+unsigned get_index();
+
+int main() {
+    int result {};
+    switch (foo(get_index(), result)) {
+        case Result::OK:
+            std::println("Result: {}", result);
+            break;
+        case Result::OUT_OF_RANGE:
+            std::println(stderr, "Error: out of bounds");
+        default:
+            std::println(stderr, "Error: unknown");
+            break;
+    }
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Ошибка в возвращаемом значении}
+
+    \begin{task}
+      Подумайте, какие преимущества и недостатки у \textbf{варианта 1}.
+    \end{task}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Ошибка в возвращаемом значении}
+
+    \textbf{Вариант 2} \textemdash \space информация об ошибке и результат
+    операции объединены в один тип.
+
+    \begin{myinplacelisting}[minted language=cpp]
+struct Result {
+    enum class Error {
+        NONE,
+        OUT_OF_RANGE
+    };
+    Error error = Error::NONE;
+    int value;
+};
+
+Result foo(unsigned i) {
+    constexpr int arr[] = {1, 2, 3};
+    if (i > 2) {
+        return {Result::Error::OUT_OF_RANGE};
+    }
+    Result result {};
+    result.value = arr[i];
+    return result;
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Ошибка в возвращаемом значении}
+
+    \textbf{Вариант 2} \textemdash \space информация об ошибке и результат
+    операции объединены в один тип.
+
+    \begin{myinplacelisting}[minted language=cpp]
+unsigned get_index();
+
+int main() {
+    const auto result = foo(get_index());
+    switch (result.error) {
+        case Result::Error::NONE:
+            std::println("Result: {}", result.value);
+            break;
+        case Result::Error::OUT_OF_RANGE:
+            std::println(stderr,
+                "Error: out of bounds");
+        default:
+            break;
+    }
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Ошибка в возвращаемом значении}
+
+    \begin{task}
+      Подумайте, какие преимущества и недостатки у \textbf{варианта 2}.
+    \end{task}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Unrepresentable state}
+
+    Передача ошибки через возвращаемое значение \textemdash \space
+    не универсальное решение.
+    Возвращаемых значений нет у \textit{конструкторов классов}.
+
+    \begin{myinplacelisting}[minted language=cpp]
+class Month {
+public:
+    Month(const unsigned number) {
+        if (number >= 12) {
+            // how do we handle this?
+        }
+    }
+    // ...
+};
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Unrepresentable state}
+
+    Одним из способов решения проблемы \textemdash \space
+    создание методов, указывающих на консистентность
+    состояния объекта.
+
+    \begin{myinplacelisting}[minted language=cpp]
+class Month {
+    std::uint8_t number_;
+public:
+    Month(std::uint8_t number) :
+        number_(number) {}
+    bool Valid() const {
+        return number_ < 12;
+    }
+};
+
+void foo(const Month& month) {
+    if (month.Valid()) {
+        // do stuff ...
+    }
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Unrepresentable state}
+
+    Как правило, лучше вообще не давать создавать объект с
+    неконсистентным состояним, делая его таким образом
+    \enquote{непредставимым} (\textit{unrepresentable state}).
+
+    \begin{myinplacelisting}[minted language=cpp]
+class Month {
+    std::uint8_t number_;
+public:
+    Month(std::uint8_t number) : number_(number) {
+        if (number_ > 11) {
+            throw std::out_of_range(
+                "There's only 12 months"
+            );
+        }
+    }
+};
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Выброс исключения}
+
+    Исключения выбрасываются ключевым словом \texttt{throw}.
+    Исключение может быть объектом любого типа.
+
+    \begin{myinplacelisting}[minted language=cpp]
+throw 1;
+throw "hello!";
+throw (1.0f * 2);
+throw new int;
+throw Foo{};
+throw std::runtime_error("hello!");
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Отлов исключений}
+
+    Для отлова исключений используется блок \texttt{try} \slash \texttt{catch}.
+    Семантика отлова исключений позволяет фильтровать их по \textit{типу}.
+
+    \begin{myinplacelisting}[minted language=cpp]
+void foo(int i) {
+    switch (i) {
+        case 1:  throw int{};
+        case 2:  throw double{};
+        default: throw nullptr;
+    }
+}
+
+void bar(int i) {
+    try {
+        foo(i);
+    }
+    catch (const double err) {
+        // `throw double` will be handled here
+    }
+    // all other `throw`s are not handled at all
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Отлов исключений}
+
+    В одном \texttt{try} \slash \texttt{catch} блоке можно отловить более
+    одного типа исключений.
+    Последовательность блоков \texttt{catch} важна:
+    при возникновении неоднозначности в выборе блока будет выбран первый.
+
+    \begin{myinplacelisting}[minted language=cpp]
+void bar(int i) {
+    try {
+        foo(i);
+    }
+    catch (const double err) {
+        std::println("Error: {}", err);
+    }
+    catch (const int err) {
+        std::println("Error: {}", err);
+    }
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Отлов исключений}
+
+    Для отлова исключения любого типа используется конструкция
+    \texttt{catch(...)}.
+
+    \begin{myinplacelisting}[minted language=cpp]
+void bar(int i) {
+    try {
+        foo(i);
+    }
+    catch (const double err) {
+        std::println("Error: {}", err);
+    }
+    catch (...) {
+        // will handle all unhandled exceptions
+        // but we lack error object here
+        std::println("Error: unknown");
+    }
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Stack unwinding}
+
+    После выбрасывания исключению поток управления переходит
+    в ближайший блок \texttt{catch} вниз по стекам фрейма.
+    Вызываются деструкторы уже созданных объектов.
+    Этот процесс называется \textit{размоткой стека} (stack
+    unwinding).
+
+    \begin{myinplacelisting}[minted language=cpp]
+struct Foo {
+  std::string_view name_;
+  Foo(std::string_view name) : name_(name) {
+    std::println("New: {}", name_);
+  }
+  ~Foo() { std::println("Delete: {}", name_); }
+};
+
+void foo() { Foo f4 {"f4"}; throw 1; Foo f5 {"f5"}; };
+
+void bar() { Foo f2 {"f2"}; foo(); Foo f3 {"f3"}; };
+
+int main() {
+  try { Foo f0 {"f0"}; bar(); Foo f1 {"f1"}; }
+  catch (...) {}
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Stack unwinding}
+
+    Пример вывод приложения с прошлого слайда:
+
+    \begin{terminalwindow}
+!\shellcommand{./a.out}!
+New: f0
+New: f2
+New: f4
+Delete: f4
+Delete: f2
+Delete: f0
+    \end{terminalwindow}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Исключения и деструкторы}
+
+    В процессе размотки стека вызываются деструкторы.
+    Из-за этого нельзя выбрасывать новые исключения в самих
+    деструкторах \textemdash \space C++ runtime не сможет
+    выбросить новое исключение во время обработки уже имеющегося.
+    В этом случае будет вызвана функция \texttt{std::terminate}\footnotemark{}.
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/error/terminate.html}}
+
+    \begin{myinplacelisting}[minted language=cpp]
+struct Foo { ~Foo() { throw 1; } };
+
+int main() {
+  try { Foo f {}; throw 1; }
+  catch (...) {}
+}
+    \end{myinplacelisting}
+
+    \begin{terminalwindow}
+!\shellcommand{./a.out}!
+terminate called after throwing an instance of 'int'
+Aborted (core dumped)
+    \end{terminalwindow}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Спецификатор \texttt{noexcept}}
+
+    Функции, помеченные спецификатором \texttt{noexcept},
+    приведут к вызову \texttt{std::terminate}, если их них
+    будет выброшено исключение.
+
+    \begin{myinplacelisting}[minted language=cpp]
+void bar() { throw 1; }
+
+void foo() noexcept { bar(); }
+
+int main() { foo(); }
+    \end{myinplacelisting}
+
+    \begin{terminalwindow}
+!\shellcommand{./a.out}!
+terminate called after throwing an instance of 'int'
+Aborted (core dumped)
+    \end{terminalwindow}
+
+  \end{frame}
+
+\end{document}
