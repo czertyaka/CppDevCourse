@@ -12,6 +12,7 @@ BUILD_DIR := build
 	hw-04 \
 	hw-05 \
 	hw-06 \
+	hw-07 \
 	install \
 	pr-01 \
 	pr-02 \
@@ -38,6 +39,7 @@ build: \
 	hw-04 \
 	hw-05 \
 	hw-06 \
+	hw-07 \
 	pr-01 \
 	pr-02 \
 	pr-03 \
@@ -76,6 +78,7 @@ install: build
 	cp "$(BUILD_DIR)/hw-04.pdf" "$(PREFIX)/Домашние задания/04 The Guessing Game.pdf"
 	cp "$(BUILD_DIR)/hw-05.pdf" "$(PREFIX)/Домашние задания/05 Hide Secret.pdf"
 	cp "$(BUILD_DIR)/hw-06.pdf" "$(PREFIX)/Домашние задания/06 LIFO Stack.pdf"
+	cp "$(BUILD_DIR)/hw-07.pdf" "$(PREFIX)/Домашние задания/07 Real48.pdf"
 	mkdir -p "$(PREFIX)/Проекты"
 	cp "$(BUILD_DIR)/prj-auth-lib.pdf" "$(PREFIX)/Проекты/Библиотека идентификации и аутентификации.pdf"
 	cp "$(BUILD_DIR)/prj-enc-exch.pdf" "$(PREFIX)/Проекты/Baremetal шифрование обмена.pdf"
@@ -94,6 +97,7 @@ help:
 	@printf "hw-04\tbuild homework hw-04.pdf\n"
 	@printf "hw-05\tbuild homework hw-05.pdf\n"
 	@printf "hw-06\tbuild homework hw-06.pdf\n"
+	@printf "hw-07\tbuild homework hw-07.pdf\n"
 	@printf "install\tinstall all presentations and homeworks\n"
 	@printf "pr-01\tbuild presentation pr-01.pdf\n"
 	@printf "pr-02\tbuild presentation pr-02.pdf\n"
@@ -131,6 +135,7 @@ hw-03: hw-03.pdf
 hw-04: hw-04.pdf
 hw-05: hw-05.pdf
 hw-06: hw-06.pdf
+hw-07: hw-07.pdf
 
 prj-auth-lib: prj-auth-lib.pdf
 prj-enc-exch: prj-enc-exch.pdf
@@ -324,6 +329,13 @@ hw-05.pdf: \
 
 hw-06.pdf: \
 	Homeworks/06-LIFO-Stack/lifo-stack.tex \
+	Homeworks/homeworktemplate.sty \
+	Packages/terminal.sty \
+	Packages/mylisting.sty
+	$(call generate_pdf,$<,$@)
+
+hw-07.pdf: \
+	Homeworks/07-Real48/real48.tex \
 	Homeworks/homeworktemplate.sty \
 	Packages/terminal.sty \
 	Packages/mylisting.sty
