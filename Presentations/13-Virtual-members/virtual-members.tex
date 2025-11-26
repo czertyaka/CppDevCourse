@@ -8,7 +8,19 @@
 \usepackage{tikz}
 \usetikzlibrary{positioning}
 
-\title{Виртуальные методы и полиморфизм}
+\newtcolorbox{task}{
+    colback=yellow!50!white,
+    boxrule=0.02cm,
+    colframe=black,
+    sharp corners,
+    left=0mm,
+    right=0mm,
+    top=0mm,
+    bottom=0mm,
+    before upper={\textbf{Задание}:\:},
+}
+
+\title{Виртуальные методы и динамический полиморфизм}
 
 \begin{document}
 
@@ -47,11 +59,13 @@
 
 \begin{frame}[fragile]
 
-    \frametitle{Полиморфизм}
+    \frametitle{Динамический полиморфизм}
 
     В С++ виртуальные методы являются одним из механизов поддержки
     \textbf{полиморфизма} (polymorphism): способности одного и того же
     кода работать с объектами разных типов.
+    Полиморфизм на основе виртуальных методов называют \textit{динамическим
+    полиморфизмом} или \textit{динамической диспатчеризацией} (dynamic dispatch).
 
     \hfill\break
     Для использования этой возможности необходимо выполнение двух условий:
@@ -213,13 +227,95 @@ int main() {
 
 \begin{frame}[fragile]
 
+    \frametitle{Виртуальная таблица}
+
+    Простейший пример использования виртуальной таблицы:
+
+    \begin{myinplacelisting}[minted language=cpp]
+// foo.cpp
+struct Foo {
+    virtual void Unused();
+    virtual void Bar();
+};
+
+void bar(Foo& f) {
+    f.Bar();
+}
+    \end{myinplacelisting}
+
+    \begin{terminalwindow}
+!\shellcommand{c++ -O3 -c foo.cpp -o foo.o}!
+!\shellcommand{objdump -dC foo.o}!
+...
+0000000000000000 <bar(Foo&)>:
+   0:   48 8b 07                mov    (%rdi),%rax
+   3:   ff 60 08                jmp    *0x8(%rax)
+    \end{terminalwindow}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
     \frametitle{Виртуальные методы в конструкторах \\ и деструкторах}
 
-    Вызов виртуального метода всегда осуществляется через указатель на виртуальную
-    таблицу, которая хранится в объекте.
-    Во время выполнения конструктора этот указатель может быть еще не
-    проинициализирован, а во время выполнения деструктора --- уже освобожден.
-    Поэтому небезопасно вызывать виртуальные методы из конструктора и деструктора.
+    \begin{task}
+        Подумайте, что должна вывести программа на листинге ниже.
+        Обоснуйте свое мнение.
+    \end{task}
+
+    \begin{myinplacelisting}[minted language=cpp]
+#include <print>
+
+struct Base {
+    Base() {
+        Foo(); // what to call?
+    }
+    virtual void Foo() { std::println("base method"); }
+};
+
+struct Derived : Base {
+    Derived() : Base() {}
+    void Foo() override { std::println("overriden method"); }
+};
+
+int main() {
+    Derived {};
+}
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Виртуальные методы в конструкторах \\ и деструкторах}
+
+    Правильный ответ \textemdash \space будет вызван метод \verb|Base::Foo|,
+    потому что метод \verb|Derived::Foo| может обращаться к полям, которые
+    еще не были инициализированы.
+
+    \begin{myinplacelisting}[minted language=cpp]
+struct Base {
+    Base() {
+        Foo(); // Derived::a is not initialized yet
+    }
+    virtual void Foo() { std::println("base method"); }
+};
+
+struct Derived : Base {
+    Derived() : Base(), a(-1) {}
+    void Foo() override { std::println("a = {}", a); }
+    int a;
+};
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Виртуальные методы в конструкторах \\ и деструкторах}
+
+    Динамическая диспетчеризация
+    не работает в конструкторах и деструкторах.
 
     \begin{myinplacelisting}[minted language=cpp]
 struct Base {
@@ -322,6 +418,28 @@ struct Circle : Shape {
         { return 3.14 * rad_ * rad_; }
 private:
     double rad_;
+};
+    \end{myinplacelisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+    \frametitle{Вызов чистого виртуального метода}
+
+    \hfill\break
+    Вызов чистого виртуального метода является неопределенным поведением.
+    Обычно он приводит к аварийному завершению программы.
+
+    \begin{myinplacelisting}[minted language=cpp]
+struct Base {
+    Base() { Foo(); } // undefined behaviour
+    ~Base() { Foo(); } // undefined behaviour
+    virtual void Foo() = 0;
+};
+
+struct Derived : Base {
+    void Foo() override {}
 };
     \end{myinplacelisting}
 
