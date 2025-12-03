@@ -1,0 +1,1228 @@
+\documentclass[compress, 8pt]{beamer}
+
+\usepackage{presentationtemplate}
+\usepackage[askip=3mm, bskip=3mm]{terminal}
+\usepackage[linenosfontsize=\tiny, askip=3mm, bskip=3mm]{mylisting}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows.meta}
+\usepackage{csquotes}
+
+\newtcolorbox{task}{
+    colback=yellow!50!white,
+    boxrule=0.02cm,
+    colframe=black,
+    sharp corners,
+    left=0mm,
+    right=0mm,
+    top=0mm,
+    bottom=0mm,
+    before upper={\textbf{Задание}:\:},
+}
+
+\title{Шаблоны и статический полиморфизм}
+
+\begin{document}
+
+  \frame[plain]{\titlepage}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Boilerplate code}
+
+    Иногда возникает необходимость несколько раз
+    написать одинаковый код, который должен работать
+    с разными типами.
+    Наивный подход к решению этой проблемы приводит к появлению
+    \textit{boilerplate code}\footnotemark{}.
+
+    \footnotetext{\url{https://en.wikipedia.org/wiki/Boilerplate\_code}}
+
+    \begin{columns}[T]
+      \begin{column}{0.5\textwidth}
+        \begin{myinplacelisting}[minted language=cpp]
+int max(int a, int b) {
+    return a > b ? a : b;
+}
+
+long max(long a, long b) {
+    return a > b ? a : b;
+}
+
+float max(float a, float b) {
+    return a > b ? a : b;
+}
+        \end{myinplacelisting}
+      \end{column}
+      \begin{column}{0.5\textwidth}
+        \begin{myinplacelisting}[minted language=cpp]
+struct A { void Foo(); };
+struct B { void Foo(); };
+struct C { void Foo(); };
+
+void foo(A obj) { obj.Foo(); }
+void foo(B obj) { obj.Foo(); }
+void foo(C obj) { obj.Foo(); }
+        \end{myinplacelisting}
+      \end{column}
+    \end{columns}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Boilerplate code}
+
+    \begin{task}
+      Рассмотрите примеры boilerplate code на листингах
+      с прошлого слайда.
+      Используя уже известные вам механизмы кодогенерации
+      в C++, предложите решение этой проблемы.
+    \end{task}
+
+    \begin{columns}[T]
+      \begin{column}{0.5\textwidth}
+        \begin{myinplacelisting}[minted language=cpp]
+int max(int a, int b) {
+    return a > b ? a : b;
+}
+
+long max(long a, long b) {
+    return a > b ? a : b;
+}
+
+float max(float a, float b) {
+    return a > b ? a : b;
+}
+        \end{myinplacelisting}
+      \end{column}
+      \begin{column}{0.5\textwidth}
+        \begin{myinplacelisting}[minted language=cpp]
+struct A { void Foo(); };
+struct B { void Foo(); };
+struct C { void Foo(); };
+
+void foo(A obj) { obj.Foo(); }
+void foo(B obj) { obj.Foo(); }
+void foo(C obj) { obj.Foo(); }
+        \end{myinplacelisting}
+      \end{column}
+    \end{columns}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Кодогенерация на макросах}
+
+    Одним из способов уменьшить количество дублирующегося
+    кода является директива препроцессора \verb|define|.
+
+    \begin{myinplacelisting}[minted language=cpp]
+#define __MAX(A, B) ((A) > (B) ? (A) : (B))
+
+struct A { void Foo(); };
+struct B { void Foo(); };
+struct C { void Foo(); };
+
+#define __FOO(X) do { (X).Foo(); } while (0);
+    \end{myinplacelisting}
+
+    \begin{task}
+Подумайте, когда удобно использовать препроцессор для кодогенерации,
+а когда нет.
+    \end{task}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Кодогенерация на макросах}
+
+    \begin{task}
+      Подумайте, что выведет программа на листинге ниже.
+    \end{task}
+
+    \begin{myinplacelisting}[minted language=cpp]
+#include <print>
+
+#define __MIN(A, B) ((A) <= (B) ? (A) : (B))
+
+int main() {
+    int a = 2;
+    int b = 4;
+    std::println("min = {}", __MIN(++a, --b));
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Кодогенерация на макросах}
+
+    Вот так выглядит вывод препроцессора кода с листинга
+    на прошлом слайде.
+
+    \begin{myinplacelisting}[minted language=cpp]
+int main() {
+    int a = 2;
+    int b = 4;
+    std::println("min = {}", ((++a) <= (--b) ? (++a) : (--b)));
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Кодогенерация на макросах}
+
+    \begin{task}
+      Найдите проблему в коде на листинге ниже.
+    \end{task}
+
+    \begin{myinplacelisting}[minted language=cpp]
+#define __SWAP(X, Y) \
+    auto tmp = (X); \
+    (X) = (Y); \
+    (Y) = tmp;
+
+void swap(bool condition, int a, int b) {
+    if (condition)
+        __SWAP(a, b);
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Кодогенерация на макросах}
+
+    Кодогенерация на макросах имеет следующие недостатки:
+
+    \begin{itemize}
+      \item Неудобно писать (для поддержки многострочных макросов
+        необходимо в конец строки добалять символ продолжения
+        \verb|/|).
+      \item \enquote{Гетерогенность} макросов по отношению
+        к обычным функциям.
+        Макрос нельзя поместить в пространство имен,
+        непросто получить тип параметра,
+        нельзя взять его адрес и т.д.
+        С точки зрения метапрограммирования макрос и функция
+        \textemdash \space объекты разных типов.
+      \item Макросы неустойчивы к нетривиальным сценариям
+        использования.
+        Для решения таких проблем приходится прибегать к
+        специальным мерам.
+        Некоторые проблемы решить нельзя.
+    \end{itemize}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Кодогенерация на шаблонах}
+
+    Другим возможным способом кодогенрации в C++ являются
+    \textit{шаблоны}\footnotemark{} (templates).
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/language/templates.html}}
+
+    \hfill \break
+    Шаблоны не являются полноценной альтернативой макросам.
+    Макросы работают на уровне \enquote{сырого} текста, шаблоны
+    \textemdash \space встроены в языковую модель C++.
+
+    \hfill \break
+    Шаблоны позволяют генерировать параметризованные:
+    \begin{itemize}
+      \item функции;
+      \item классы;
+      \item псевдонимы типов;
+      \item переменные;
+      \item concepts.
+    \end{itemize}
+
+    \hfill \break
+    В качестве параметров шаблонов могут выступать типы, константы и
+    другие шаблоны.
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Шаблонная функция}
+
+    Пример \textit{шаблонной функции}\footnote{\url{https://en.cppreference.com/w/cpp/language/function\_template.html}}:
+
+    \begin{myinplacelisting}[minted language=cpp]
+// template function foo is type parametrized
+template <class T> // T is template parameter
+T max(T a, T b)
+{
+    return a > b ? a : b;
+}
+
+int main() {
+    // all 3 calls are template instantiations
+    max<int>(1, 2);
+    max<float>(1., 2.);
+    max('a', 'b'); // type parameter was deduced
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Шаблонная функция}
+
+    Дизассемблер кода с листинга на прошлом слайде:
+
+    \begin{myinplacelisting}[minted language=text]
+0000000000000000 <int max<int>(int, int)>:
+   0:   55                      push   %rbp
+   1:   48 89 e5                mov    %rsp,%rbp
+   4:   89 7d fc                mov    %edi,-0x4(%rbp)
+...
+0000000000000000 <float max<float>(float, float)>:
+   0:   55                      push   %rbp
+   1:   48 89 e5                mov    %rsp,%rbp
+   4:   f3 0f 11 45 fc          movss  %xmm0,-0x4(%rbp)
+...
+0000000000000000 <char max<char>(char, char)>:
+   0:   55                      push   %rbp
+   1:   48 89 e5                mov    %rsp,%rbp
+   4:   40 88 f0                mov    %sil,%al
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Шаблонный класс}
+
+    Пример \textit{шаблонного класса}\footnotemark{}:
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/language/class\_template.html}}
+
+    \begin{myinplacelisting}[minted language=cpp]
+// template class is type parametrized
+template <class T>
+class Vector {
+public:
+    Vector() = default;
+    Vector(std::size_t size) : ptr_(new T[size]), size_(size)
+    {}
+    T& operator[](std::size_t index) { return ptr_[index]; }
+private:
+    T* ptr_ = nullptr;
+    std::size_t size_ = 0u;
+};
+
+int main() {
+    Vector<double> v {2}; // template instantiation
+    v[0] = 1.0;
+    v[1] = 2.0;
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Шаблонная переменная}
+
+    Пример \textit{шаблонной переменной}\footnotemark{}:
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/language/variable\_template.html}}
+
+    \begin{myinplacelisting}[minted language=cpp]
+// template variable is type parametrized
+template<class T>
+constexpr T pi = T(3.1415926535897932385L);
+
+template<class T>
+T area(T r)
+{
+    return pi<T> * r * r; // variable
+                          // template instantiation
+}
+
+int main() {
+    area<double>(10.0);
+    area<float>(10.0);
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Шаблонный псевдоним}
+
+    \begin{columns}[T]
+
+      \begin{column}{0.5\textwidth}
+
+        \begin{myinplacelisting}[minted language=cpp]
+// template alias
+template <class T>
+using Ptr = T*;
+
+// template instantiation
+void bar(Ptr<int> p) {
+    *p = int {-1};
+}
+        \end{myinplacelisting}
+
+        Примеры \textit{шаблонных псевдонимов}\footnotemark{}:
+
+        \footnotetext{\url{https://en.cppreference.com/w/cpp/language/type\_alias.html}}
+
+      \end{column}
+      
+      \begin{column}{0.5\textwidth}
+
+        \begin{myinplacelisting}[minted language=cpp]
+template <class T1, class T2>
+struct Foo {
+    T1 a;
+    T2 b;
+};
+
+// template aliases
+template <class T>
+using IntFoo1 = Foo<int, T>;
+
+template <class T>
+using IntFoo2 = Foo<T, int>;
+
+void foo() {
+    // template instantiations
+    int a = IntFoo1<char>{}.a;
+    int b = IntFoo2<bool>{}.b;
+}
+        \end{myinplacelisting}
+
+      \end{column}
+
+    \end{columns}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Параметр шаблона: тип}
+
+    Все предыдущие примеры в качестве параметра шаблона
+    использовали тип\footnotemark{}.
+    Для этого взаимозаменяемо используются ключевые слова
+    \verb|class| и \verb|typename| в объявлении шаблона.
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/language/template\_parameters.html\#Type\_template\_parameter}}
+
+    \centering
+
+    \begin{tikzpicture}
+
+      \node (template) [text width=4.5cm] {
+        \begin{myinplacelisting}[minted language=cpp]
+template <typename T>
+// or template <class T>
+T inc(T t) {
+    T v = ++t;
+    return v;
+}
+        \end{myinplacelisting}
+      };
+
+      \node (int) [below right=0.5cm and -7cm of template, text width=4cm] {
+        \begin{myinplacelisting}[minted language=cpp]
+int inc(int t) {
+    int v = t++;
+    return v;
+}
+        \end{myinplacelisting}
+      };
+
+      \node (long) [below right=0.5cm and -2cm of template, text width=4cm] {
+        \begin{myinplacelisting}[minted language=cpp]
+long inc(long t) {
+    long v = t++;
+    return v;
+}
+        \end{myinplacelisting}
+      };
+
+      \draw[-{Latex}] (template.south west) -- (int.north);
+      \draw[-{Latex}] (template.south east) -- (long.north);
+
+    \end{tikzpicture}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Параметр шаблона: константа}
+
+    В качестве параметра шаблона также можно использовать
+    одно из значений конкретного типа\footnotemark{}.
+    Для этого в объявлении шаблона указывается этот тип.
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/language/template\_parameters.html\#Constant\_template\_parameter}}
+
+    \centering
+
+    \begin{tikzpicture}
+
+      \node (template) [text width=5cm] {
+        \begin{myinplacelisting}[minted language=cpp]
+template <unsigned S>
+using Array = int[S];
+
+void foo() {
+    Array<1> arr0 = {0};
+    Array<3> arr1 = {0, 1, 2};
+}
+        \end{myinplacelisting}
+      };
+
+      \node (int) [below right=0.5cm and -7.5cm of template, text width=4cm] {
+        \begin{myinplacelisting}[minted language=cpp]
+int arr0[1] = {0};
+        \end{myinplacelisting}
+      };
+
+      \node (long) [below right=0.5cm and -2cm of template, text width=4cm] {
+        \begin{myinplacelisting}[minted language=cpp]
+int arr1[3] = {0, 1, 2};
+        \end{myinplacelisting}
+      };
+
+      \draw[-{Latex}] (template.south west) -- (int.north);
+      \draw[-{Latex}] (template.south east) -- (long.north);
+
+    \end{tikzpicture}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Параметр шаблона: константа}
+
+    В качестве типа параметра-константы можно использовать:
+
+    \begin{itemize}
+
+      \item Интегральный тип:
+        \begin{myinplacelisting}[minted language=cpp]
+template <int T> struct Foo {/*...*/};
+Foo<1> f {};
+        \end{myinplacelisting}
+
+      \item Перечисление:
+        \begin{myinplacelisting}[minted language=cpp]
+enum Color { RED, BLUE };
+template <Color T> struct Foo {/*...*/};
+
+Foo<Color::RED> f {};
+        \end{myinplacelisting}
+
+      \item Число с плавающей точкой (C++20):
+        \begin{myinplacelisting}[minted language=cpp]
+template <float T> struct Foo {/*...*/};
+Foo<1.0f> f {};
+        \end{myinplacelisting}
+
+    \end{itemize}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Параметр шаблона: константа}
+
+    Продолжение:
+    
+    \begin{itemize}
+
+      \item Указатель:
+        \begin{myinplacelisting}[minted language=cpp]
+struct Bar {};
+template <Bar* T> struct Foo {/*...*/};
+
+Bar b {};
+Foo<&b> f {};
+        \end{myinplacelisting}
+
+      \item Именованную ссылку:
+        \begin{myinplacelisting}[minted language=cpp]
+struct Bar {};
+template <Bar& T> struct Foo {/*...*/};
+
+Bar b {};
+Foo<b> f {};
+        \end{myinplacelisting}
+
+    \end{itemize}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Параметр шаблона: другой шаблон}
+
+    В качестве параметра шаблона можно использовать другой
+    шаблонный тип\footnotemark{}.
+    Это может быть полезно для комбинации различных
+    типов внутри одного шаблона.
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/language/template\_parameters.html\#Template\_template\_parameter}}
+
+    \centering
+    
+    \begin{tikzpicture}
+
+      \node (template) [text width=10cm] {
+        \begin{myinplacelisting}[minted language=cpp]
+template <class Key, class Value, template<class> class Arr>
+class Map {
+    Arr<Key> keys_;
+    Arr<Value> values_;
+};
+        \end{myinplacelisting}
+      };
+
+      \node (int) [below right=0.5cm and -10.5cm of template, text width=5.5cm] {
+        \begin{myinplacelisting}[minted language=cpp]
+class Map {
+    StatArr<int> keys_;
+    StatArr<const char*> values_;
+};
+        \end{myinplacelisting}
+      };
+
+      \node (long) [below right=0.5cm and -4.5cm of template, text width=5cm] {
+        \begin{myinplacelisting}[minted language=cpp]
+class Map {
+    DynArr<const char*> keys_;
+    DynArr<Foo> values_;
+};
+        \end{myinplacelisting}
+      };
+
+      \draw[-{Latex}] (template.south) -- (int.north);
+      \draw[-{Latex}] (template.south) -- (long.north);
+
+    \end{tikzpicture}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Аргументы по-умолчанию}
+
+    По аналогии с аргументами функции, шаблоны могут иметь
+    аргументы по-умолчанию\footnotemark{}.
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/language/template\_parameters.html\#Default\_template\_arguments}}
+
+    \begin{myinplacelisting}[minted language=cpp]
+template <class T, class U = int>
+struct Foo {};
+
+template <class T = int, class U> // compilation error
+struct Bar {};
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Объявление и определение шаблона}
+
+    Так же, как и у обычной функции, у шаблонной функции может быть
+    объявление и определение:
+
+    \begin{myinplacelisting}[minted language=cpp]
+template <class T>
+T foo();
+
+template <class T>
+T foo() {
+    return T {1, 2, 'c'};
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Объявление и определение шаблона}
+
+    Определение шаблонного метода или метода шаблонного класса
+    отдельно от определения самого класса выглядит так:
+
+    \begin{myinplacelisting}[minted language=cpp]
+class Foo {
+    template <class T>
+    void Method(T t);
+};
+
+template <class T>
+void Foo::Method(T t) {}
+
+template <class T>
+class Bar {
+    void Method(T t);
+};
+
+template <class T>
+void Bar<T>::Method(T t) {}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Определение шаблона}
+
+    Попробуем скомпилировать программу из двух файлов:
+
+    \begin{mytitledinplacelisting}[minted language=cpp]{main.cpp}
+template <class T>
+void foo(T t);
+
+int main() {
+    foo<int>(1);
+}
+    \end{mytitledinplacelisting}
+
+    \begin{mytitledinplacelisting}[minted language=cpp]{foo.cpp}
+#include <print>
+
+template <class T>
+void foo(T t) {
+    std::println("t = {}", t);
+}
+    \end{mytitledinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Определение шаблона}
+
+    Компиляция завершится с похожим выводом:
+
+    \begin{terminalwindow}
+!\shellcommand{c++ -std=c++23 main.cpp foo.cpp}!
+/usr/bin/ld: /tmp/main-66392d.o: in function `main':
+main.cpp:(.text+0xa): undefined reference to `void foo<int>(int)'
+clang++: !\color{red}{error:}! !\textbf{linker command failed with exit code 1 (use -v to see invocation)}!
+    \end{terminalwindow}
+
+    \begin{task}
+      По выводу компилятора определите, на каком этапе трансляции произошла ошибка.
+      Сделайте предположения, почему могла произойти ошибка.
+    \end{task}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Определение шаблона}
+
+    Инстанцирование шаблона и кодогенерация происходят в рамках компиляции
+    одной единицы трансляции.
+    Компилятор не сгенерировал код для \verb|foo<int>(int)| и не поместил
+    его в \verb|foo.o|, потому что на этапе компиляции \verb|foo.cpp| он не
+    знал, что в \verb|main.o| требуется инстанцирование функции
+    \verb|foo|.
+
+    \begin{terminalwindow}
+!\shellcommand{c++ -std=c++23 -c foo.cpp}!
+!\shellcommand{objdump -tC foo.o}!
+
+foo.o:     file format elf64-x86-64
+
+SYMBOL TABLE:
+0000000000000000 l    df *ABS*  0000000000000000 foo.cpp
+    \end{terminalwindow}
+
+    \begin{task}
+      Предложите способы исправить эту проблему.
+    \end{task}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Определение шаблона в заголовочном файле}
+
+    Самым распространенным подходом является определение
+    шаблонов в заголовочных файлах.
+    Есть целый класс C++ библиотек, которые состоят только
+    из заголовочных файлов: части Boost\footnote{\url{https://www.boost.org/}},
+    MsgPack\footnote{\url{https://msgpack.org/}} и др.
+    Такие библиотеки называют \textit{header only} библиотеками.
+
+    \begin{mytitledinplacelisting}[minted language=cpp]{foo.hpp}
+#include <print>
+
+template <class T> void foo(T t) {
+    std::println("t = {}", t);
+}
+    \end{mytitledinplacelisting}
+
+    \begin{mytitledinplacelisting}[minted language=cpp]{main.cpp}
+#include "foo.hpp"
+
+int main() { foo<int>(1); }
+    \end{mytitledinplacelisting}
+
+    \begin{task}
+      Подумайте, какие у этого подхода есть недостатки.
+    \end{task}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Инстанцирование шаблона в единице трансляции}
+
+    Другим решением может быть явное инстанцирование шаблона
+    в файле с его определением.
+
+    \begin{mytitledinplacelisting}[minted language=cpp]{main.cpp}
+template <class T>
+void foo(T t);
+
+int main() {
+    foo<int>(1);
+}
+    \end{mytitledinplacelisting}
+
+    \begin{mytitledinplacelisting}[minted language=cpp]{foo.cpp}
+#include <print>
+
+template <class T>
+void foo(T t) {
+    std::println("t = {}", t);
+}
+
+template void foo<int>(int t);
+    \end{mytitledinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Инстанцирование шаблона в единице трансляции}
+
+    В этом случае ошибка линковки решится, потому что в \verb|foo.o|
+    окажется определение шаблона с нужным аргументом.
+
+    \begin{terminalwindow}
+!\shellcommand{c++ -std=c++23 -c foo.o}!
+!\shellcommand{objdump -tC foo.o}!
+
+foo.o:     file format elf64-x86-64
+
+SYMBOL TABLE:
+0000000000000000 l    df *ABS*  0000000000000000 foo.cpp
+0000000000000000 l    d  .text._Z3fooIiEvT_     0000000000000000 .text._Z3fooIiEvT_
+0000000000000000  w    F .text._Z3fooIiEvT_     0000000000000009 !\colorbox{yellow}{void foo<int>(int)}!
+    \end{terminalwindow}
+
+    \begin{task}
+      Подумайте, какие у этого подхода есть недостатки.
+    \end{task}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Специализиация шаблона}
+
+    \textit{Специализация шаблона}\footnotemark{}
+    позволяет написать отдельное определение
+    шаблона для конкретного набора его аргументов.
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/language/template\_specialization.html}}
+
+    \begin{myinplacelisting}[minted language=cpp]
+template <class T>
+struct Foo {
+    Foo(T t) : t(t) {}
+    void Print() const {
+        std::println("t = {}", t);
+    }
+    T t;
+};
+
+// template specialization for void
+template <>
+struct Foo<void> {
+    void Print() const {
+        std::println("void...");
+    };
+};
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Специализиация шаблона}
+
+    Инстанцирование учитывает специализации шаблонов:
+
+    \begin{myinplacelisting}[minted language=cpp]
+int main() {
+    Foo<int> f0 {1};
+    f0.Print();
+
+    Foo<void> f1 {};
+    f1.Print();
+}
+    \end{myinplacelisting}
+
+    \begin{terminalwindow}
+!\shellcommand{c++ -std=c++23 main.cpp -o main}!
+!\shellcommand{./main}!
+t = 1
+void...
+    \end{terminalwindow}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Частичная специализиация шаблона}
+
+    Специализация шаблона, в которой аргументы есть для
+    каждого параметра шаблона, называются \textit{полными}.
+    Для шаблонных классов и шаблонных переменных можно
+    определить также \textit{частичную специализацию}\footnotemark{}.
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/language/partial\_specialization.html}}
+
+    \begin{myinplacelisting}[minted language=cpp]
+template <class T0, class T1>
+struct Foo {};
+
+// full specialization
+template <>
+struct Foo<int, int> {};
+
+// partial specialization
+template <class T>
+struct Foo<int, T> {};
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Parameters pack}
+
+    Используя \textit{parameters pack}\footnotemark{},
+    можно написать шаблон, который будет принимать произвольное
+    количество аргументов.
+
+    \begin{myinplacelisting}[minted language=cpp]
+template <class... T>
+class Tuple {};
+
+int main() {
+    Tuple <> t0 {};
+    Tuple <int> t1 {};
+    Tuple <int, double> t2 {};
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Parameters pack}
+
+    Пример построения класса кортежа с использованием
+    paramateres pack:
+
+    \begin{myinplacelisting}[minted language=cpp]
+#include <print>
+
+template <class... T>
+struct Tuple;
+
+template <>
+struct Tuple<> {};
+
+template <class H, class... T>
+struct Tuple<H, T...> {
+    H head = {};
+    Tuple<T...> tail;
+};
+
+int main() {
+    Tuple <int, double, char> t {};
+    std::println("{}", typeid(t.head).name());
+    std::println("{}", typeid(t.tail.head).name());
+    std::println("{}", typeid(t.tail.tail.head).name());
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{SFINAE}
+
+    В C++ действует правило \textit{SFINAE}\footnotemark{}
+    (\enquote{Substitution Failure Is Not An Error}), которое гласит, что:
+
+    \footnotetext{\url{http://en.cppreference.com/w/cpp/language/sfinae.html}}
+
+    \begin{tcolorbox}
+      ошибка подстановки типа в шаблон не является ошибкой
+      компиляции\footnotemark{}.
+    \end{tcolorbox}
+
+    \footnotetext{Но все еще может быть ошибкой линковки.}
+
+    До появления concepts (C++20) SFINAE использовалось для рефлексии\footnotemark{}
+    времени компиляции.
+
+    \footnotetext{\url{https://ru.wikipedia.org/wiki/\%D0\%A0\%D0\%B5\%D1\%84\%D0\%BB\%D0\%B5\%D0\%BA\%D1\%81\%D0\%B8\%D1\%8F\_(\%D0\%BF\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%B8\%D1\%80\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D0\%B5)}}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{SFINAE}
+
+    Попробуем написать код для проверки возможности сложения объектов типа
+    во время компиляции при помощи SFINAE.
+
+    Используем перегрузку функций.
+    При разрешении перегрузок вызовется \enquote{наиболее подходящая}
+    функция.
+
+    \begin{myinplacelisting}[minted language=cpp]
+void test(int*) {}
+void test(void*);
+
+int main() {
+    int i {};
+    test(&i); // will call test(int*)
+
+    struct Foo {} f;
+    test(&f); // will call test(void*)
+              // and then... linker error!
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{SFINAE}
+
+    Добавим шаблон.
+    Согласно SFINAE, компилятор при ошибке подстановки типа
+    должен попробовать другие перегрузки функции.
+    В этом примере для вызова \verb|test<Foo>| компилятор не сможет
+    использовать первую перегрузку и будет использовать вторую.
+
+    \begin{myinplacelisting}[minted language=cpp]
+template <class T>
+decltype(T{}, void()) test(std::nullptr_t) {}
+
+template <class T>
+void test(void*) {}
+
+int main() {
+    test<int>(nullptr); // will call first test
+
+    struct Foo { Foo() = delete; };
+    test<Foo>(nullptr); // will call second test
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{SFINAE}
+
+    Для более удобочитаемой ошибки можно использовать \verb|static_assert|.
+
+    \begin{myinplacelisting}[minted language=cpp]
+struct Yes { char dummy[1]; };
+struct No { char dymmy[2]; };
+
+template <class T> decltype(T{}, Yes {}) test(std::nullptr_t);
+template <class T> No test(void*);
+
+template <class T> void default_constructable() {
+    static_assert(sizeof(test<T>(nullptr)) == sizeof(Yes),
+        "Type is not constructable");
+}
+
+int main() {
+    default_constructable<int>(); // ok
+
+    struct Foo { Foo() = delete; };
+    default_constructable<Foo>(); // compilation error!
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{SFINAE}
+
+    В стандартной библиотеке есть поддержка\footnotemark{} SFINAE.
+
+    \footnotetext{\url{http://en.cppreference.com/w/cpp/types/enable\_if.html}}
+
+    \begin{myinplacelisting}[minted language=cpp]
+#include <type_traits>
+
+template<typename T>
+typename std::enable_if<std::is_integral<T>::value, T>::type
+zero() {
+    return T {};
+}
+
+int main() {
+    auto i = zero<int>();
+    auto f = zero<float>(); // compilation error
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Concepts}
+
+    Использование SFINAE привело к появлению большого
+    количества \enquote{абракадабры} в коде программистов,
+    склонных к усложнению кодовой базы.
+    В современном C++ эта идиома считается устаревшей,
+    на смену ей пришел другой механизм языка, который
+    называется \textit{concepts}\footnotemark{}.
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/language/constraints.html}}
+
+    \hfill \break
+    Concepts позволяют в явном виде объявить набор требований к типу,
+    который используется в шаблоне.
+    Компилятор выдаст понятную и ясную ошибку в случае, если данный тип
+    не удовлетворяет этим требованиям.
+    Concepts можно сравнить с абстрактными классами в динамическом полиморфизме,
+    только на этот раз полиморфизм статический.
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Concepts}
+
+    Простейший пример использования concepts:
+
+    \begin{myinplacelisting}[minted language=cpp]
+template <class T>
+concept Constructable = requires {
+    T {};
+};
+
+template <Constructable T>
+void foo() {
+    T t {};
+}
+
+int main() {
+    foo<int>();
+
+    struct Bar { Bar() = delete; };
+    foo<Bar>(); // compilation error!
+}
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{Concepts}
+
+    Станадратная библиотека определяет набор concepts общего назначения\footnotemark{}.
+
+    \footnotetext{\url{https://en.cppreference.com/w/cpp/concepts.html}}
+
+    Пользовательские требования можно определять очень гибко:
+    композицией из уже имеющихся concepts, используя произвольные
+    выражения и т.д.
+
+    \begin{myinplacelisting}[minted language=cpp]
+#include <concepts>
+
+template <class T>
+concept Constructable = requires {
+    T {};
+};
+
+template <class T>
+concept MyConcept =
+    // one can compose concepts
+    Constructable<T> &&
+    requires (T t, int a) {
+        // T has method Foo, which takes int
+        // and returns int
+        { t.Foo(a) } -> std::same_as<int>;
+    };
+    \end{myinplacelisting}
+
+  \end{frame}
+
+  \begin{frame}[fragile]
+
+    \frametitle{CRTR}
+
+    Другим примером статического полиморфизма на шаблонах\break
+    является \textit(CRTR) (\enquote{Curiously Recurring Template Pattern}).
+    Он позволяет организивать аналог виртуальных функций, который
+    работает во время компиляции.
+
+    \begin{myinplacelisting}[minted language=cpp]
+template <class Derived>
+struct Shape {
+    float Area() const {
+        return static_cast<const Derived*>(this)->Area();
+    }
+protected: Shape() = default;
+};
+
+struct Circle : Shape<Circle> {
+    float Area() const { return 3.14 * radius_ * radius_; }
+private: float radius_ = 1.f;
+};
+
+int main() {
+    const Circle c {};
+    const Shape<Circle>* s = &c;
+    std::println("area = {}", s->Area());
+}
+    \end{myinplacelisting}
+    
+  \end{frame}
+
+\end{document}
